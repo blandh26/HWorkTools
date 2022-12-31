@@ -1,0 +1,27 @@
+﻿<Application x:Class="HWorkTools.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HWorkTools"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="MainWindow.xaml"
+             Startup="Application_Startup">
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="Resources/Language/zh_cn.xaml"/>
+                <ResourceDictionary Source="Resources/Language/jp_jp.xaml"/>
+                <ResourceDictionary Source="Resources/Language/en_us.xaml"/>
+                <ResourceDictionary Source="Resources/Language/kr_kr.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#008B8B" />
+            <!--<SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#3b76ee"  />-->
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#008B8B"  />
+            <!--<SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#3b76ee"  />-->
+            <!--<SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#3b76ee"  /> -->
+            <!--<SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#3b76ee"  />-->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

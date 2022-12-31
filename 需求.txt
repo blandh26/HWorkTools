@@ -1,0 +1,41 @@
+https://www.haolizi.net/example/view_5224.html
+https://www.haolizi.net/example/view_34823.html
+https://www.haolizi.net/example/view_6472.html
+https://www.haolizi.net/example/view_26169.html
+https://www.haolizi.net/example/view_16830.html
+https://www.haolizi.net/example/view_5224.html
+https://www.haolizi.net/example/view_34823.html
+https://www.haolizi.net/example/view_6472.html
+https://www.haolizi.net/example/view_26169.html
+https://www.haolizi.net/example/view_16830.html
+https://www.haolizi.net/example/view_51816.html
+https://www.haolizi.net/example/view_6476.html
+https://www.haolizi.net/example/view_183753.html
+聊天
+https://www.haolizi.net/example/view_7618.html
+
+
+截图 录屏  
+    快捷键设置(支持跨屏，多屏)
+        截图
+        拼接图片
+        对比弹出框
+        自动全屏
+    录屏选择屏幕
+       选择显示器
+https://blog.csdn.net/xuanfengdd/article/details/108148060
+
+提醒功能
+    标题 描述 时间
+    定时年月日时分钟
+    每月 xx日  时分钟 往后推3月 自动
+    每周 周几  时分钟  往后推3周 自动
+    每日 时分钟    往后推3天 自动
+    提醒弹出框 特别定制（高于所有窗体\有一天后\5分钟后\15分钟后 30分钟 1小时）
+http://t.zoukankan.com/robertyao-p-10315571.html
+https://blog.csdn.net/MsTiang/article/details/123425123 Windows RDP设置多用户同时远程登录
+
+托盘  退出  双击打开   
+多语言设置  翻译和动态化   App.Current.FindResource("btn_Language_label")
+图标Icon 主页面  观看页面icon  鼠标图片设计
+开机自动启动
