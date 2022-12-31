@@ -22,6 +22,7 @@ using OpenCvSharp.Extensions;
 using static H.Util.WhoUsePort;
 using RDPCOMAPILib;
 using System.Net;
+using Microsoft.Win32;
 
 namespace H.WorkTools
 {
@@ -1227,6 +1228,31 @@ namespace H.WorkTools
                         LvClipboard.Items.Clear();
                     }
                 }
+            }
+            try
+            {
+                //根据情况是否写入注册表
+                RegistryKey regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run\", true);
+                if (Convert.ToBoolean(rbStart1.IsChecked))
+                {
+                    if (regKey == null)
+                        regKey = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run\");
+                    regKey.SetValue("H.WorkTools", System.Windows.Forms.Application.ExecutablePath);
+                }
+                else
+                {
+                    if (regKey != null)
+                    {
+                        if (regKey.GetValue("H.WorkTools") != null)
+                            regKey.DeleteValue("H.WorkTools");
+                    }
+                }
+                regKey.Close();
+            }
+            catch (Exception)
+            {
+                new MessageBoxCustom("adssad", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+
             }
         }
         #endregion
