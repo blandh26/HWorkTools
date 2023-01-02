@@ -177,6 +177,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\H.ScreenCapture\H.ScreenCapture.csproj">
+      <Project>{f93e1633-3bfb-46ff-b8d7-c8dbb6adcb73}</Project>
+      <Name>H.ScreenCapture</Name>
+    </ProjectReference>
     <ProjectReference Include="..\H.Util\H.Util.csproj">
       <Project>{fbaccb07-893e-4652-987c-9ce73f47ad20}</Project>
       <Name>H.Util</Name>

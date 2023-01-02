@@ -23,6 +23,7 @@ using static H.Util.WhoUsePort;
 using RDPCOMAPILib;
 using System.Net;
 using Microsoft.Win32;
+using H.ScreenCapture;
 
 namespace H.WorkTools
 {
@@ -313,14 +314,25 @@ namespace H.WorkTools
         /// <param name="e"></param>
         private void ScreenCapture_Click(object sender, EventArgs e)
         {
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.P, () =>
-            {
-                try
-                {
-                    System.Windows.MessageBox.Show("aaa");
-                }
-                catch { }
-            });
+            StartCapture(false);
+            //hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.P, () =>
+            //{
+            //    try
+            //    {
+            //        System.Windows.MessageBox.Show("aaa");
+            //    }
+            //    catch { }
+            //});
+        }
+        private FrmCapture m_frmCapture;
+        //启动截图
+        private void StartCapture(bool bFromClip)
+        {
+            if (m_frmCapture == null || m_frmCapture.IsDisposed)
+                m_frmCapture = new FrmCapture();
+            m_frmCapture.IsCaptureCursor = true;//鼠标是否截图
+            m_frmCapture.IsFromClipBoard = bFromClip;
+            m_frmCapture.Show();
         }
         #endregion
 
@@ -597,7 +609,7 @@ namespace H.WorkTools
         private void BtnPortKill_Click(object sender, EventArgs e)
         {
             portlist[LvPort.SelectedIndex].Process.Kill();
-            LvPort.Items.Remove(LvPort.Items[LvPort.SelectedIndex]);            
+            LvPort.Items.Remove(LvPort.Items[LvPort.SelectedIndex]);
         }
 
         #endregion
@@ -684,7 +696,7 @@ namespace H.WorkTools
                 Sendmsg.recIP = txtIp.Text.ToString();
                 Sendmsg.recProt = cif.GetValue("Tcp");
                 Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.ExitUpdate);
-                bool issend = p2p.Send(Sendmsg);                
+                bool issend = p2p.Send(Sendmsg);
             }
             catch (Exception ex)
             {
@@ -832,16 +844,33 @@ namespace H.WorkTools
                                 {//推送密钥
                                     try
                                     {
-                                        TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
-                                        Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
-                                        Sendmsg.sendIP = cbIp.SelectedValue.ToString();
-                                        Sendmsg.sendName = txtNiceName.Text;
-                                        Sendmsg.sendProt = cif.GetValue("Tcp");
-                                        Sendmsg.Data = Encoding.UTF8.GetBytes(invitationString);
-                                        Sendmsg.recIP = msgstr.sendIP;
-                                        Sendmsg.recProt = cif.GetValue("Tcp");
-                                        Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.JoinSuccess);
-                                        p2p.Send(Sendmsg);
+                                        bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                                        if (Convert.ToBoolean(Result))
+                                        {//同意加入
+                                            TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                                            Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                                            Sendmsg.sendIP = cbIp.SelectedValue.ToString();
+                                            Sendmsg.sendName = txtNiceName.Text;
+                                            Sendmsg.sendProt = cif.GetValue("Tcp");
+                                            Sendmsg.Data = Encoding.UTF8.GetBytes(invitationString);
+                                            Sendmsg.recIP = msgstr.sendIP;
+                                            Sendmsg.recProt = cif.GetValue("Tcp");
+                                            Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.JoinSuccess);
+                                            p2p.Send(Sendmsg);
+                                        }
+                                        else
+                                        {//加入被拒
+                                            TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                                            Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                                            Sendmsg.sendIP = cbIp.SelectedValue.ToString();
+                                            Sendmsg.sendName = txtNiceName.Text;
+                                            Sendmsg.sendProt = cif.GetValue("Tcp");
+                                            Sendmsg.Data = Encoding.UTF8.GetBytes(invitationString);
+                                            Sendmsg.recIP = msgstr.sendIP;
+                                            Sendmsg.recProt = cif.GetValue("Tcp");
+                                            Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.JoinRefuse);
+                                            p2p.Send(Sendmsg);
+                                        }
                                     }
                                     catch (Exception ex)
                                     {
@@ -871,7 +900,7 @@ namespace H.WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinSuccess))
                         {//加入成功
-                            DeskShareView win = new DeskShareView(Encoding.UTF8.GetString(msgstr.Data), txtNiceName.Text,_LvAudienceUpdate);
+                            DeskShareView win = new DeskShareView(Encoding.UTF8.GetString(msgstr.Data), txtNiceName.Text, _LvAudienceUpdate);
                             win.Show();
                             //推送加入成功
                             try
@@ -890,6 +919,11 @@ namespace H.WorkTools
                             {
 
                             }
+                            return;
+                        }
+                        else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinRefuse))
+                        {//加入拒绝
+                            new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinUpdate))

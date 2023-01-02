@@ -69,6 +69,10 @@ namespace H.Util
             /// </summary>
             JoinSuccess,
             /// <summary>
+            /// 加入拒绝
+            /// </summary>
+            JoinRefuse,
+            /// <summary>
             /// 加入成功更新
             /// </summary>
             JoinUpdate,

@@ -20,7 +20,13 @@ namespace H.ScreenCapture
             this.ForeColor = Color.White;
             this.BackColor = Color.Black;
             this.Dock = DockStyle.Fill;
+            var rect = SystemInformation.VirtualScreen;
+            Left = rect.X;
+            Top = rect.Y;
+            Width = rect.Width;
+            Height = rect.Height;
 
+            this.Size = new System.Drawing.Size(Width, Height);
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -29,8 +35,8 @@ namespace H.ScreenCapture
         }
 
         private void InitMember() {
-            this.dotColor = Color.Yellow;
-            this.lineColor = Color.Cyan;
+            this.dotColor = Color.Gold;
+            this.lineColor = Color.LightSeaGreen;
             this.magnifySize = new Size(15, 15);
             this.magnifyTimes = 7;
             this.isDrawOperationDot = true;
@@ -86,7 +92,7 @@ namespace H.ScreenCapture
         /// 获取或设置操作框点的颜色
         /// </summary>
         [Description("获取或设置操作框点的颜色")]
-        [DefaultValue(typeof(Color), "Yellow"), Category("Custom")]
+        [DefaultValue(typeof(Color), "Gold"), Category("Custom")]
         public Color DotColor {
             get { return dotColor; }
             set { dotColor = value; }
@@ -97,7 +103,7 @@ namespace H.ScreenCapture
         /// 获取或设置操作框线条的颜色
         /// </summary>
         [Description("获取或设置操作框线条的颜色")]
-        [DefaultValue(typeof(Color), "Cyan"), Category("Custom")]
+        [DefaultValue(typeof(Color), "LightSeaGreen"), Category("Custom")]
         public Color LineColor {
             get { return lineColor; }
             set { lineColor = value; }
@@ -333,6 +339,7 @@ namespace H.ScreenCapture
             #region Calculate the operationbox
 
             if (isStartDraw) {
+                Console.WriteLine("开始拖拽");
                 if (isMoving) {     //如果移动选区 只重置 location
                     //Point ptLast = this.selectedRectangle.Location;
                     this.selectedRectangle.X = m_ptTempStarPos.X + e.X - m_ptOriginal.X;
@@ -451,7 +458,8 @@ namespace H.ScreenCapture
             if (this.selectedRectangle.Width <= 10 || this.selectedRectangle.Height <= 10)
                 g.DrawRectangle(m_pen, this.selectedRectangle);
         }
-        //绘制图像放大信息
+
+        //绘制图像放大信息 十字准心 部分分屏会有异常
         protected virtual void DrawInfo(Graphics g) {
 
             #region Calculate point
@@ -497,39 +505,39 @@ namespace H.ScreenCapture
             g.DrawLine(m_pen, tempCenterX, tempY + 4, tempCenterX, tempRectBorder.Bottom - 2);
             g.DrawLine(m_pen, tempX + 4, tempCenterY, tempX + tempW - 4, tempCenterY);
 
-            #region Draw Info
+            //#region Draw Info
 
-            m_sb.Color = this.ForeColor;
-            Color clr = ((Bitmap)this.baseImage).GetPixel(m_ptCurrent.X, m_ptCurrent.Y);
-            g.DrawString("Size: " + (this.selectedRectangle.Width + 1) + " x "
-                + (this.selectedRectangle.Height + 1),
-                this.Font, m_sb, tempX + 2, tempRectBorder.Bottom + 2);
-            g.DrawString(clr.A + "," + clr.R + "," + clr.G + "," + clr.B,
-                this.Font, m_sb, tempX + 2, tempRectBorder.Bottom + 2 + this.Font.Height);
-            g.DrawString("0x" + clr.A.ToString("X").PadLeft(2, '0') +
-                clr.R.ToString("X").PadLeft(2, '0') +
-                clr.G.ToString("X").PadLeft(2, '0') +
-                clr.B.ToString("X").PadLeft(2, '0'),
-                this.Font, m_sb, tempX + 2, tempRectBorder.Bottom + 2 + this.Font.Height * 2);
-            m_sb.Color = clr;
-            g.FillRectangle(m_sb, tempX + tempW - 2 - this.Font.Height,         //右下角颜色
-                tempY + tempH - 2 - this.Font.Height,
-                this.Font.Height,
-                this.Font.Height);
-            g.DrawRectangle(Pens.Cyan, tempX + tempW - 2 - this.Font.Height,    //右下角颜色边框
-                tempY + tempH - 2 - this.Font.Height,
-                this.Font.Height,
-                this.Font.Height);
-            g.FillRectangle(m_sb, tempCenterX - this.magnifyTimes / 2,          //十字架中间颜色
-                tempCenterY - this.magnifyTimes / 2,
-                this.magnifyTimes,
-                this.magnifyTimes);
-            g.DrawRectangle(Pens.Cyan, tempCenterX - this.magnifyTimes / 2,     //十字架中间边框
-                tempCenterY - this.magnifyTimes / 2,
-                this.magnifyTimes - 1,
-                this.magnifyTimes - 1);
+            //m_sb.Color = this.ForeColor;
+            //Color clr = ((Bitmap)this.baseImage).GetPixel(m_ptCurrent.X, m_ptCurrent.Y);
+            //g.DrawString("Size: " + (this.selectedRectangle.Width + 1) + " x "
+            //    + (this.selectedRectangle.Height + 1),
+            //    this.Font, m_sb, tempX + 2, tempRectBorder.Bottom + 2);
+            //g.DrawString(clr.A + "," + clr.R + "," + clr.G + "," + clr.B,
+            //    this.Font, m_sb, tempX + 2, tempRectBorder.Bottom + 2 + this.Font.Height);
+            //g.DrawString("0x" + clr.A.ToString("X").PadLeft(2, '0') +
+            //    clr.R.ToString("X").PadLeft(2, '0') +
+            //    clr.G.ToString("X").PadLeft(2, '0') +
+            //    clr.B.ToString("X").PadLeft(2, '0'),
+            //    this.Font, m_sb, tempX + 2, tempRectBorder.Bottom + 2 + this.Font.Height * 2);
+            //m_sb.Color = clr;
+            //g.FillRectangle(m_sb, tempX + tempW - 2 - this.Font.Height,         //右下角颜色
+            //    tempY + tempH - 2 - this.Font.Height,
+            //    this.Font.Height,
+            //    this.Font.Height);
+            //g.DrawRectangle(Pens.Cyan, tempX + tempW - 2 - this.Font.Height,    //右下角颜色边框
+            //    tempY + tempH - 2 - this.Font.Height,
+            //    this.Font.Height,
+            //    this.Font.Height);
+            //g.FillRectangle(m_sb, tempCenterX - this.magnifyTimes / 2,          //十字架中间颜色
+            //    tempCenterY - this.magnifyTimes / 2,
+            //    this.magnifyTimes,
+            //    this.magnifyTimes);
+            //g.DrawRectangle(Pens.Cyan, tempCenterX - this.magnifyTimes / 2,     //十字架中间边框
+            //    tempCenterY - this.magnifyTimes / 2,
+            //    this.magnifyTimes - 1,
+            //    this.magnifyTimes - 1);
 
-            #endregion
+            //#endregion
         }
         //放大图形
         private static Bitmap MagnifyImage(Bitmap bmpSrc, int times) {

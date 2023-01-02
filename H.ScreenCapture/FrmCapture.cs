@@ -12,14 +12,21 @@ namespace H.ScreenCapture
 {
     public partial class FrmCapture : Form
     {
+        private Rectangle m_rectScreen;         //屏幕的矩形区域
+
         public FrmCapture() {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.Location = new Point(0, 0);
-            this.Size = new Size(Screen.PrimaryScreen.Bounds.Width,
-                Screen.PrimaryScreen.Bounds.Height);
             this.TopMost = true;
             this.ShowInTaskbar = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.Manual;
+            m_rectScreen = Win32.GetDesktopRect();
+            this.Location = m_rectScreen.Location;
+            m_rectScreen.Size = new Size(m_rectScreen.Width, m_rectScreen.Height / 2);
+            this.Size = m_rectScreen.Size;
+
+
+            imageProcessBox1.BaseImage = this.GetFullScreen(this.isCaptureCursor, this.isFromClipBoard);
 
             m_MHook = new MouseHook();
             this.FormClosing += (s, e) => { m_MHook.UnLoadHook(); this.DelResource(); };
@@ -129,7 +136,6 @@ namespace H.ScreenCapture
 
         private void FrmCapture_Load(object sender, EventArgs e) {
             this.InitMember();
-            imageProcessBox1.BaseImage = FrmCapture.GetScreen(this.isCaptureCursor,this.isFromClipBoard);
             m_MHook.SetHook();
             m_MHook.MHookEvent += new MouseHook.MHookEventHandler(m_MHook_MHookEvent);
             imageProcessBox1.IsDrawOperationDot = false;
@@ -459,7 +465,7 @@ namespace H.ScreenCapture
             }
         }
         //获取桌面图像
-        private static Bitmap GetScreen(bool bCaptureCursor,bool bFromClipBoard) {
+        private  Bitmap GetScreen(bool bCaptureCursor,bool bFromClipBoard) {
             Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width,
                     Screen.PrimaryScreen.Bounds.Height);
             if (bCaptureCursor)      //是否捕获鼠标
@@ -483,6 +489,36 @@ namespace H.ScreenCapture
             }
             return bmp;
         }
+
+        /// <summary>
+        /// 获取桌面图片
+        /// </summary>
+        /// <param name="bCaptureCursor">是否捕获鼠标</param>
+        /// <param name="bFromClipboard">是否从剪切板获取图像</param>
+        /// <returns>获取到的图像</returns>
+        private Image GetFullScreen(bool bCaptureCursor, bool bFromClipboard)
+        {
+            if (bCaptureCursor) Win32.DrawCurToScreen(MousePosition);
+            Bitmap bmp = new Bitmap(m_rectScreen.Width, m_rectScreen.Height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.CopyFromScreen(m_rectScreen.X, m_rectScreen.Y, 0, 0, bmp.Size);
+                if (bFromClipboard)
+                {
+                    Image img = Clipboard.GetImage();
+                    if (img != null)
+                    {
+                        Point pt = new Point((this.Width - img.Width) / 2, (this.Height - img.Height) / 2);
+                        Rectangle rectScreen = Screen.PrimaryScreen.Bounds;
+                        if (img.Width <= rectScreen.Width && img.Height <= rectScreen.Height)
+                            pt = new Point(rectScreen.Left + (rectScreen.Width - img.Width) / 2, rectScreen.Top + (rectScreen.Height - img.Height) / 2);
+                        g.DrawImage(img, pt);
+                    }
+                }
+            }
+            return bmp;
+        }
+
         //在桌面绘制鼠标
         public static Rectangle DrawCurToScreen() {
             //如果直接将捕获当的鼠标画在bmp上 光标不会反色 指针边框也很浓 也就是说
@@ -495,6 +531,7 @@ namespace H.ScreenCapture
                 if (pci.hCursor != IntPtr.Zero) {
                     Cursor cur = new Cursor(pci.hCursor);
                     Rectangle rect_cur = new Rectangle((Point)((Size)MousePosition - (Size)cur.HotSpot), cur.Size);
+                    Console.WriteLine(rect_cur);
                     g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
                     //g.CopyFromScreen(rect_cur.Location, rect_cur.Location, rect_cur.Size); //在桌面绘制鼠标前 先在桌面绘制一下当前的桌面图像
                     //如果不绘制当前桌面 那么cur.Draw的时候会是用历史桌面的快照 进行鼠标的混合 那么到时候混出现底色(测试中就是这样的)
