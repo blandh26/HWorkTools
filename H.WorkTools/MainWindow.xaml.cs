@@ -223,6 +223,14 @@ namespace H.WorkTools
             languages.Add(new LanguageModel { id = "kr_kr", title = "한국어" });
             cbLanguage.ItemsSource = languages;
             cbLanguage.SelectedIndex = languages.FindIndex(language => language.id == cif.GetValue("Language"));
+            if (Convert.ToBoolean(cif.GetValue("Start") == ""|| cif.GetValue("Start") == "True" ? true : false))
+            {
+                rbStart1.IsChecked = true;
+            }
+            else
+            {
+                rbStart2.IsChecked = true;
+            }
             #endregion
 
             #region 装载剪贴板
@@ -1265,6 +1273,7 @@ namespace H.WorkTools
             }
             try
             {
+                cif.SaveValue("Start", rbStart1.IsChecked.ToString());
                 //根据情况是否写入注册表
                 RegistryKey regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run\", true);
                 if (Convert.ToBoolean(rbStart1.IsChecked))
