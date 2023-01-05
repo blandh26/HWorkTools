@@ -361,8 +361,7 @@ namespace H_ScreenCapture
                 g.DrawRectangle(pen, rect.X + (bmpNew.Width >> 1) - 1, rect.Y + (bmpNew.Height >> 1) - 1, 8, 8);
 
             }
-            string strDraw = "size:" + (this._SelectedRectangle.Width) + " * " + (this._SelectedRectangle.Height)
-                + "\r\n" + clr.A + "," + clr.R + "," + clr.G + "," + clr.B
+            string strDraw = clr.A + "," + clr.R + "," + clr.G + "," + clr.B
                 + "\r\n0x" + clr.A.ToString("X").PadLeft(2, '0') + clr.R.ToString("X").PadLeft(2, '0') + clr.G.ToString("X").PadLeft(2, '0') + clr.B.ToString("X").PadLeft(2, '0');
             g.DrawString(strDraw, this.Font, Brushes.White, rect.X + 3, rect.Y + 6 + bmpNew.Height);
             sb.Color = clr;

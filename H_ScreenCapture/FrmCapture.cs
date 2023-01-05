@@ -13,7 +13,8 @@ namespace H_ScreenCapture
 {
     public partial class FrmCapture : Form
     {
-        public FrmCapture(bool bCaptureCursor, bool bFromClipboard) {
+        public FrmCapture()
+        {
             InitializeComponent();
             this.TopMost = true;
             this.ShowInTaskbar = false;
@@ -21,15 +22,16 @@ namespace H_ScreenCapture
             this.StartPosition = FormStartPosition.Manual;
             m_rectScreen = Win32.GetDesktopRect();
             this.Location = m_rectScreen.Location;
-            this.Size = m_rectScreen.Size;
+            this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height);
 
             imageCroppingBox1.IsDrawMagnifier = true;
-            Image imgScreen = this.GetFullScreen(bCaptureCursor, bFromClipboard);
+            Image imgScreen = this.GetFullScreen(true);
+            imgScreen.Save(@"C:\Users\blank\1.png");
             this.imageCroppingBox1.Image = imgScreen;
             this.imageCroppingBox1.Dock = DockStyle.Fill;
         }
 
-        
+
 
         private Point m_ptLastMouseDown;        //鼠标上一次点击位置
         private Point m_ptCurrent;              //鼠标当前位置
@@ -55,7 +57,8 @@ namespace H_ScreenCapture
         private bool m_bDrawEffect;             //mousedown 中表示为是否进行后期绘制
         private List<Image> m_layer = new List<Image>();    //历史记录
 
-        private void FrmCaption_Load(object sender, EventArgs e) {
+        private void FrmCaption_Load(object sender, EventArgs e)
+        {
             m_sbFill = new SolidBrush(Color.Red);
 
             panel1.Parent = imageCroppingBox1;
@@ -65,7 +68,8 @@ namespace H_ScreenCapture
             this.captureToolbar1.Parent = imageCroppingBox1;
             this.captureToolbar1.Visible = false;
             this.captureToolbar1.Cursor = Cursors.Default;
-            colorBox1.ColorChanged += (s, ex) => {
+            colorBox1.ColorChanged += (s, ex) =>
+            {
                 sizeTrackBar1.Color = colorBox1.Color;
                 textBox1.ForeColor = colorBox1.Color;
                 m_sbFill.Color = colorBox1.Color;
@@ -77,7 +81,8 @@ namespace H_ScreenCapture
 
             linkLabel1.Location = new Point(163, 5);
             linkLabel1.BackColor = Color.Transparent;
-            linkLabel1.Click += (s, ex) => {
+            linkLabel1.Click += (s, ex) =>
+            {
                 FontDialog fd = new FontDialog();
                 fd.Font = textBox1.Font;
                 if (fd.ShowDialog() != DialogResult.OK) return;
@@ -87,9 +92,11 @@ namespace H_ScreenCapture
             linkLabel1.Visible = false;
         }
         //绘图时候选择文字工具 文本框离开焦点的时候将文本绘制上去
-        private void textBox1_Validating(object sender, CancelEventArgs e) {
+        private void textBox1_Validating(object sender, CancelEventArgs e)
+        {
             if (textBox1.Text.Trim() == string.Empty) return;
-            using (Graphics g = Graphics.FromImage(m_imgCurrentLayer)) {
+            using (Graphics g = Graphics.FromImage(m_imgCurrentLayer))
+            {
                 Brush brush = m_sbFill;
                 if (ckbox_mosaic.Checked) brush = m_tbMosaic;
                 g.DrawImage(m_imgLastLayer, 0, 0);
@@ -111,49 +118,47 @@ namespace H_ScreenCapture
         /// 获取桌面图片
         /// </summary>
         /// <param name="bCaptureCursor">是否捕获鼠标</param>
-        /// <param name="bFromClipboard">是否从剪切板获取图像</param>
         /// <returns>获取到的图像</returns>
-        private Image GetFullScreen(bool bCaptureCursor, bool bFromClipboard) {
+        private Image GetFullScreen(bool bCaptureCursor)
+        {
             if (bCaptureCursor) Win32.DrawCurToScreen(MousePosition);
             Bitmap bmp = new Bitmap(m_rectScreen.Width, m_rectScreen.Height);
-            using (Graphics g = Graphics.FromImage(bmp)) {
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
                 g.CopyFromScreen(m_rectScreen.X, m_rectScreen.Y, 0, 0, bmp.Size);
-                if (bFromClipboard) {
-                    Image img = Clipboard.GetImage();
-                    if (img != null) {
-                        Point pt = new Point((this.Width - img.Width) / 2, (this.Height - img.Height) / 2);
-                        Rectangle rectScreen = Screen.PrimaryScreen.Bounds;
-                        if (img.Width <= rectScreen.Width && img.Height <= rectScreen.Height)
-                            pt = new Point(rectScreen.Left + (rectScreen.Width - img.Width) / 2, rectScreen.Top + (rectScreen.Height - img.Height) / 2);
-                        g.DrawImage(img, pt);
-                    }
-                }
             }
             return bmp;
         }
 
-        private void imageCroppingBox1_MouseDown(object sender, MouseEventArgs e) {
+        private void imageCroppingBox1_MouseDown(object sender, MouseEventArgs e)
+        {
             m_ptLastMouseDown = e.Location;
             if (e.Button != MouseButtons.Left) return;                  //禁止右键的时候触发
-            if (!imageCroppingBox1.IsLockSelected) {
+            if (!imageCroppingBox1.IsLockSelected)
+            {
                 this.captureToolbar1.Visible = false;
             }
-            if (m_bCtrlDown && !imageCroppingBox1.IsSelected) {
+            if (m_bCtrlDown && !imageCroppingBox1.IsSelected)
+            {
                 this.Close();
                 string strFileName = Application.StartupPath + "/SpyTool.exe";
-                if (System.IO.File.Exists(strFileName)) {
+                if (System.IO.File.Exists(strFileName))
+                {
                     System.Diagnostics.Process p = new System.Diagnostics.Process();
                     p.StartInfo.FileName = strFileName;
                     p.StartInfo.Arguments = String.Format("{0} {1} {2}", m_hWnd, m_bGetVisable, m_bGetTransparent);
                     p.Start();
                     p.WaitForInputIdle();
                     Win32.SetForegroundWindow(p.MainWindowHandle);
-                } else
+                }
+                else
                     new FrmTextAlert("没有发现[SpyTool.exe]").Show();
             }
             //如果已经锁定了选取 并且 鼠标点下的位置在选取内 而且工具条上有选择工具 那么则表示可能需要绘制了 如：矩形框 箭头 等
-            if (imageCroppingBox1.IsLockSelected && imageCroppingBox1.SelectedRectangle.Contains(e.Location) && captureToolbar1.GetSelectBtnName() != null) {
-                if (captureToolbar1.GetSelectBtnName() == "btn_text") { //如果选择的是文字工具 那么特殊处理
+            if (imageCroppingBox1.IsLockSelected && imageCroppingBox1.SelectedRectangle.Contains(e.Location) && captureToolbar1.GetSelectBtnName() != null)
+            {
+                if (captureToolbar1.GetSelectBtnName() == "btn_text")
+                { //如果选择的是文字工具 那么特殊处理
                     textBox1.Location = e.Location;                     //将文本框位置设置为鼠标点下的位子
                     textBox1.Visible = true;                            //显示文本框以便输入文字
                     textBox1.Focus();                                   //获得焦点
@@ -164,14 +169,18 @@ namespace H_ScreenCapture
             }
         }
 
-        private void imageCroppingBox1_MouseUp(object sender, MouseEventArgs e) {
+        private void imageCroppingBox1_MouseUp(object sender, MouseEventArgs e)
+        {
             m_bDrawEffect = false;                                      //无论如何 鼠标抬起的时候 后期绘制的标识都应该标记为false
             Cursor.Clip = Rectangle.Empty;                              //无论如何 鼠标抬起的时候 应该取消鼠标的活动限制
-            if (e.Button == MouseButtons.Right) {
-                if (imageCroppingBox1.IsSelected) {                     //如果是右键抬起并且有选择区域的情况 则有可能是右键菜单 或者 取消选择
+            if (e.Button == MouseButtons.Right)
+            {
+                if (imageCroppingBox1.IsSelected)
+                {                     //如果是右键抬起并且有选择区域的情况 则有可能是右键菜单 或者 取消选择
                     imageCroppingBox1.Clear();                          //取消选择
                     m_layer.Clear();                                    //同时情况历史图层
-                } else
+                }
+                else
                     this.Close();                                       //如果没有选择区域且右键抬起 则直接关闭窗体
                 this.captureToolbar1.Visible = false;                   //如果代码走到这里 则表示取消了选择 那么工具条应该被隐藏
                 captureToolbar1.ClearSelect();                          //清空工具条上的工具选择
@@ -179,13 +188,17 @@ namespace H_ScreenCapture
                 m_imgLastLayer = m_imgCurrentLayer = null;              //临时图层也应该被清空
             }
             //如果是左键抬起 并且 抬起时候的位置和鼠标点下的位置一样 并且 还没有选择区域的情况下 则赋值为自动框选出来的区域(自动框选时)
-            if (e.Button == MouseButtons.Left && (m_ptLastMouseDown == e.Location) && !imageCroppingBox1.IsSelected) {
+            if (e.Button == MouseButtons.Left && (m_ptLastMouseDown == e.Location) && !imageCroppingBox1.IsSelected)
+            {
                 imageCroppingBox1.SelectedRectangle = m_rect;
             }
-            if (imageCroppingBox1.IsLockSelected) {                     //如果是鼠标抬起 并且 已经锁定了区域的情况下 则有可能在进行后期绘制
+            if (imageCroppingBox1.IsLockSelected)
+            {                     //如果是鼠标抬起 并且 已经锁定了区域的情况下 则有可能在进行后期绘制
                 //如果工具条上有选择工具 那么就可以确定是在进行后期的绘制   当然如果选择的是文字工具 那么忽略 因为特殊处理的 其他则设置历史图层
                 if (captureToolbar1.GetSelectBtnName() != null && captureToolbar1.GetSelectBtnName() != "btn_text") this.SetHistoryLayer();
-            } else if (imageCroppingBox1.IsSelected) {                  //如果没有进入上面的判断 则判断当前有没有选取 可能鼠标抬起是确认选取
+            }
+            else if (imageCroppingBox1.IsSelected)
+            {                  //如果没有进入上面的判断 则判断当前有没有选取 可能鼠标抬起是确认选取
                 this.SetToolBarLocation();                              //如果有选取 那么应该设置工具条的位置并且显示 以便后期绘制
                 this.captureToolbar1.Visible = true;
                 if (m_imgLastLayer != null) m_imgLastLayer.Dispose();
@@ -199,10 +212,12 @@ namespace H_ScreenCapture
             }
         }
 
-        private void imageCroppingBox1_MouseMove(object sender, MouseEventArgs e) {
+        private void imageCroppingBox1_MouseMove(object sender, MouseEventArgs e)
+        {
             if (m_ptCurrent == e.Location) return;
             m_ptCurrent = e.Location;
-            if (imageCroppingBox1.IsLockSelected) {                     //如果已经锁定了选取 则有可能是正在进行后期绘制
+            if (imageCroppingBox1.IsLockSelected)
+            {                     //如果已经锁定了选取 则有可能是正在进行后期绘制
                 imageCroppingBox1.Cursor = imageCroppingBox1.SelectedRectangle.Contains(e.Location) ? Cursors.Cross : Cursors.Default;
                 if (m_bDrawEffect) this.DrawEffects();                  //如果说在mousedown中设置了绘制标识 那么则表示是在进行后期绘制
                 else if (imageCroppingBox1.SelectedRectangle.Contains(e.Location))              //如果没有设置绘制标识 判断鼠标是否在选取内
@@ -228,22 +243,27 @@ namespace H_ScreenCapture
             imageCroppingBox1.Invalidate();
         }
 
-        private void imageCroppingBox1_Paint(object sender, PaintEventArgs e) {
+        private void imageCroppingBox1_Paint(object sender, PaintEventArgs e)
+        {
             Graphics g = e.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             if (m_layer.Count > 0)                                  //绘制最后一张图层
                 g.DrawImage(m_layer[m_layer.Count - 1], imageCroppingBox1.SelectedRectangle);
             if (m_imgCurrentLayer != null)                          //当前正在mousemove中进行绘制的临时图层
                 g.DrawImage(m_imgCurrentLayer, imageCroppingBox1.SelectedRectangle.Location);
-            if (imageCroppingBox1.Cursor == Cursors.Cross) {        //如果鼠标是十字架 说明正在后期绘制或者准备后期绘制
-                using (Pen p = new Pen(colorBox1.Color)) {
+            if (imageCroppingBox1.Cursor == Cursors.Cross)
+            {        //如果鼠标是十字架 说明正在后期绘制或者准备后期绘制
+                using (Pen p = new Pen(colorBox1.Color))
+                {
                     Rectangle rect = new Rectangle(m_ptCurrent.X - sizeTrackBar1.Value / 2, m_ptCurrent.Y - sizeTrackBar1.Value / 2, sizeTrackBar1.Value, sizeTrackBar1.Value);
-                    using (SolidBrush sb = new SolidBrush(Color.FromArgb(50, 0, 0, 0))) {
+                    using (SolidBrush sb = new SolidBrush(Color.FromArgb(50, 0, 0, 0)))
+                    {
                         g.DrawRectangle(p, rect.X, rect.Y, rect.Width - 1, rect.Height - 1);
                         g.DrawEllipse(p, rect.X, rect.Y, rect.Width - 1, rect.Height - 1);
                     }//绘制画笔大小预览(圆和矩形的那个)
                     //以下根据工具条上选择的工具 确定是否需要绘制辅助线条 主要用于马赛克时候让用户知道绘制的区域 非马赛克也无所谓 反正都会被挡住
-                    if (m_bDrawEffect) {                            //如果mousedown中标识了 后期绘制
+                    if (m_bDrawEffect)
+                    {                            //如果mousedown中标识了 后期绘制
                         rect = new Rectangle(                       //鼠标点下到当前位置的矩形区域
                             m_ptCurrent.X < m_ptLastMouseDown.X ? m_ptCurrent.X : m_ptLastMouseDown.X,
                             m_ptCurrent.Y < m_ptLastMouseDown.Y ? m_ptCurrent.Y : m_ptLastMouseDown.Y,
@@ -251,7 +271,8 @@ namespace H_ScreenCapture
                             Math.Abs(m_ptLastMouseDown.Y - m_ptCurrent.Y));
                         p.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
                         p.DashPattern = new float[] { 5, 5 };
-                        switch (captureToolbar1.GetSelectBtnName()) {
+                        switch (captureToolbar1.GetSelectBtnName())
+                        {
                             case "btn_rect":
                                 g.DrawRectangle(p, rect);
                                 break;
@@ -271,14 +292,17 @@ namespace H_ScreenCapture
             Size sz = g.MeasureString(m_strShow, this.Font).ToSize();
             Point pt = new Point(m_rect.X + sz.Width > this.Width ? this.Width - sz.Width : m_rect.X, m_rect.Y - sz.Height - 5);
             if (pt.Y < 0) pt.Y = 5;
-            using (SolidBrush sb = new SolidBrush(Color.FromArgb(125, 0, 0, 0))) {
+            using (SolidBrush sb = new SolidBrush(Color.FromArgb(125, 0, 0, 0)))
+            {
                 g.FillRectangle(sb, new Rectangle(pt, sz));
             }
             g.DrawString(m_strShow, this.Font, Brushes.White, pt);
         }
         //一些快捷键
-        private void imageCroppingBox1_KeyDown(object sender, KeyEventArgs e) {
-            switch (e.KeyCode) {
+        private void imageCroppingBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
                 case Keys.W:                                    //微距离移动鼠标
                     Win32.SetCursorPos(m_ptCurrent.X, m_ptCurrent.Y - 1);//可以不用判断 Y < 0
                     break;
@@ -306,22 +330,26 @@ namespace H_ScreenCapture
             Console.WriteLine(e.KeyCode);
         }
 
-        private void captureToolbar1_ToolButtonClick(object sender, EventArgs e) {
+        private void captureToolbar1_ToolButtonClick(object sender, EventArgs e)
+        {
             this.OnToolBarClick((sender as Control).Name);
         }
 
-        private void imageCroppingBox1_MouseDoubleClick(object sender, MouseEventArgs e) {
+        private void imageCroppingBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
             if (imageCroppingBox1.SelectedRectangle.Size == Size.Empty) return;
             Clipboard.SetImage(m_imgLastLayer);
             this.Close();
         }
-        
+
         /// <summary>
         /// 工具栏被点下的时候
         /// </summary>
         /// <param name="strCtrlName">被点下的工具的控件名字</param>
-        private void OnToolBarClick(string strCtrlName) {
-            switch (strCtrlName) {
+        private void OnToolBarClick(string strCtrlName)
+        {
+            switch (strCtrlName)
+            {
                 case "btn_close": this.Close(); break;
                 case "btn_ok":
                     Clipboard.SetImage(m_imgLastLayer);
@@ -332,24 +360,31 @@ namespace H_ScreenCapture
                     this.Close();
                     break;
                 case "btn_cancel":
-                    if (textBox1.Visible) {                     //如果撤销的时候正则使用文字工具 则清理掉
+                    if (textBox1.Visible)
+                    {                     //如果撤销的时候正则使用文字工具 则清理掉
                         textBox1.Text = string.Empty;
                         textBox1.Visible = false;
                         break;
                     }
-                    if (m_layer.Count > 0) {                    //如果存在历史图层
+                    if (m_layer.Count > 0)
+                    {                    //如果存在历史图层
                         m_layer.RemoveAt(m_layer.Count - 1);    //则干掉最后一层
                         if (m_imgCurrentLayer != null) m_imgCurrentLayer.Dispose();
                         m_imgCurrentLayer = new Bitmap(m_imgLastLayer.Width, m_imgLastLayer.Height);        //当前正在绘制的图层清理掉
                         if (m_imgLastLayer != null) m_imgLastLayer.Dispose();
-                        if (m_layer.Count > 0) {                //如果干点最后一层还存在图层 则设置
+                        if (m_layer.Count > 0)
+                        {                //如果干点最后一层还存在图层 则设置
                             m_imgLastLayer = m_layer[m_layer.Count - 1].Clone() as Bitmap;
-                        } else {                                //否则回到刚选择好选取的时候
+                        }
+                        else
+                        {                                //否则回到刚选择好选取的时候
                             m_imgLastLayer = imageCroppingBox1.GetSelectedImage();
                             imageCroppingBox1.IsLockSelected = captureToolbar1.GetSelectBtnName() != null;
                         }
                         imageCroppingBox1.Invalidate(imageCroppingBox1.SelectedRectangle);
-                    } else {                                    //如果已经不存在历史记录了 则直接撤销选取 重新选择区域
+                    }
+                    else
+                    {                                    //如果已经不存在历史记录了 则直接撤销选取 重新选择区域
                         imageCroppingBox1.Clear();
                         captureToolbar1.ClearSelect();
                         captureToolbar1.Visible = false;
@@ -361,14 +396,17 @@ namespace H_ScreenCapture
                     sfd.Filter = "*.png|*.png|*.jpg|*.jpg|*.bmp|*.bmp|*.gif|*.gif|*.tiff|*.tiff";
                     sfd.FileName = "DevCap_"/*Developer Capture*/ + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
                     System.Drawing.Imaging.ImageFormat imgf = System.Drawing.Imaging.ImageFormat.Png;
-                    if (sfd.ShowDialog() == DialogResult.OK) {
-                        switch (sfd.FilterIndex) {
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        switch (sfd.FilterIndex)
+                        {
                             case 2: imgf = System.Drawing.Imaging.ImageFormat.Jpeg; break;
                             case 3: imgf = System.Drawing.Imaging.ImageFormat.Bmp; break;
                             case 4: imgf = System.Drawing.Imaging.ImageFormat.Gif; break;
                             case 5: imgf = System.Drawing.Imaging.ImageFormat.Tiff; break;
                         }
-                        using (System.IO.Stream stream = new System.IO.FileStream(sfd.FileName, System.IO.FileMode.Create)) {
+                        using (System.IO.Stream stream = new System.IO.FileStream(sfd.FileName, System.IO.FileMode.Create))
+                        {
                             m_imgLastLayer.Save(stream, imgf);
                             //如果使用此工具或者此代码 请保留此代码 好歹让原著装个逼啊 开源需要动力
                             byte[] byString = Encoding.ASCII.GetBytes("\0\0\r\nBy->blandh26@gmail.com");
@@ -382,16 +420,22 @@ namespace H_ScreenCapture
                 case "btn_arrow":
                 case "btn_brush":
                 case "btn_text":
-                    if (captureToolbar1.GetSelectBtnName() == null) {                       //如果没有工具被选择 那么配置面板信息隐藏
+                    if (captureToolbar1.GetSelectBtnName() == null)
+                    {                       //如果没有工具被选择 那么配置面板信息隐藏
                         if (m_layer.Count == 0) imageCroppingBox1.IsLockSelected = false;   //如果没有历史图层 则取消选取的锁定
                         panel1.Visible = false;
-                    } else {
+                    }
+                    else
+                    {
                         imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板
                         panel1.Visible = true;
-                        if (strCtrlName == "btn_arrow") {
+                        if (strCtrlName == "btn_arrow")
+                        {
                             rdbtn_draw.Text = "箭头";
                             rdbtn_fill.Text = "直线";
-                        } else {
+                        }
+                        else
+                        {
                             rdbtn_draw.Text = "绘制";
                             rdbtn_fill.Text = "填充";
                         }
@@ -403,16 +447,20 @@ namespace H_ScreenCapture
             }
         }
         //设置工具条位置
-        private void SetToolBarLocation() {
+        private void SetToolBarLocation()
+        {
             this.captureToolbar1.Location = new Point(imageCroppingBox1.SelectedRectangle.Left, imageCroppingBox1.SelectedRectangle.Bottom + 5);
             int nBottom = captureToolbar1.Bottom + (panel1.Visible ? panel1.Height + 5 : 0);
-            if (this.captureToolbar1.Right > this.Width) {
+            if (this.captureToolbar1.Right > this.Width)
+            {
                 this.captureToolbar1.Left = this.Width - this.captureToolbar1.Width;
             }
-            if (nBottom > this.Height) {
+            if (nBottom > this.Height)
+            {
                 this.captureToolbar1.Top = this.imageCroppingBox1.SelectedRectangle.Top - 5 - this.captureToolbar1.Height - (panel1.Visible ? panel1.Height + 5 : 5);
             }
-            if (this.captureToolbar1.Top < 0) {
+            if (this.captureToolbar1.Top < 0)
+            {
                 this.captureToolbar1.Top = this.imageCroppingBox1.SelectedRectangle.Top + 5;
             }
             if (panel1.Visible)
@@ -420,7 +468,8 @@ namespace H_ScreenCapture
             panel1.Top = captureToolbar1.Bottom + 5;
         }
         //后期绘制
-        private void DrawEffects() {
+        private void DrawEffects()
+        {
             //绘制的起点坐标(相对于选取内的坐标)
             Point ptStart = new Point(m_ptLastMouseDown.X < m_ptCurrent.X ? m_ptLastMouseDown.X : m_ptCurrent.X, m_ptLastMouseDown.Y < m_ptCurrent.Y ? m_ptLastMouseDown.Y : m_ptCurrent.Y);
             ptStart = (Point)((Size)ptStart - (Size)imageCroppingBox1.SelectedRectangle.Location);
@@ -428,9 +477,11 @@ namespace H_ScreenCapture
             Brush brush = m_sbFill;                                 //默认为填充画笔 否则使用马赛克画刷
             if (ckbox_mosaic.Checked) brush = m_tbMosaic;
             using (Pen p = new Pen(brush, sizeTrackBar1.Value))     //根据画刷设置画笔
-            using (Graphics g = Graphics.FromImage(m_imgCurrentLayer)) {
+            using (Graphics g = Graphics.FromImage(m_imgCurrentLayer))
+            {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                switch (captureToolbar1.GetSelectBtnName()) {
+                switch (captureToolbar1.GetSelectBtnName())
+                {
                     case "btn_rect":
                         g.Clear(Color.Transparent);                 //清空上一次绘制
                         if (rdbtn_fill.Checked)                     //如果选择的是 填充 则直接使用画刷 否则画笔
@@ -461,8 +512,10 @@ namespace H_ScreenCapture
             }
         }
         //设置历史图层
-        private void SetHistoryLayer() {
-            using (Graphics g = Graphics.FromImage(m_imgLastLayer)) {
+        private void SetHistoryLayer()
+        {
+            using (Graphics g = Graphics.FromImage(m_imgLastLayer))
+            {
                 g.DrawImage(m_imgCurrentLayer, 0, 0);               //先将临时绘制的图层绘制到LastLayer中
             }
             m_layer.Add(m_imgLastLayer);                            //然后保存本次图层
@@ -474,14 +527,15 @@ namespace H_ScreenCapture
             m_tbMosaic = new TextureBrush(m_imgMosaic);             //设置马赛克画刷
         }
 
-        private void SetTextBoxSize() {
+        private void SetTextBoxSize()
+        {
             Size se = TextRenderer.MeasureText(textBox1.Text, textBox1.Font);
             textBox1.Size = se.IsEmpty ? new Size(50, textBox1.Font.Height) : se;
         }
 
 
-       
 
-        
+
+
     }
 }

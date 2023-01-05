@@ -58,7 +58,7 @@ namespace H_WorkTools
         #region 通信
         private TcpP2p p2p = new TcpP2p();
         #endregion
-
+        private FrmCapture m_frmCapture;//截图窗体
         PortUserInfo[] portlist;
         private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
         string encrypt_key = "";//加密解密key
@@ -294,7 +294,12 @@ namespace H_WorkTools
             hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad8, () => { try { Clipboard.SetDataObject((LvClipboard.Items[8] as TextBlock).Text); } catch { } });
             hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
             #endregion
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.Escape, () => { try { Stop(); } catch { } });
+            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.Escape, () => { try { Stop(); } catch { } });//停止共享
+            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.A, () => { try {
+                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
+                        m_frmCapture = new FrmCapture();
+                    m_frmCapture.Show();
+                } catch { } });//截图快捷键
         }
         const int WM_HOTKEY = 0x312;
         /// <summary>
@@ -322,15 +327,7 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void ScreenCapture_Click(object sender, EventArgs e)
         {
-            //StartCapture(false);
-            //hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.P, () =>
-            //{
-            //    try
-            //    {
-            //        System.Windows.MessageBox.Show("aaa");
-            //    }
-            //    catch { }
-            //});
+            
         }
         #endregion
 
