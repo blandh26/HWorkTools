@@ -322,7 +322,7 @@ namespace H.WorkTools
         /// <param name="e"></param>
         private void ScreenCapture_Click(object sender, EventArgs e)
         {
-            StartCapture(false);
+            //StartCapture(false);
             //hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.P, () =>
             //{
             //    try
@@ -331,16 +331,6 @@ namespace H.WorkTools
             //    }
             //    catch { }
             //});
-        }
-        private FrmCapture m_frmCapture;
-        //启动截图
-        private void StartCapture(bool bFromClip)
-        {
-            if (m_frmCapture == null || m_frmCapture.IsDisposed)
-                m_frmCapture = new FrmCapture();
-            m_frmCapture.IsCaptureCursor = true;//鼠标是否截图
-            m_frmCapture.IsFromClipBoard = bFromClip;
-            m_frmCapture.Show();
         }
         #endregion
 
