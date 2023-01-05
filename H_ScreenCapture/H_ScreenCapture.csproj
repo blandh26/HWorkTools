@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F93E1633-3BFB-46FF-B8D7-C8DBB6ADCB73}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>H_ScreenCapture</RootNamespace>
+    <AssemblyName>H_ScreenCapture</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CaptureToolbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CaptureToolbar.designer.cs">
+      <DependentUpon>CaptureToolbar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CaptureToolbarDesigner.cs" />
+    <Compile Include="CaptureToolButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CaptureToolButtonDesigner.cs" />
+    <Compile Include="ColorBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FrmCapture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCapture.designer.cs">
+      <DependentUpon>FrmCapture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmOut.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmOut.designer.cs">
+      <DependentUpon>FrmOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRectAlert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRectAlert.designer.cs">
+      <DependentUpon>FrmRectAlert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmTextAlert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTextAlert.designer.cs">
+      <DependentUpon>FrmTextAlert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageCroppingBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ImageHelper.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderHelper.cs" />
+    <Compile Include="SizeTrackBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win32.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CaptureToolbar.resx">
+      <DependentUpon>CaptureToolbar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCapture.resx">
+      <DependentUpon>FrmCapture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmOut.resx">
+      <DependentUpon>FrmOut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRectAlert.resx">
+      <DependentUpon>FrmRectAlert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTextAlert.resx">
+      <DependentUpon>FrmTextAlert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\alpha_back.png" />
+    <Content Include="Resources\back_toolbar.png" />
+    <Content Include="Resources\brush.png" />
+    <Content Include="Resources\btn_arrow.png" />
+    <Content Include="Resources\btn_brush.png" />
+    <Content Include="Resources\btn_cancel.png" />
+    <Content Include="Resources\btn_close.png" />
+    <Content Include="Resources\btn_ellips.png" />
+    <Content Include="Resources\btn_mosaic.png" />
+    <Content Include="Resources\btn_ok.png" />
+    <Content Include="Resources\btn_out.png" />
+    <Content Include="Resources\btn_rect.png" />
+    <Content Include="Resources\btn_save.png" />
+    <Content Include="Resources\btn_text.png" />
+    <Content Include="Resources\cancel.png" />
+    <Content Include="Resources\frm_out.ico" />
+    <Content Include="Resources\ok.png" />
+    <Content Include="Resources\QBtn_Glass_Hover.png" />
+    <Content Include="Resources\separator.png" />
+    <Content Include="Resources\src_image_none.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Thumbs.db" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
