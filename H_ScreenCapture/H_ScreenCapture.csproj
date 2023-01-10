@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>H_ScreenCapture</RootNamespace>
     <AssemblyName>H_ScreenCapture</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -99,6 +99,9 @@
   <ItemGroup>
     <EmbeddedResource Include="CaptureToolbar.resx">
       <DependentUpon>CaptureToolbar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCapture.resx">
       <DependentUpon>FrmCapture.cs</DependentUpon>

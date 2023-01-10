@@ -29,10 +29,10 @@
             this.rdbtn_fill = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.sizeTrackBar1 = new H_ScreenCapture.SizeTrackBar();
             this.ckbox_mosaic = new System.Windows.Forms.CheckBox();
-            this.colorBox1 = new H_ScreenCapture.ColorBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.sizeTrackBar1 = new H_ScreenCapture.SizeTrackBar();
+            this.colorBox1 = new H_ScreenCapture.ColorBox();
             this.captureToolbar1 = new H_ScreenCapture.CaptureToolbar();
             this.imageCroppingBox1 = new H_ScreenCapture.ImageCroppingBox();
             this.panel1.SuspendLayout();
@@ -44,7 +44,7 @@
             this.rdbtn_draw.BackColor = System.Drawing.Color.Transparent;
             this.rdbtn_draw.Checked = true;
             this.rdbtn_draw.ForeColor = System.Drawing.Color.White;
-            this.rdbtn_draw.Location = new System.Drawing.Point(163, 3);
+            this.rdbtn_draw.Location = new System.Drawing.Point(188, 23);
             this.rdbtn_draw.Name = "rdbtn_draw";
             this.rdbtn_draw.Size = new System.Drawing.Size(47, 16);
             this.rdbtn_draw.TabIndex = 3;
@@ -57,7 +57,7 @@
             this.rdbtn_fill.AutoSize = true;
             this.rdbtn_fill.BackColor = System.Drawing.Color.Transparent;
             this.rdbtn_fill.ForeColor = System.Drawing.Color.White;
-            this.rdbtn_fill.Location = new System.Drawing.Point(218, 3);
+            this.rdbtn_fill.Location = new System.Drawing.Point(243, 23);
             this.rdbtn_fill.Name = "rdbtn_fill";
             this.rdbtn_fill.Size = new System.Drawing.Size(47, 16);
             this.rdbtn_fill.TabIndex = 4;
@@ -75,7 +75,7 @@
             this.panel1.Controls.Add(this.rdbtn_fill);
             this.panel1.Location = new System.Drawing.Point(42, 120);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(348, 45);
+            this.panel1.Size = new System.Drawing.Size(373, 89);
             this.panel1.TabIndex = 6;
             // 
             // linkLabel1
@@ -83,18 +83,40 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Black;
             this.linkLabel1.LinkColor = System.Drawing.Color.White;
-            this.linkLabel1.Location = new System.Drawing.Point(212, 25);
+            this.linkLabel1.Location = new System.Drawing.Point(237, 45);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(53, 12);
             this.linkLabel1.TabIndex = 8;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "选择字体";
             // 
+            // ckbox_mosaic
+            // 
+            this.ckbox_mosaic.AutoSize = true;
+            this.ckbox_mosaic.BackColor = System.Drawing.Color.Transparent;
+            this.ckbox_mosaic.ForeColor = System.Drawing.Color.White;
+            this.ckbox_mosaic.Location = new System.Drawing.Point(298, 24);
+            this.ckbox_mosaic.Name = "ckbox_mosaic";
+            this.ckbox_mosaic.Size = new System.Drawing.Size(60, 16);
+            this.ckbox_mosaic.TabIndex = 6;
+            this.ckbox_mosaic.Text = "马赛克";
+            this.ckbox_mosaic.UseVisualStyleBackColor = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.ForeColor = System.Drawing.Color.Red;
+            this.textBox1.Location = new System.Drawing.Point(45, 171);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 18);
+            this.textBox1.TabIndex = 7;
+            // 
             // sizeTrackBar1
             // 
             this.sizeTrackBar1.BackColor = System.Drawing.Color.Transparent;
             this.sizeTrackBar1.Color = System.Drawing.Color.Red;
-            this.sizeTrackBar1.Location = new System.Drawing.Point(163, 25);
+            this.sizeTrackBar1.Location = new System.Drawing.Point(188, 45);
             this.sizeTrackBar1.MaxValue = 30;
             this.sizeTrackBar1.MinValue = 1;
             this.sizeTrackBar1.Name = "sizeTrackBar1";
@@ -102,18 +124,6 @@
             this.sizeTrackBar1.TabIndex = 7;
             this.sizeTrackBar1.Text = "sizeTrackBar1";
             this.sizeTrackBar1.Value = 1;
-            // 
-            // ckbox_mosaic
-            // 
-            this.ckbox_mosaic.AutoSize = true;
-            this.ckbox_mosaic.BackColor = System.Drawing.Color.Transparent;
-            this.ckbox_mosaic.ForeColor = System.Drawing.Color.White;
-            this.ckbox_mosaic.Location = new System.Drawing.Point(273, 4);
-            this.ckbox_mosaic.Name = "ckbox_mosaic";
-            this.ckbox_mosaic.Size = new System.Drawing.Size(60, 16);
-            this.ckbox_mosaic.TabIndex = 6;
-            this.ckbox_mosaic.Text = "马赛克";
-            this.ckbox_mosaic.UseVisualStyleBackColor = false;
             // 
             // colorBox1
             // 
@@ -125,16 +135,6 @@
             this.colorBox1.Size = new System.Drawing.Size(154, 45);
             this.colorBox1.TabIndex = 2;
             this.colorBox1.Text = "colorBox1";
-            // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.ForeColor = System.Drawing.Color.Red;
-            this.textBox1.Location = new System.Drawing.Point(45, 171);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 18);
-            this.textBox1.TabIndex = 7;
             // 
             // captureToolbar1
             // 

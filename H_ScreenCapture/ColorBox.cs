@@ -29,7 +29,7 @@ namespace H_ScreenCapture
         private Rectangle m_rectResult = new Rectangle(2, 2, 28, 28);
         private Rectangle[] m_rectColors;
         private Color[] m_colors = new Color[]{
-            Color.Black,Color.DimGray,Color.DarkRed,Color.DarkGoldenrod,
+            Color.Black,Color.Black,Color.Black,Color.Black,
             Color.DarkGreen,Color.DarkBlue,Color.DarkViolet,Color.DarkCyan,
             Color.White,Color.DarkGray,Color.Red,Color.Yellow,
             Color.LightGreen,Color.Blue,Color.Fuchsia,Color.Cyan
@@ -79,7 +79,8 @@ namespace H_ScreenCapture
             for (int i = 0; i < 8; i++) {
                 m_rectColors[i] = new Rectangle(i * 15 + 34, 2, 13, 13);
             }
-            for (int i = 8; i < 16; i++) {
+            for (int i = 8; i < 16; i++)
+            {
                 m_rectColors[i] = new Rectangle((i - 8) * 15 + 34, 17, 13, 13);
             }
             base.OnCreateControl();
@@ -186,6 +187,13 @@ namespace H_ScreenCapture
             if (x <= m_rectTrack.Left) x = m_rectTrack.Left + 1;
             else if (x >= m_rectTrack.Right) x = m_rectTrack.Right - 1;
             this.Alpha = (byte)((((double)x - m_rectTrack.Left - 1) / (m_rectTrack.Width - 2)) * 255);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.ResumeLayout(false);
+
         }
     }
 }

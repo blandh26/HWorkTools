@@ -1,6 +1,6 @@
-D:\Code\HWorkTools\H_Util\bin\Release\H_Util.dll
-D:\Code\HWorkTools\H_Util\bin\Release\H_Util.pdb
-D:\Code\HWorkTools\H_Util\obj\Release\H_Util.csproj.AssemblyReference.cache
-D:\Code\HWorkTools\H_Util\obj\Release\H_Util.csproj.CoreCompileInputs.cache
-D:\Code\HWorkTools\H_Util\obj\Release\H_Util.dll
-D:\Code\HWorkTools\H_Util\obj\Release\H_Util.pdb
+D:\Blank\Code\HWorkTools\H_Util\bin\Release\H_Util.dll
+D:\Blank\Code\HWorkTools\H_Util\bin\Release\H_Util.pdb
+D:\Blank\Code\HWorkTools\H_Util\obj\Release\H_Util.csproj.AssemblyReference.cache
+D:\Blank\Code\HWorkTools\H_Util\obj\Release\H_Util.csproj.CoreCompileInputs.cache
+D:\Blank\Code\HWorkTools\H_Util\obj\Release\H_Util.dll
+D:\Blank\Code\HWorkTools\H_Util\obj\Release\H_Util.pdb

@@ -1,6 +1,0 @@
-D:\Code\HWorkTools\H.Util\bin\Debug\H.Util.dll
-D:\Code\HWorkTools\H.Util\bin\Debug\H.Util.pdb
-D:\Code\HWorkTools\H.Util\obj\Debug\H.Util.csproj.AssemblyReference.cache
-D:\Code\HWorkTools\H.Util\obj\Debug\H.Util.csproj.CoreCompileInputs.cache
-D:\Code\HWorkTools\H.Util\obj\Debug\H.Util.dll
-D:\Code\HWorkTools\H.Util\obj\Debug\H.Util.pdb

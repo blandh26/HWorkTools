@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\迅雷下载\\tsql-parser-master55\\tsql-parser-master\\TSQL_Parser\\TSQL_Parser\\TSQL_Parser.csproj": {}
+  },
+  "projects": {
+    "D:\\迅雷下载\\tsql-parser-master55\\tsql-parser-master\\TSQL_Parser\\TSQL_Parser\\TSQL_Parser.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\迅雷下载\\tsql-parser-master55\\tsql-parser-master\\TSQL_Parser\\TSQL_Parser\\TSQL_Parser.csproj",
+        "projectName": "TSQL_Parser",
+        "projectPath": "D:\\迅雷下载\\tsql-parser-master55\\tsql-parser-master\\TSQL_Parser\\TSQL_Parser\\TSQL_Parser.csproj",
+        "projectJsonPath": "D:\\迅雷下载\\tsql-parser-master55\\tsql-parser-master\\TSQL_Parser\\TSQL_Parser\\project.json",
+        "packagesPath": "C:\\Users\\blank\\.nuget\\packages\\",
+        "outputPath": "D:\\迅雷下载\\tsql-parser-master55\\tsql-parser-master\\TSQL_Parser\\TSQL_Parser\\obj\\",
+        "projectStyle": "ProjectJson",
+        "fallbackFolders": [
+          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\blank\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        }
+      },
+      "frameworks": {
+        "net452": {}
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

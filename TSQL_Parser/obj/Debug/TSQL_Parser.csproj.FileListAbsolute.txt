@@ -1,0 +1,7 @@
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\bin\Debug\net40\TSQL_Parser.dll
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\bin\Debug\net40\TSQL_Parser.pdb
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\bin\Debug\net40\TSQL_Parser.xml
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\obj\Debug\TSQL_Parser.csproj.AssemblyReference.cache
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\obj\Debug\TSQL_Parser.csproj.CoreCompileInputs.cache
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\obj\Debug\TSQL_Parser.dll
+D:\迅雷下载\tsql-parser-master55\tsql-parser-master\TSQL_Parser\TSQL_Parser\obj\Debug\TSQL_Parser.pdb

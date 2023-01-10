@@ -178,6 +178,7 @@ namespace H_ScreenCapture
             }
 
             m_ptStart = e.Location;
+            Console.WriteLine("OnMouseDown"+e.Location);
             m_bChangeHeight = true;
             m_bChangeWidth = true;
             //如果 已经选择区域 若鼠标点下 判断是否在控制顶点上
@@ -222,6 +223,7 @@ namespace H_ScreenCapture
                 return;
             }
             if (this._IsSelected) {//如果已经绘制 移动过程中判断是否需要设置鼠标样式
+                Console.WriteLine("_IsSelected"+_IsSelected);
                 this.SetCursorStyle(e.Location);
             } else if (e.Button == MouseButtons.Left) {//否则可能表示在选择区域或重置大小
                 if (m_bChangeWidth) {//是否允许选区宽度改变 如重置大小时候 拉动上边和下边中点时候
@@ -252,6 +254,14 @@ namespace H_ScreenCapture
         }
 
         protected override void OnMouseUp(MouseEventArgs e) {
+            Console.WriteLine("OnMouseUp"+e.Location);
+            if (e.Location== m_ptStart&& e.Button == MouseButtons.Left)
+            {
+                this._SelectedRectangle.X = PreViewRectangle.Location.X;//自动选择区域点击后 bland
+                this._SelectedRectangle.Width = PreViewRectangle.Width;//自动选择区域点击后 bland
+                this._SelectedRectangle.Y = PreViewRectangle.Location.Y;//自动选择区域点击后 bland
+                this._SelectedRectangle.Height = PreViewRectangle.Height;//自动选择区域点击后 bland
+            }
             this._IsSelected = !this._SelectedRectangle.IsEmpty;
             m_ptTempForMove = this._SelectedRectangle.Location;
             m_bMoving = false;

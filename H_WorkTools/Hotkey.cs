@@ -24,11 +24,9 @@ namespace H_WorkTools
         public static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
         #endregion
 
-        AddLvClipboardListDelegate _AddLvClipboardListDelegate = null;//使用定义的委托
 
-        public Hotkey(AddLvClipboardListDelegate temp)
+        public Hotkey()
         {
-            _AddLvClipboardListDelegate = temp;
         }
         /// <summary>
         /// 注册快捷键
@@ -42,7 +40,8 @@ namespace H_WorkTools
             var hwnd = new WindowInteropHelper(window).Handle;
             AddClipboardFormatListener(hwnd);
             var _hwndSource = HwndSource.FromHwnd(hwnd);
-            _hwndSource.AddHook(WndProc);
+            MainWindow aa = new MainWindow();
+            _hwndSource.AddHook(aa.WndProc);
 
             int id = keyid++;
 
@@ -52,25 +51,21 @@ namespace H_WorkTools
             keymap[id] = callBack;
         }
 
-        /// <summary>
-        /// 快捷键消息处理
-        /// </summary>
-         IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if (msg == WM_HOTKEY)
-            {
-                int id = wParam.ToInt32();
-                if (keymap.TryGetValue(id, out var callback))
-                {
-                    callback();
-                }
-            }
-            else if(msg == 0x031D)//剪贴板
-            {
-                _AddLvClipboardListDelegate();
-            }
-            return IntPtr.Zero;
-        }
+        ///// <summary>
+        ///// 快捷键消息处理
+        ///// </summary>
+        // IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        //{
+        //    if (msg == WM_HOTKEY)
+        //    {
+               
+        //    }
+        //    else if(msg == 0x031D)//剪贴板
+        //    {
+        //        _AddLvClipboardListDelegate();
+        //    }
+        //    return IntPtr.Zero;
+        //}
 
         /// <summary>
         /// 注销快捷键
@@ -90,7 +85,7 @@ namespace H_WorkTools
 
         const int WM_HOTKEY = 0x312;
         static int keyid = 10;
-        static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
+        public static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
 
         public delegate void HotKeyCallBackHanlder();
     }

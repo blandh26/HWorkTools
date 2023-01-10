@@ -21,12 +21,13 @@ namespace H_ScreenCapture
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.Manual;
             m_rectScreen = Win32.GetDesktopRect();
-            this.Location = m_rectScreen.Location;
+            this.Location = new Point(1920, m_rectScreen.Location.Y);
+            //this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
             this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height);
 
             imageCroppingBox1.IsDrawMagnifier = true;
             Image imgScreen = this.GetFullScreen(true);
-            imgScreen.Save(@"C:\Users\blank\1.png");
+            imgScreen.Save(@"D:\1.png");
             this.imageCroppingBox1.Image = imgScreen;
             this.imageCroppingBox1.Dock = DockStyle.Fill;
         }
@@ -40,7 +41,6 @@ namespace H_ScreenCapture
 
         private bool m_bGetVisable = true;      //是否只框选可见窗体
         private bool m_bGetTransparent;         //是否框选透明窗体
-        private bool m_bCtrlDown;               //ctrl键是否被点下
 
         private Rectangle m_rectScreen;         //屏幕的矩形区域
 
@@ -62,7 +62,7 @@ namespace H_ScreenCapture
             m_sbFill = new SolidBrush(Color.Red);
 
             panel1.Parent = imageCroppingBox1;
-            panel1.BackColor = Color.FromArgb(100, 0, 0, 0);
+            panel1.BackColor = Color.White;
             panel1.Cursor = Cursors.Default;
             panel1.Visible = false;
             this.captureToolbar1.Parent = imageCroppingBox1;
@@ -133,26 +133,13 @@ namespace H_ScreenCapture
         private void imageCroppingBox1_MouseDown(object sender, MouseEventArgs e)
         {
             m_ptLastMouseDown = e.Location;
-            if (e.Button != MouseButtons.Left) return;                  //禁止右键的时候触发
+            if (e.Button != MouseButtons.Left)
+            { //禁止右键的时候触发
+                return;
+            }
             if (!imageCroppingBox1.IsLockSelected)
             {
                 this.captureToolbar1.Visible = false;
-            }
-            if (m_bCtrlDown && !imageCroppingBox1.IsSelected)
-            {
-                this.Close();
-                string strFileName = Application.StartupPath + "/SpyTool.exe";
-                if (System.IO.File.Exists(strFileName))
-                {
-                    System.Diagnostics.Process p = new System.Diagnostics.Process();
-                    p.StartInfo.FileName = strFileName;
-                    p.StartInfo.Arguments = String.Format("{0} {1} {2}", m_hWnd, m_bGetVisable, m_bGetTransparent);
-                    p.Start();
-                    p.WaitForInputIdle();
-                    Win32.SetForegroundWindow(p.MainWindowHandle);
-                }
-                else
-                    new FrmTextAlert("没有发现[SpyTool.exe]").Show();
             }
             //如果已经锁定了选取 并且 鼠标点下的位置在选取内 而且工具条上有选择工具 那么则表示可能需要绘制了 如：矩形框 箭头 等
             if (imageCroppingBox1.IsLockSelected && imageCroppingBox1.SelectedRectangle.Contains(e.Location) && captureToolbar1.GetSelectBtnName() != null)
@@ -176,12 +163,18 @@ namespace H_ScreenCapture
             if (e.Button == MouseButtons.Right)
             {
                 if (imageCroppingBox1.IsSelected)
-                {                     //如果是右键抬起并且有选择区域的情况 则有可能是右键菜单 或者 取消选择
+                {//如果是右键抬起并且有选择区域的情况 则有可能是右键菜单 或者 取消选择
+                    Console.WriteLine("1");
                     imageCroppingBox1.Clear();                          //取消选择
                     m_layer.Clear();                                    //同时情况历史图层
                 }
                 else
-                    this.Close();                                       //如果没有选择区域且右键抬起 则直接关闭窗体
+                {//如果没有选择区域且右键抬起 则直接关闭窗体
+                    Console.WriteLine("2");
+                    this.Close();
+                    return;
+                }
+                Console.WriteLine("3");
                 this.captureToolbar1.Visible = false;                   //如果代码走到这里 则表示取消了选择 那么工具条应该被隐藏
                 captureToolbar1.ClearSelect();                          //清空工具条上的工具选择
                 panel1.Visible = false;                                 //配置面板也应该被关闭
@@ -323,9 +316,6 @@ namespace H_ScreenCapture
                     m_bGetTransparent = !m_bGetTransparent;     //自动框选时候是否获取透明窗体
                     new FrmTextAlert("是否获取透明窗体:" + m_bGetTransparent).Show(this);
                     break;
-                case Keys.ControlKey:
-                    m_bCtrlDown = true;
-                    break;
             }
             Console.WriteLine(e.KeyCode);
         }
@@ -409,7 +399,7 @@ namespace H_ScreenCapture
                         {
                             m_imgLastLayer.Save(stream, imgf);
                             //如果使用此工具或者此代码 请保留此代码 好歹让原著装个逼啊 开源需要动力
-                            byte[] byString = Encoding.ASCII.GetBytes("\0\0\r\nBy->blandh26@gmail.com");
+                            byte[] byString = Encoding.UTF8.GetBytes("\0\0\r\nBy->blandh26@gmail.com");
                             stream.Write(byString, 0, byString.Length); ;
                         }
                         this.Close();
@@ -532,10 +522,6 @@ namespace H_ScreenCapture
             Size se = TextRenderer.MeasureText(textBox1.Text, textBox1.Font);
             textBox1.Size = se.IsEmpty ? new Size(50, textBox1.Font.Height) : se;
         }
-
-
-
-
 
     }
 }

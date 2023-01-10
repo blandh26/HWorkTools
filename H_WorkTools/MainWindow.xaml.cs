@@ -58,7 +58,6 @@ namespace H_WorkTools
         #region 通信
         private TcpP2p p2p = new TcpP2p();
         #endregion
-        private FrmCapture m_frmCapture;//截图窗体
         PortUserInfo[] portlist;
         private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
         string encrypt_key = "";//加密解密key
@@ -68,7 +67,7 @@ namespace H_WorkTools
         Icon MousePointerImg = null;//正常状态ico
         Icon MouseRightImg = null;//左键ico
         Icon MouseWheelImg = null;//滑轮ico
-
+        FrmCapture m_frmCapture;//截图
         SystemInfo sys = new SystemInfo();
 
         #region 窗体事件
@@ -117,7 +116,15 @@ namespace H_WorkTools
                 }
             }
             cbIp.ItemsSource = ipList;
-            cbIp.SelectedIndex = ipList.FindIndex(ipmodel => ipmodel.id == cif.GetValue("Ip"));
+            if (cif.GetValue("Ip") != "")
+            {
+                cbIp.SelectedIndex = ipList.FindIndex(ipmodel => ipmodel.id == cif.GetValue("Ip"));
+            }
+            else
+            {
+                cbIp.SelectedIndex = 0;
+            }
+
             #region 设置监听
             p2p.myport = Convert.ToInt32(cif.GetValue("Tcp"));
             if (TcpP2p.IsPortOccuped(p2p.myport))
@@ -223,7 +230,7 @@ namespace H_WorkTools
             languages.Add(new LanguageModel { id = "kr_kr", title = "한국어" });
             cbLanguage.ItemsSource = languages;
             cbLanguage.SelectedIndex = languages.FindIndex(language => language.id == cif.GetValue("Language"));
-            if (Convert.ToBoolean(cif.GetValue("Start") == ""|| cif.GetValue("Start") == "True" ? true : false))
+            if (Convert.ToBoolean(cif.GetValue("Start") == "" || cif.GetValue("Start") == "True" ? true : false))
             {
                 rbStart1.IsChecked = true;
             }
@@ -281,7 +288,7 @@ namespace H_WorkTools
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            hotkey = new Hotkey(AddLvClipboardList);
+            hotkey = new Hotkey();
             #region  剪贴板 默认快捷键Ctrl + 1-10
             hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad0, () => { try { Clipboard.SetDataObject((LvClipboard.Items[0] as TextBlock).Text); } catch { } });
             hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad1, () => { try { Clipboard.SetDataObject((LvClipboard.Items[1] as TextBlock).Text); } catch { } });
@@ -295,27 +302,40 @@ namespace H_WorkTools
             hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
             #endregion
             hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.Escape, () => { try { Stop(); } catch { } });//停止共享
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.A, () => { try {
+            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.A, () =>
+            {
+                try
+                {
                     if (m_frmCapture == null || m_frmCapture.IsDisposed)
                         m_frmCapture = new FrmCapture();
                     m_frmCapture.Show();
-                } catch { } });//截图快捷键
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            });//截图快捷键
         }
         const int WM_HOTKEY = 0x312;
+        //https://blog.csdn.net/u011555996/article/details/113785700 参考 msg 数字
         /// <summary>
         /// 快捷键消息处理
         /// </summary>
-        IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_HOTKEY)
             {
-
+                int id = wParam.ToInt32();
+                if (Hotkey.keymap.TryGetValue(id, out var callback))
+                {
+                    callback();
+                }
             }
             else if (msg == 0x031D)//剪贴板
             {
-
+                AddLvClipboardList();
             }
-            return IntPtr.Zero;
+            return hwnd;
         }
         #endregion
 
@@ -327,7 +347,7 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void ScreenCapture_Click(object sender, EventArgs e)
         {
-            
+
         }
         #endregion
 
@@ -661,8 +681,11 @@ namespace H_WorkTools
             {
                 IsDeskShare = true;
                 invitationString = "";
-                _rdpSession.Close();
-                _rdpSession = null;
+                if (_rdpSession != null)
+                {
+                    _rdpSession.Close();
+                    _rdpSession = null;
+                }
             }
             catch (Exception ex)
             { }

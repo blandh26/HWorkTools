@@ -1,0 +1,13 @@
+D:\Blank\Code\HWorkTools\H_ScreenCapture\bin\Release\H_ScreenCapture.dll
+D:\Blank\Code\HWorkTools\H_ScreenCapture\bin\Release\H_ScreenCapture.pdb
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.csproj.AssemblyReference.cache
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.CaptureToolbar.resources
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.FrmCapture.resources
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.FrmOut.resources
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.FrmRectAlert.resources
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.FrmTextAlert.resources
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.Properties.Resources.resources
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.csproj.GenerateResource.cache
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.csproj.CoreCompileInputs.cache
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.dll
+D:\Blank\Code\HWorkTools\H_ScreenCapture\obj\Release\H_ScreenCapture.pdb
