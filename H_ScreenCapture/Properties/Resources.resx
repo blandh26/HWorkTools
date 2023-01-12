@@ -124,9 +124,6 @@
   <data name="QBtn_Glass_Hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\QBtn_Glass_Hover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="separator" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\separator.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="alpha_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\alpha_back.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

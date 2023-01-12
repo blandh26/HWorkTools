@@ -52,7 +52,7 @@ namespace H_ScreenCapture
 
         protected override void OnPaint(PaintEventArgs e) {
             Graphics g = e.Graphics;
-            RenderHelper.RenderBackground(g, this.ClientRectangle, H_ScreenCapture.Properties.Resources.back_toolbar);
+            //RenderHelper.RenderBackground(g, this.ClientRectangle, H_ScreenCapture.Properties.Resources.back_toolbar);//控件背景图
             //g.DrawRectangle(Pens.DodgerBlue, 0, 0, this.Width - 1, this.Height - 1);
             base.OnPaint(e);
         }
