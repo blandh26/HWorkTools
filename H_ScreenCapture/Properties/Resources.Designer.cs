@@ -133,6 +133,16 @@ namespace H_ScreenCapture.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap btn_ellips_fill {
+            get {
+                object obj = ResourceManager.GetObject("btn_ellips_fill", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap btn_mosaic {
             get {
                 object obj = ResourceManager.GetObject("btn_mosaic", resourceCulture);
@@ -166,6 +176,16 @@ namespace H_ScreenCapture.Properties {
         internal static System.Drawing.Bitmap btn_rect {
             get {
                 object obj = ResourceManager.GetObject("btn_rect", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_rect_fill {
+            get {
+                object obj = ResourceManager.GetObject("btn_rect_fill", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

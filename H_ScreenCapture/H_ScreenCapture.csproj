@@ -131,21 +131,18 @@
     <Content Include="Resources\btn_cancel.png" />
     <Content Include="Resources\btn_close.png" />
     <Content Include="Resources\btn_ellips.png" />
+    <None Include="Resources\btn_ellips_fill.png" />
     <Content Include="Resources\btn_mosaic.png" />
     <Content Include="Resources\btn_ok.png" />
     <Content Include="Resources\btn_out.png" />
     <Content Include="Resources\btn_rect.png" />
+    <None Include="Resources\btn_rect_fill.png" />
     <Content Include="Resources\btn_save.png" />
     <Content Include="Resources\btn_text.png" />
     <Content Include="Resources\cancel.png" />
     <Content Include="Resources\frm_out.ico" />
-    <Content Include="Resources\ok.png" />
     <Content Include="Resources\QBtn_Glass_Hover.png" />
-    <Content Include="Resources\separator.png" />
     <Content Include="Resources\src_image_none.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Thumbs.db" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
