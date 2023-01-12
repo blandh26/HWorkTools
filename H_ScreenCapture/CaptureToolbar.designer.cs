@@ -48,9 +48,9 @@
             this.btn_ok.IsCheckButton = false;
             this.btn_ok.IsRadioButton = false;
             this.btn_ok.IsSelected = false;
-            this.btn_ok.Location = new System.Drawing.Point(327, 0);
+            this.btn_ok.Location = new System.Drawing.Point(447, 48);
             this.btn_ok.Name = "btn_ok";
-            this.btn_ok.Size = new System.Drawing.Size(21, 21);
+            this.btn_ok.Size = new System.Drawing.Size(32, 32);
             this.btn_ok.TabIndex = 10;
             // 
             // btn_close
@@ -61,9 +61,9 @@
             this.btn_close.IsCheckButton = false;
             this.btn_close.IsRadioButton = false;
             this.btn_close.IsSelected = false;
-            this.btn_close.Location = new System.Drawing.Point(300, 0);
+            this.btn_close.Location = new System.Drawing.Point(420, 48);
             this.btn_close.Name = "btn_close";
-            this.btn_close.Size = new System.Drawing.Size(21, 21);
+            this.btn_close.Size = new System.Drawing.Size(32, 32);
             this.btn_close.TabIndex = 9;
             // 
             // btn_save
@@ -73,9 +73,9 @@
             this.btn_save.IsCheckButton = false;
             this.btn_save.IsRadioButton = false;
             this.btn_save.IsSelected = false;
-            this.btn_save.Location = new System.Drawing.Point(273, 0);
+            this.btn_save.Location = new System.Drawing.Point(393, 48);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(21, 21);
+            this.btn_save.Size = new System.Drawing.Size(32, 32);
             this.btn_save.TabIndex = 8;
             // 
             // btn_out
@@ -85,9 +85,9 @@
             this.btn_out.IsCheckButton = false;
             this.btn_out.IsRadioButton = false;
             this.btn_out.IsSelected = false;
-            this.btn_out.Location = new System.Drawing.Point(246, 0);
+            this.btn_out.Location = new System.Drawing.Point(366, 48);
             this.btn_out.Name = "btn_out";
-            this.btn_out.Size = new System.Drawing.Size(21, 21);
+            this.btn_out.Size = new System.Drawing.Size(32, 32);
             this.btn_out.TabIndex = 7;
             // 
             // btn_cancel
@@ -97,9 +97,9 @@
             this.btn_cancel.IsCheckButton = false;
             this.btn_cancel.IsRadioButton = false;
             this.btn_cancel.IsSelected = false;
-            this.btn_cancel.Location = new System.Drawing.Point(219, 0);
+            this.btn_cancel.Location = new System.Drawing.Point(339, 48);
             this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(21, 21);
+            this.btn_cancel.Size = new System.Drawing.Size(32, 32);
             this.btn_cancel.TabIndex = 6;
             // 
             // btn_text
@@ -109,9 +109,9 @@
             this.btn_text.IsCheckButton = true;
             this.btn_text.IsRadioButton = false;
             this.btn_text.IsSelected = false;
-            this.btn_text.Location = new System.Drawing.Point(192, 0);
+            this.btn_text.Location = new System.Drawing.Point(312, 48);
             this.btn_text.Name = "btn_text";
-            this.btn_text.Size = new System.Drawing.Size(21, 21);
+            this.btn_text.Size = new System.Drawing.Size(32, 32);
             this.btn_text.TabIndex = 4;
             // 
             // btn_brush
@@ -121,9 +121,9 @@
             this.btn_brush.IsCheckButton = true;
             this.btn_brush.IsRadioButton = false;
             this.btn_brush.IsSelected = false;
-            this.btn_brush.Location = new System.Drawing.Point(165, 0);
+            this.btn_brush.Location = new System.Drawing.Point(285, 48);
             this.btn_brush.Name = "btn_brush";
-            this.btn_brush.Size = new System.Drawing.Size(21, 21);
+            this.btn_brush.Size = new System.Drawing.Size(32, 32);
             this.btn_brush.TabIndex = 3;
             // 
             // btn_arrow
@@ -133,9 +133,9 @@
             this.btn_arrow.IsCheckButton = true;
             this.btn_arrow.IsRadioButton = false;
             this.btn_arrow.IsSelected = false;
-            this.btn_arrow.Location = new System.Drawing.Point(138, 0);
+            this.btn_arrow.Location = new System.Drawing.Point(258, 48);
             this.btn_arrow.Name = "btn_arrow";
-            this.btn_arrow.Size = new System.Drawing.Size(21, 21);
+            this.btn_arrow.Size = new System.Drawing.Size(32, 32);
             this.btn_arrow.TabIndex = 2;
             // 
             // btn_elips_fill
@@ -145,9 +145,9 @@
             this.btn_elips_fill.IsCheckButton = true;
             this.btn_elips_fill.IsRadioButton = false;
             this.btn_elips_fill.IsSelected = false;
-            this.btn_elips_fill.Location = new System.Drawing.Point(84, 0);
+            this.btn_elips_fill.Location = new System.Drawing.Point(204, 48);
             this.btn_elips_fill.Name = "btn_elips_fill";
-            this.btn_elips_fill.Size = new System.Drawing.Size(21, 21);
+            this.btn_elips_fill.Size = new System.Drawing.Size(32, 32);
             this.btn_elips_fill.TabIndex = 1;
             // 
             // btn_elips
@@ -157,9 +157,9 @@
             this.btn_elips.IsCheckButton = true;
             this.btn_elips.IsRadioButton = false;
             this.btn_elips.IsSelected = false;
-            this.btn_elips.Location = new System.Drawing.Point(57, 0);
+            this.btn_elips.Location = new System.Drawing.Point(177, 48);
             this.btn_elips.Name = "btn_elips";
-            this.btn_elips.Size = new System.Drawing.Size(21, 21);
+            this.btn_elips.Size = new System.Drawing.Size(32, 32);
             this.btn_elips.TabIndex = 1;
             // 
             // btn_mosaic
@@ -169,9 +169,9 @@
             this.btn_mosaic.IsCheckButton = true;
             this.btn_mosaic.IsRadioButton = false;
             this.btn_mosaic.IsSelected = false;
-            this.btn_mosaic.Location = new System.Drawing.Point(111, 0);
+            this.btn_mosaic.Location = new System.Drawing.Point(231, 48);
             this.btn_mosaic.Name = "btn_mosaic";
-            this.btn_mosaic.Size = new System.Drawing.Size(21, 21);
+            this.btn_mosaic.Size = new System.Drawing.Size(32, 32);
             this.btn_mosaic.TabIndex = 0;
             // 
             // btn_rect_fill
@@ -181,9 +181,9 @@
             this.btn_rect_fill.IsCheckButton = true;
             this.btn_rect_fill.IsRadioButton = false;
             this.btn_rect_fill.IsSelected = false;
-            this.btn_rect_fill.Location = new System.Drawing.Point(30, 0);
+            this.btn_rect_fill.Location = new System.Drawing.Point(139, 48);
             this.btn_rect_fill.Name = "btn_rect_fill";
-            this.btn_rect_fill.Size = new System.Drawing.Size(21, 21);
+            this.btn_rect_fill.Size = new System.Drawing.Size(32, 32);
             this.btn_rect_fill.TabIndex = 0;
             // 
             // btn_rect
@@ -193,9 +193,9 @@
             this.btn_rect.IsCheckButton = true;
             this.btn_rect.IsRadioButton = false;
             this.btn_rect.IsSelected = false;
-            this.btn_rect.Location = new System.Drawing.Point(3, 0);
+            this.btn_rect.Location = new System.Drawing.Point(68, 38);
             this.btn_rect.Name = "btn_rect";
-            this.btn_rect.Size = new System.Drawing.Size(21, 21);
+            this.btn_rect.Size = new System.Drawing.Size(32, 32);
             this.btn_rect.TabIndex = 0;
             // 
             // CaptureToolbar
@@ -233,8 +233,8 @@
         private CaptureToolButton btn_save;
         private CaptureToolButton btn_close;
         private CaptureToolButton btn_ok;
-        private CaptureToolButton btn_rect_fill;
         private CaptureToolButton btn_mosaic;
         private CaptureToolButton btn_elips_fill;
+        private CaptureToolButton btn_rect_fill;
     }
 }

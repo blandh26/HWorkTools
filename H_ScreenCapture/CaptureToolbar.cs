@@ -68,8 +68,8 @@ namespace H_ScreenCapture
         private Size InitSize() {
             if (this.Controls.Count == 0) return new Size(75, 30);
 
-            int nTop = 4;
-            int nLeft = 4;
+            int nTop = 10;
+            int nLeft = 20;
             int nHightMax = 0;
             int flag = this.Controls.Count;
             int len = flag;
@@ -90,15 +90,15 @@ namespace H_ScreenCapture
                     }
                 }
             }
-            nHightMax += 6;
+            nHightMax += 20;
             this.Controls[indexs[0]].Left = nLeft;
             this.Controls[indexs[0]].Top = nTop;
             len = this.Controls.Count;
             for (int i = 1; i < len; i++) {
-                this.Controls[indexs[i]].Left = this.Controls[indexs[i - 1]].Right + 6;
+                this.Controls[indexs[i]].Left = this.Controls[indexs[i - 1]].Right + 20;
                 this.Controls[indexs[i]].Top = (nHightMax - this.Controls[indexs[i]].Height) >> 1;
             }
-            return new Size(this.Controls[indexs[len - 1]].Right + 4, nHightMax);
+            return new Size(this.Controls[indexs[len - 1]].Right + 20, nHightMax);
         }
     }
 }

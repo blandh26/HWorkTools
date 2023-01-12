@@ -21,8 +21,8 @@ namespace H_ScreenCapture
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.Manual;
             m_rectScreen = Win32.GetDesktopRect();
-            this.Location = new Point(1920, m_rectScreen.Location.Y);
-            //this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
+            //this.Location = new Point(1920, m_rectScreen.Location.Y);
+            this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
             this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height);
 
             imageCroppingBox1.IsDrawMagnifier = true;

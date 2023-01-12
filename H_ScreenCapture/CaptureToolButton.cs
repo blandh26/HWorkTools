@@ -116,9 +116,9 @@ namespace H_ScreenCapture
                 g.DrawRectangle(Pens.DodgerBlue, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
             }
             if (this._Image == null) 
-                g.DrawImage(global::H_ScreenCapture.Properties.Resources.src_image_none, new Rectangle(2, 2, 17, 17));
+                g.DrawImage(global::H_ScreenCapture.Properties.Resources.src_image_none, new Rectangle(0, 0, 21, 21));
             else
-                g.DrawImage(this._Image, new Rectangle(2, 2, 17, 17));
+                g.DrawImage(this._Image, new Rectangle(0, 0, 21, 21));
             using (SolidBrush sb = new SolidBrush(this.ForeColor)) {
                 g.DrawString(this.Text, this.Font, sb, 21, (this.Height - this.Font.Height) / 2);
             }
