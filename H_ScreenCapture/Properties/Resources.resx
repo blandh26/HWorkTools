@@ -151,25 +151,28 @@
   <data name="btn_brush" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_brush.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="btn_ellips_fill" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btn_ellips_fill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="src_image_none" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\src_image_none.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="btn_mosaic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btn_mosaic.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="QBtn_Glass_Hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\QBtn_Glass_Hover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="btn_rect_fill" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btn_rect_fill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btn_ellips" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_ellips.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="QBtn_Glass_Hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\QBtn_Glass_Hover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btn_mosaic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btn_mosaic.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="btn_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_close.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="btn_ellips_fill" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btn_ellips_fill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="btn_rect_fill" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btn_rect_fill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="btn_line" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btn_line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

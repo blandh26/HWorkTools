@@ -132,6 +132,7 @@
     <Content Include="Resources\btn_close.png" />
     <Content Include="Resources\btn_ellips.png" />
     <None Include="Resources\btn_ellips_fill.png" />
+    <None Include="Resources\btn_line.png" />
     <Content Include="Resources\btn_mosaic.png" />
     <Content Include="Resources\btn_ok.png" />
     <Content Include="Resources\btn_out.png" />

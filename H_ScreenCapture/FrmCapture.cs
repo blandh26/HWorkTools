@@ -97,8 +97,6 @@ namespace H_ScreenCapture
             if (textBox1.Text.Trim() == string.Empty) return;
             using (Graphics g = Graphics.FromImage(m_imgCurrentLayer))
             {
-                Brush brush = m_sbFill;
-                if (ckbox_mosaic.Checked) brush = m_tbMosaic;
                 g.DrawImage(m_imgLastLayer, 0, 0);
                 g.DrawString(
                     textBox1.Text,
@@ -419,18 +417,6 @@ namespace H_ScreenCapture
                     {
                         imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板
                         panel1.Visible = true;
-                        if (strCtrlName == "btn_arrow")
-                        {
-                            rdbtn_draw.Text = "箭头";
-                            rdbtn_fill.Text = "直线";
-                        }
-                        else
-                        {
-                            rdbtn_draw.Text = "绘制";
-                            rdbtn_fill.Text = "填充";
-                        }
-                        //如果是文字工具被选择 则显示[选择字体]并隐藏 (绘制 填充) 控件
-                        rdbtn_draw.Visible = rdbtn_fill.Visible = !(linkLabel1.Visible = strCtrlName == "btn_text");
                         this.SetToolBarLocation();
                     }
                     break;
@@ -465,7 +451,6 @@ namespace H_ScreenCapture
             ptStart = (Point)((Size)ptStart - (Size)imageCroppingBox1.SelectedRectangle.Location);
             Size sz = new Size(Math.Abs(m_ptCurrent.X - m_ptLastMouseDown.X), Math.Abs(m_ptCurrent.Y - m_ptLastMouseDown.Y));
             Brush brush = m_sbFill;                                 //默认为填充画笔 否则使用马赛克画刷
-            if (ckbox_mosaic.Checked) brush = m_tbMosaic;
             using (Pen p = new Pen(brush, sizeTrackBar1.Value))     //根据画刷设置画笔
             using (Graphics g = Graphics.FromImage(m_imgCurrentLayer))
             {
@@ -474,28 +459,36 @@ namespace H_ScreenCapture
                 {
                     case "btn_rect":
                         g.Clear(Color.Transparent);                 //清空上一次绘制
-                        if (rdbtn_fill.Checked)                     //如果选择的是 填充 则直接使用画刷 否则画笔
-                            g.FillRectangle(brush, new Rectangle(ptStart, sz));
-                        else
-                            g.DrawRectangle(p, new Rectangle(ptStart, sz));
+                        g.DrawRectangle(p, new Rectangle(ptStart, sz));
+                        break;
+                    case "btn_rect_fill":
+                        g.Clear(Color.Transparent);                 //清空上一次绘制
+                        g.FillRectangle(brush, new Rectangle(ptStart, sz));
                         break;
                     case "btn_elips":
                         g.Clear(Color.Transparent);
-                        if (rdbtn_fill.Checked)
-                            g.FillEllipse(brush, new Rectangle(ptStart, sz));
-                        else
-                            g.DrawEllipse(p, new Rectangle(ptStart, sz));
+                        g.DrawEllipse(p, new Rectangle(ptStart, sz));
+                        break;
+                    case "btn_elips_fill":
+                        g.Clear(Color.Transparent);
+                        g.FillEllipse(brush, new Rectangle(ptStart, sz));
                         break;
                     case "btn_arrow":
                         g.Clear(Color.Transparent);
-                        if (rdbtn_draw.Checked)                     //箭头还是直线 工具条被选择为箭头工具时候 (绘制 填充) 被改为 (箭头 直线)
-                            p.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5, true);
+                        p.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5, true);
+                        g.DrawLine(p, (Point)((Size)m_ptLastMouseDown - (Size)imageCroppingBox1.SelectedRectangle.Location), (Point)((Size)m_ptCurrent - (Size)imageCroppingBox1.SelectedRectangle.Location));
+                        break;
+                    case "btn_line":
+                        g.Clear(Color.Transparent);
                         g.DrawLine(p, (Point)((Size)m_ptLastMouseDown - (Size)imageCroppingBox1.SelectedRectangle.Location), (Point)((Size)m_ptCurrent - (Size)imageCroppingBox1.SelectedRectangle.Location));
                         break;
                     case "btn_brush":                               //如果是画线 则就不需要g.Clear(Color.Transparent)来清空上一次才绘制了
                         p.StartCap = p.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                         g.DrawLine(p, (Point)((Size)m_ptLastMouseDown - (Size)imageCroppingBox1.SelectedRectangle.Location), (Point)((Size)m_ptCurrent - (Size)imageCroppingBox1.SelectedRectangle.Location));
                         m_ptLastMouseDown = m_ptCurrent;            //重置上一次点击位置 以便下一次进入此代码使用
+                        break;
+                    case "btn_mosaic":
+                        brush = m_tbMosaic;
                         break;
                 }
                 imageCroppingBox1.Invalidate(imageCroppingBox1.SelectedRectangle);

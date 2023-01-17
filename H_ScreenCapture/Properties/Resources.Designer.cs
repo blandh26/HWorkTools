@@ -143,6 +143,16 @@ namespace H_ScreenCapture.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap btn_line {
+            get {
+                object obj = ResourceManager.GetObject("btn_line", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap btn_mosaic {
             get {
                 object obj = ResourceManager.GetObject("btn_mosaic", resourceCulture);
