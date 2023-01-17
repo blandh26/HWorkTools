@@ -152,12 +152,12 @@ namespace H_ScreenCapture
         protected override void OnPaint(PaintEventArgs e) {
             Graphics g = e.Graphics;
             g.DrawImage(H_ScreenCapture.Properties.Resources.alpha_back, m_rectResult.X + 2, m_rectResult.Y + 2, 24, 24);
-            g.DrawRectangle(Pens.White, m_rectResult.X, m_rectResult.Y, m_rectResult.Width - 1, m_rectResult.Height - 1);
-            using (SolidBrush sb = new SolidBrush(Color.White)) {
+            g.DrawRectangle(Pens.Black, m_rectResult.X, m_rectResult.Y, m_rectResult.Width - 1, m_rectResult.Height - 1);
+            using (SolidBrush sb = new SolidBrush(Color.Black)) {
                 for (int i = 0; i < 16; i++) {
                     sb.Color = m_colors[i];
                     g.FillRectangle(sb, m_rectColors[i]);
-                    g.DrawRectangle(Pens.White, m_rectColors[i].X, m_rectColors[i].Y, m_rectColors[i].Width - 1, m_rectColors[i].Height - 1);
+                    g.DrawRectangle(Pens.Black, m_rectColors[i].X, m_rectColors[i].Y, m_rectColors[i].Width - 1, m_rectColors[i].Height - 1);
                 }
                 sb.Color = this._Color;
                 g.FillRectangle(sb, 4, 4, 24, 24);
@@ -166,10 +166,10 @@ namespace H_ScreenCapture
             using (LinearGradientBrush lgb = new LinearGradientBrush(new Point(m_rectTrack.Left + 1, m_rectTrack.Top + 1), new Point(m_rectTrack.Right - 1, m_rectTrack.Top + 1), Color.Transparent, this._SourceColor)) {
                 g.FillRectangle(lgb, m_rectTrack);
             }
-            g.DrawRectangle(Pens.White, m_rectTrack.Left, m_rectTrack.Top, m_rectTrack.Width - 1, m_rectTrack.Height - 1);
+            g.DrawRectangle(Pens.Black, m_rectTrack.Left, m_rectTrack.Top, m_rectTrack.Width - 1, m_rectTrack.Height - 1);
             int x = (int)(((double)this._Alpha / 255) * (m_rectTrack.Width - 2) + m_rectTrack.Left);
             if (x < m_rectTrack.Left + 1) x = m_rectTrack.Left + 1;
-            g.FillPolygon(Brushes.White, new Point[]{
+            g.FillPolygon(Brushes.Black, new Point[]{
                     new Point(x,m_rectTrack.Top),
                     new Point(x - 2,m_rectTrack.Top - 3),
                     new Point(x + 3,m_rectTrack.Top - 3)}

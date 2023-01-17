@@ -123,7 +123,7 @@ namespace H_ScreenCapture
                 int nLeft = (int)((double)this.Width * (this._Value - this.MinValue) / (this._MaxValue - this._MinValue));
                 if (nLeft >= this.Width) nLeft = this.Width - 1;
                 else if (nLeft < 0) nLeft = 0;
-                g.DrawLine(p, nLeft, 0, nLeft, this.Height);
+                g.DrawLine(p, nLeft, 100, nLeft, this.Height);
             }
             base.OnPaint(e);
         }

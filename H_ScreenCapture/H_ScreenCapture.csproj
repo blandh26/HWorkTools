@@ -94,6 +94,13 @@
     <Compile Include="SizeTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ToolButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolButton.designer.cs">
+      <DependentUpon>ToolButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ToolButtonDesigner.cs" />
     <Compile Include="Win32.cs" />
   </ItemGroup>
   <ItemGroup>

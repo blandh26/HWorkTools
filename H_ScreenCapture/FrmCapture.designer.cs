@@ -27,74 +27,80 @@
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.toolButton2 = new H_ScreenCapture.ToolButton();
+            this.toolButton1 = new H_ScreenCapture.ToolButton();
             this.sizeTrackBar1 = new H_ScreenCapture.SizeTrackBar();
-            this.ckbox_mosaic = new System.Windows.Forms.CheckBox();
             this.colorBox1 = new H_ScreenCapture.ColorBox();
             this.captureToolbar1 = new H_ScreenCapture.CaptureToolbar();
             this.imageCroppingBox1 = new H_ScreenCapture.ImageCroppingBox();
+            this.toolButton3 = new H_ScreenCapture.ToolButton();
+            this.toolButton4 = new H_ScreenCapture.ToolButton();
+            this.toolButton5 = new H_ScreenCapture.ToolButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.linkLabel1);
+            this.panel1.Controls.Add(this.toolButton5);
+            this.panel1.Controls.Add(this.toolButton4);
+            this.panel1.Controls.Add(this.toolButton3);
+            this.panel1.Controls.Add(this.toolButton2);
+            this.panel1.Controls.Add(this.toolButton1);
             this.panel1.Controls.Add(this.sizeTrackBar1);
-            this.panel1.Controls.Add(this.ckbox_mosaic);
             this.panel1.Controls.Add(this.colorBox1);
             this.panel1.Location = new System.Drawing.Point(42, 137);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(373, 89);
+            this.panel1.Size = new System.Drawing.Size(679, 204);
             this.panel1.TabIndex = 6;
             // 
             // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.textBox1.ForeColor = System.Drawing.Color.Red;
-            this.textBox1.Location = new System.Drawing.Point(29, 54);
+            this.textBox1.Location = new System.Drawing.Point(28, 26);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 18);
             this.textBox1.TabIndex = 7;
             // 
-            // linkLabel1
+            // toolButton2
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.BackColor = System.Drawing.Color.Black;
-            this.linkLabel1.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel1.Location = new System.Drawing.Point(27, 54);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(53, 12);
-            this.linkLabel1.TabIndex = 8;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "选择字体";
+            this.toolButton2.BtnImage = null;
+            this.toolButton2.IsSelected = false;
+            this.toolButton2.IsSelectedBtn = true;
+            this.toolButton2.IsSingleSelectedBtn = true;
+            this.toolButton2.Location = new System.Drawing.Point(295, 15);
+            this.toolButton2.Name = "toolButton2";
+            this.toolButton2.Size = new System.Drawing.Size(92, 21);
+            this.toolButton2.TabIndex = 9;
+            this.toolButton2.Text = "toolButton2";
+            // 
+            // toolButton1
+            // 
+            this.toolButton1.BtnImage = null;
+            this.toolButton1.IsSelected = true;
+            this.toolButton1.IsSelectedBtn = true;
+            this.toolButton1.IsSingleSelectedBtn = true;
+            this.toolButton1.Location = new System.Drawing.Point(182, 15);
+            this.toolButton1.Name = "toolButton1";
+            this.toolButton1.Size = new System.Drawing.Size(92, 21);
+            this.toolButton1.TabIndex = 8;
+            this.toolButton1.Text = "toolButton1";
             // 
             // sizeTrackBar1
             // 
             this.sizeTrackBar1.BackColor = System.Drawing.Color.Transparent;
             this.sizeTrackBar1.Color = System.Drawing.Color.Red;
-            this.sizeTrackBar1.Location = new System.Drawing.Point(188, 45);
+            this.sizeTrackBar1.Location = new System.Drawing.Point(55, 84);
             this.sizeTrackBar1.MaxValue = 30;
             this.sizeTrackBar1.MinValue = 1;
             this.sizeTrackBar1.Name = "sizeTrackBar1";
-            this.sizeTrackBar1.Size = new System.Drawing.Size(182, 18);
+            this.sizeTrackBar1.Size = new System.Drawing.Size(180, 45);
             this.sizeTrackBar1.TabIndex = 7;
             this.sizeTrackBar1.Text = "sizeTrackBar1";
             this.sizeTrackBar1.Value = 1;
-            // 
-            // ckbox_mosaic
-            // 
-            this.ckbox_mosaic.AutoSize = true;
-            this.ckbox_mosaic.BackColor = System.Drawing.Color.Transparent;
-            this.ckbox_mosaic.ForeColor = System.Drawing.Color.White;
-            this.ckbox_mosaic.Location = new System.Drawing.Point(298, 24);
-            this.ckbox_mosaic.Name = "ckbox_mosaic";
-            this.ckbox_mosaic.Size = new System.Drawing.Size(60, 16);
-            this.ckbox_mosaic.TabIndex = 6;
-            this.ckbox_mosaic.Text = "马赛克";
-            this.ckbox_mosaic.UseVisualStyleBackColor = false;
             // 
             // colorBox1
             // 
@@ -109,7 +115,7 @@
             // 
             // captureToolbar1
             // 
-            this.captureToolbar1.BackColor = System.Drawing.Color.White;
+            this.captureToolbar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.captureToolbar1.Location = new System.Drawing.Point(42, 90);
             this.captureToolbar1.Name = "captureToolbar1";
             this.captureToolbar1.Size = new System.Drawing.Size(594, 41);
@@ -128,7 +134,7 @@
             this.imageCroppingBox1.Name = "imageCroppingBox1";
             this.imageCroppingBox1.PreViewRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.imageCroppingBox1.SelectedRectangle = new System.Drawing.Rectangle(0, 0, 1, 1);
-            this.imageCroppingBox1.Size = new System.Drawing.Size(517, 358);
+            this.imageCroppingBox1.Size = new System.Drawing.Size(1055, 449);
             this.imageCroppingBox1.TabIndex = 0;
             this.imageCroppingBox1.Text = "imageCroppingBox1";
             this.imageCroppingBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.imageCroppingBox1_Paint);
@@ -138,11 +144,48 @@
             this.imageCroppingBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageCroppingBox1_MouseMove);
             this.imageCroppingBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imageCroppingBox1_MouseUp);
             // 
+            // toolButton3
+            // 
+            this.toolButton3.BtnImage = null;
+            this.toolButton3.IsSelected = false;
+            this.toolButton3.IsSelectedBtn = true;
+            this.toolButton3.IsSingleSelectedBtn = true;
+            this.toolButton3.Location = new System.Drawing.Point(393, 15);
+            this.toolButton3.Name = "toolButton3";
+            this.toolButton3.Size = new System.Drawing.Size(92, 21);
+            this.toolButton3.TabIndex = 9;
+            this.toolButton3.Text = "toolButton2";
+            // 
+            // toolButton4
+            // 
+            this.toolButton4.BtnImage = null;
+            this.toolButton4.IsSelected = false;
+            this.toolButton4.IsSelectedBtn = true;
+            this.toolButton4.IsSingleSelectedBtn = true;
+            this.toolButton4.Location = new System.Drawing.Point(491, 15);
+            this.toolButton4.Name = "toolButton4";
+            this.toolButton4.Size = new System.Drawing.Size(92, 21);
+            this.toolButton4.TabIndex = 9;
+            this.toolButton4.Text = "toolButton2";
+            // 
+            // toolButton5
+            // 
+            this.toolButton5.BtnImage = null;
+            this.toolButton5.IsSelected = false;
+            this.toolButton5.IsSelectedBtn = true;
+            this.toolButton5.IsSingleSelectedBtn = true;
+            this.toolButton5.Location = new System.Drawing.Point(602, 15);
+            this.toolButton5.Name = "toolButton5";
+            this.toolButton5.Size = new System.Drawing.Size(92, 21);
+            this.toolButton5.TabIndex = 9;
+            this.toolButton5.Text = "toolButton2";
+            // 
             // FrmCapture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(637, 253);
+            this.ClientSize = new System.Drawing.Size(1076, 497);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.captureToolbar1);
             this.Controls.Add(this.imageCroppingBox1);
@@ -150,8 +193,8 @@
             this.Text = "FrmCaption";
             this.Load += new System.EventHandler(this.FrmCaption_Load);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -161,10 +204,12 @@
         private CaptureToolbar captureToolbar1;
         private ColorBox colorBox1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox ckbox_mosaic;
         private SizeTrackBar sizeTrackBar1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-
+        private ToolButton toolButton2;
+        private ToolButton toolButton1;
+        private ToolButton toolButton5;
+        private ToolButton toolButton4;
+        private ToolButton toolButton3;
     }
 }

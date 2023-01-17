@@ -21,8 +21,8 @@ namespace H_ScreenCapture
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.Manual;
             m_rectScreen = Win32.GetDesktopRect();
-            //this.Location = new Point(1920, m_rectScreen.Location.Y);
-            this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
+            this.Location = new Point(1920, m_rectScreen.Location.Y);
+            //this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
             this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height);
 
             imageCroppingBox1.IsDrawMagnifier = true;
@@ -78,18 +78,6 @@ namespace H_ScreenCapture
             textBox1.Visible = false;
             textBox1.TextChanged += (s, ex) => this.SetTextBoxSize();
             textBox1.Validating += textBox1_Validating;
-
-            linkLabel1.Location = new Point(163, 5);
-            linkLabel1.BackColor = Color.Transparent;
-            linkLabel1.Click += (s, ex) =>
-            {
-                FontDialog fd = new FontDialog();
-                fd.Font = textBox1.Font;
-                if (fd.ShowDialog() != DialogResult.OK) return;
-                textBox1.Font = fd.Font;
-                this.SetTextBoxSize();
-            };
-            linkLabel1.Visible = false;
         }
         //绘图时候选择文字工具 文本框离开焦点的时候将文本绘制上去
         private void textBox1_Validating(object sender, CancelEventArgs e)
@@ -97,6 +85,7 @@ namespace H_ScreenCapture
             if (textBox1.Text.Trim() == string.Empty) return;
             using (Graphics g = Graphics.FromImage(m_imgCurrentLayer))
             {
+                Brush brush = m_sbFill;
                 g.DrawImage(m_imgLastLayer, 0, 0);
                 g.DrawString(
                     textBox1.Text,
@@ -264,13 +253,16 @@ namespace H_ScreenCapture
                         p.DashPattern = new float[] { 5, 5 };
                         switch (captureToolbar1.GetSelectBtnName())
                         {
+                            case "btn_rect_fill":
                             case "btn_rect":
                                 g.DrawRectangle(p, rect);
                                 break;
+                            case "btn_elips_fill":
                             case "btn_elips":
                                 g.DrawRectangle(p, rect);           //被绘制的圆形的外切矩形
                                 g.DrawEllipse(p, rect);
                                 break;
+                            case "btn_line":
                             case "btn_arrow":
                                 g.DrawLine(p, m_ptLastMouseDown, m_ptCurrent);
                                 break;
@@ -318,10 +310,17 @@ namespace H_ScreenCapture
             Console.WriteLine(e.KeyCode);
         }
 
+        /// <summary>
+        /// 工具栏点击按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void captureToolbar1_ToolButtonClick(object sender, EventArgs e)
         {
             this.OnToolBarClick((sender as Control).Name);
         }
+
+      
 
         private void imageCroppingBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -404,8 +403,11 @@ namespace H_ScreenCapture
                     }
                     break;
                 case "btn_rect":
+                case "btn_rect_fill":
                 case "btn_elips":
+                case "btn_elips_fill":
                 case "btn_arrow":
+                case "btn_line":
                 case "btn_brush":
                 case "btn_text":
                     if (captureToolbar1.GetSelectBtnName() == null)
@@ -489,6 +491,8 @@ namespace H_ScreenCapture
                         break;
                     case "btn_mosaic":
                         brush = m_tbMosaic;
+                        g.Clear(Color.Transparent);                 //清空上一次绘制
+                        g.FillRectangle(brush, new Rectangle(ptStart, sz));
                         break;
                 }
                 imageCroppingBox1.Invalidate(imageCroppingBox1.SelectedRectangle);
@@ -515,6 +519,5 @@ namespace H_ScreenCapture
             Size se = TextRenderer.MeasureText(textBox1.Text, textBox1.Font);
             textBox1.Size = se.IsEmpty ? new Size(50, textBox1.Font.Height) : se;
         }
-
     }
 }
