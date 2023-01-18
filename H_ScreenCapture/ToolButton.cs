@@ -60,7 +60,7 @@ namespace H_ScreenCapture
             set {
                 base.Text = value;
                 Size se = TextRenderer.MeasureText(this.Text, this.Font);
-                this.Width = se.Width + 21;
+                this.Width = se.Width + 24;
             }
         }
 
@@ -111,10 +111,10 @@ namespace H_ScreenCapture
                 g.DrawRectangle(Pens.DarkCyan, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
             }
             if (this.btnImage == null)
-                g.DrawImage(global::H_ScreenCapture.Properties.Resources.src_image_none, new Rectangle(2, 2, 17, 17));
+                g.DrawImage(global::H_ScreenCapture.Properties.Resources.src_image_none, new Rectangle(2, 2, 20, 20));
             else
-                g.DrawImage(this.btnImage, new Rectangle(2, 2, 17, 17));
-            g.DrawString(this.Text, this.Font, Brushes.Black, 21, (this.Height - this.Font.Height) / 2);
+                g.DrawImage(this.btnImage, new Rectangle(2, 2, 20, 20));
+            g.DrawString(this.Text, this.Font, Brushes.Black, 24, (this.Height - this.Font.Height) / 2);
             if (this.isSelected)
                 g.DrawRectangle(Pens.DarkCyan, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
 
@@ -122,7 +122,7 @@ namespace H_ScreenCapture
         }
 
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified) {
-            base.SetBoundsCore(x, y, TextRenderer.MeasureText(this.Text, this.Font).Width + 21, 21, specified);
+            base.SetBoundsCore(x, y, TextRenderer.MeasureText(this.Text, this.Font).Width + 24, 24, specified);
         }
     }
 }

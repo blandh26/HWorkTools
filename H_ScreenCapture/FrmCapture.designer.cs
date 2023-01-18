@@ -27,21 +27,21 @@
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.toolButton5 = new H_ScreenCapture.ToolButton();
+            this.toolButton4 = new H_ScreenCapture.ToolButton();
+            this.toolButton3 = new H_ScreenCapture.ToolButton();
             this.toolButton2 = new H_ScreenCapture.ToolButton();
             this.toolButton1 = new H_ScreenCapture.ToolButton();
             this.sizeTrackBar1 = new H_ScreenCapture.SizeTrackBar();
             this.colorBox1 = new H_ScreenCapture.ColorBox();
             this.captureToolbar1 = new H_ScreenCapture.CaptureToolbar();
             this.imageCroppingBox1 = new H_ScreenCapture.ImageCroppingBox();
-            this.toolButton3 = new H_ScreenCapture.ToolButton();
-            this.toolButton4 = new H_ScreenCapture.ToolButton();
-            this.toolButton5 = new H_ScreenCapture.ToolButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.toolButton5);
             this.panel1.Controls.Add(this.toolButton4);
             this.panel1.Controls.Add(this.toolButton3);
@@ -51,7 +51,7 @@
             this.panel1.Controls.Add(this.colorBox1);
             this.panel1.Location = new System.Drawing.Point(42, 137);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(679, 204);
+            this.panel1.Size = new System.Drawing.Size(320, 147);
             this.panel1.TabIndex = 6;
             // 
             // textBox1
@@ -65,17 +65,49 @@
             this.textBox1.Size = new System.Drawing.Size(100, 18);
             this.textBox1.TabIndex = 7;
             // 
+            // toolButton5
+            // 
+            this.toolButton5.BtnImage = global::H_ScreenCapture.Properties.Resources.btn_ellips_fill;
+            this.toolButton5.IsSelected = false;
+            this.toolButton5.IsSelectedBtn = true;
+            this.toolButton5.IsSingleSelectedBtn = true;
+            this.toolButton5.Location = new System.Drawing.Point(128, 7);
+            this.toolButton5.Name = "toolButton5";
+            this.toolButton5.Size = new System.Drawing.Size(24, 24);
+            this.toolButton5.TabIndex = 9;
+            // 
+            // toolButton4
+            // 
+            this.toolButton4.BtnImage = null;
+            this.toolButton4.IsSelected = false;
+            this.toolButton4.IsSelectedBtn = true;
+            this.toolButton4.IsSingleSelectedBtn = true;
+            this.toolButton4.Location = new System.Drawing.Point(98, 7);
+            this.toolButton4.Name = "toolButton4";
+            this.toolButton4.Size = new System.Drawing.Size(24, 24);
+            this.toolButton4.TabIndex = 9;
+            // 
+            // toolButton3
+            // 
+            this.toolButton3.BtnImage = null;
+            this.toolButton3.IsSelected = false;
+            this.toolButton3.IsSelectedBtn = true;
+            this.toolButton3.IsSingleSelectedBtn = true;
+            this.toolButton3.Location = new System.Drawing.Point(68, 7);
+            this.toolButton3.Name = "toolButton3";
+            this.toolButton3.Size = new System.Drawing.Size(24, 24);
+            this.toolButton3.TabIndex = 9;
+            // 
             // toolButton2
             // 
             this.toolButton2.BtnImage = null;
             this.toolButton2.IsSelected = false;
             this.toolButton2.IsSelectedBtn = true;
             this.toolButton2.IsSingleSelectedBtn = true;
-            this.toolButton2.Location = new System.Drawing.Point(295, 15);
+            this.toolButton2.Location = new System.Drawing.Point(38, 7);
             this.toolButton2.Name = "toolButton2";
-            this.toolButton2.Size = new System.Drawing.Size(92, 21);
+            this.toolButton2.Size = new System.Drawing.Size(24, 24);
             this.toolButton2.TabIndex = 9;
-            this.toolButton2.Text = "toolButton2";
             // 
             // toolButton1
             // 
@@ -83,17 +115,17 @@
             this.toolButton1.IsSelected = true;
             this.toolButton1.IsSelectedBtn = true;
             this.toolButton1.IsSingleSelectedBtn = true;
-            this.toolButton1.Location = new System.Drawing.Point(182, 15);
+            this.toolButton1.Location = new System.Drawing.Point(8, 7);
             this.toolButton1.Name = "toolButton1";
-            this.toolButton1.Size = new System.Drawing.Size(92, 21);
+            this.toolButton1.Size = new System.Drawing.Size(24, 24);
             this.toolButton1.TabIndex = 8;
-            this.toolButton1.Text = "toolButton1";
+            this.toolButton1.TabStop = false;
             // 
             // sizeTrackBar1
             // 
             this.sizeTrackBar1.BackColor = System.Drawing.Color.Transparent;
             this.sizeTrackBar1.Color = System.Drawing.Color.Red;
-            this.sizeTrackBar1.Location = new System.Drawing.Point(55, 84);
+            this.sizeTrackBar1.Location = new System.Drawing.Point(75, 49);
             this.sizeTrackBar1.MaxValue = 30;
             this.sizeTrackBar1.MinValue = 1;
             this.sizeTrackBar1.Name = "sizeTrackBar1";
@@ -107,9 +139,9 @@
             this.colorBox1.Alpha = ((byte)(255));
             this.colorBox1.BackColor = System.Drawing.Color.Transparent;
             this.colorBox1.Color = System.Drawing.Color.Red;
-            this.colorBox1.Location = new System.Drawing.Point(3, 3);
+            this.colorBox1.Location = new System.Drawing.Point(158, 3);
             this.colorBox1.Name = "colorBox1";
-            this.colorBox1.Size = new System.Drawing.Size(154, 45);
+            this.colorBox1.Size = new System.Drawing.Size(154, 30);
             this.colorBox1.TabIndex = 2;
             this.colorBox1.Text = "colorBox1";
             // 
@@ -143,42 +175,6 @@
             this.imageCroppingBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imageCroppingBox1_MouseDown);
             this.imageCroppingBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageCroppingBox1_MouseMove);
             this.imageCroppingBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imageCroppingBox1_MouseUp);
-            // 
-            // toolButton3
-            // 
-            this.toolButton3.BtnImage = null;
-            this.toolButton3.IsSelected = false;
-            this.toolButton3.IsSelectedBtn = true;
-            this.toolButton3.IsSingleSelectedBtn = true;
-            this.toolButton3.Location = new System.Drawing.Point(393, 15);
-            this.toolButton3.Name = "toolButton3";
-            this.toolButton3.Size = new System.Drawing.Size(92, 21);
-            this.toolButton3.TabIndex = 9;
-            this.toolButton3.Text = "toolButton2";
-            // 
-            // toolButton4
-            // 
-            this.toolButton4.BtnImage = null;
-            this.toolButton4.IsSelected = false;
-            this.toolButton4.IsSelectedBtn = true;
-            this.toolButton4.IsSingleSelectedBtn = true;
-            this.toolButton4.Location = new System.Drawing.Point(491, 15);
-            this.toolButton4.Name = "toolButton4";
-            this.toolButton4.Size = new System.Drawing.Size(92, 21);
-            this.toolButton4.TabIndex = 9;
-            this.toolButton4.Text = "toolButton2";
-            // 
-            // toolButton5
-            // 
-            this.toolButton5.BtnImage = null;
-            this.toolButton5.IsSelected = false;
-            this.toolButton5.IsSelectedBtn = true;
-            this.toolButton5.IsSingleSelectedBtn = true;
-            this.toolButton5.Location = new System.Drawing.Point(602, 15);
-            this.toolButton5.Name = "toolButton5";
-            this.toolButton5.Size = new System.Drawing.Size(92, 21);
-            this.toolButton5.TabIndex = 9;
-            this.toolButton5.Text = "toolButton2";
             // 
             // FrmCapture
             // 

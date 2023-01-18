@@ -21,13 +21,12 @@ namespace H_ScreenCapture
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.Manual;
             m_rectScreen = Win32.GetDesktopRect();
-            this.Location = new Point(1920, m_rectScreen.Location.Y);
-            //this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
+            //this.Location = new Point(1920, m_rectScreen.Location.Y);
+            this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
             this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height);
 
             imageCroppingBox1.IsDrawMagnifier = true;
             Image imgScreen = this.GetFullScreen(true);
-            imgScreen.Save(@"D:\1.png");
             this.imageCroppingBox1.Image = imgScreen;
             this.imageCroppingBox1.Dock = DockStyle.Fill;
         }
@@ -255,6 +254,7 @@ namespace H_ScreenCapture
                         {
                             case "btn_rect_fill":
                             case "btn_rect":
+                            case "btn_mosaic":
                                 g.DrawRectangle(p, rect);
                                 break;
                             case "btn_elips_fill":
@@ -409,11 +409,17 @@ namespace H_ScreenCapture
                 case "btn_arrow":
                 case "btn_line":
                 case "btn_brush":
+                case "btn_mosaic":
                 case "btn_text":
                     if (captureToolbar1.GetSelectBtnName() == null)
                     {                       //如果没有工具被选择 那么配置面板信息隐藏
                         if (m_layer.Count == 0) imageCroppingBox1.IsLockSelected = false;   //如果没有历史图层 则取消选取的锁定
                         panel1.Visible = false;
+                    }
+                    else if (captureToolbar1.GetSelectBtnName() == "btn_mosaic")
+                    {
+                        imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板
+                        this.SetToolBarLocation();
                     }
                     else
                     {
