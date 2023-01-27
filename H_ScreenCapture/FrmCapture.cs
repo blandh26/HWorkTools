@@ -81,10 +81,11 @@ namespace H_ScreenCapture
             textBox1.Visible = false;
             textBox1.TextChanged += (s, ex) => this.SetTextBoxSize();
             textBox1.Validating += textBox1_Validating;
+            #region 上一次截图区域自动选区
             if (controlType == 1)
             {
-                string str = cif.GetValue("Last_ScreenCapture");
-                if (str!="")
+                string str = cif.GetValue("ScreenCapture_Last");
+                if (str != "")
                 {
                     string[] strArr = str.Split(',');
                     imageCroppingBox1.IsLockSelected = true;
@@ -106,6 +107,7 @@ namespace H_ScreenCapture
                     m_tbMosaic = new TextureBrush(m_imgMosaic);
                 }
             }
+            #endregion
         }
         //绘图时候选择文字工具 文本框离开焦点的时候将文本绘制上去
         private void textBox1_Validating(object sender, CancelEventArgs e)
@@ -365,7 +367,20 @@ namespace H_ScreenCapture
             if (imageCroppingBox1.SelectedRectangle.Size == Size.Empty) return;
             Clipboard.SetImage(m_imgLastLayer);
             string str = imageCroppingBox1.SelectedRectangle.X + "," + imageCroppingBox1.SelectedRectangle.Y + "," + imageCroppingBox1.SelectedRectangle.Size.Width + "," + imageCroppingBox1.SelectedRectangle.Size.Height;
-            cif.SaveValue("Last_ScreenCapture", str);
+            cif.SaveValue("ScreenCapture_Last", str);
+            #region 对比截图
+            closeFrom();
+            if (controlType == 2)
+            {
+                FrmShowImage frmimage = new FrmShowImage(
+                    new Point(imageCroppingBox1.SelectedRectangle.X - 8,
+                    imageCroppingBox1.SelectedRectangle.Y - 31),
+                    new Size(imageCroppingBox1.SelectedRectangle.Size.Width + 16,
+                    imageCroppingBox1.SelectedRectangle.Size.Height + 39),
+                    m_imgLastLayer);
+                frmimage.Show();
+            }
+            #endregion
             this.Close();
         }
 
@@ -381,7 +396,20 @@ namespace H_ScreenCapture
                 case "btn_ok":
                     Clipboard.SetImage(m_imgLastLayer);
                     string str = imageCroppingBox1.SelectedRectangle.X + "," + imageCroppingBox1.SelectedRectangle.Y + "," + imageCroppingBox1.SelectedRectangle.Size.Width + "," + imageCroppingBox1.SelectedRectangle.Size.Height;
-                    cif.SaveValue("Last_ScreenCapture", str);
+                    cif.SaveValue("ScreenCapture_Last", str);
+                    #region 对比截图
+                    closeFrom();
+                    if (controlType == 2)
+                    {
+                        FrmShowImage frmimage = new FrmShowImage(
+                            new Point(imageCroppingBox1.SelectedRectangle.X - 8,
+                            imageCroppingBox1.SelectedRectangle.Y - 31),
+                            new Size(imageCroppingBox1.SelectedRectangle.Size.Width + 16,
+                            imageCroppingBox1.SelectedRectangle.Size.Height + 39),
+                            m_imgLastLayer);
+                        frmimage.Show();
+                    }
+                    #endregion
                     this.Close();
                     break;
                 case "btn_out":
@@ -611,6 +639,21 @@ namespace H_ScreenCapture
             textBox1.Font = fd.Font;
             txtfont = fd.Font;
             this.SetTextBoxSize();
+        }
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        public void closeFrom()
+        {
+            while (true)
+            {
+                if (Application.OpenForms["FrmShowImage"] == null)
+                {
+                    break;
+                }
+                Application.OpenForms["FrmShowImage"].Close();
+            }
         }
     }
 }

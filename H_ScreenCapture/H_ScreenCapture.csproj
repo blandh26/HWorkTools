@@ -74,6 +74,12 @@
     <Compile Include="FrmRectAlert.designer.cs">
       <DependentUpon>FrmRectAlert.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmShowImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmShowImage.designer.cs">
+      <DependentUpon>FrmShowImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmTextAlert.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRectAlert.resx">
       <DependentUpon>FrmRectAlert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmShowImage.resx">
+      <DependentUpon>FrmShowImage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTextAlert.resx">
       <DependentUpon>FrmTextAlert.cs</DependentUpon>
