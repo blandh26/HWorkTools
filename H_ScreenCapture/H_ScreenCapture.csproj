@@ -128,7 +128,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\H_Util\H_Util.csproj">
+      <Project>{fbaccb07-893e-4652-987c-9ce73f47ad20}</Project>
+      <Name>H_Util</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\alpha_back.png" />
     <Content Include="Resources\back_toolbar.png" />

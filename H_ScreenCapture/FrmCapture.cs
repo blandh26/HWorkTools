@@ -8,13 +8,19 @@ using System.Windows.Forms;
 
 using System.Threading;
 using System.Reflection;
+using H_Util;
 
 namespace H_ScreenCapture
 {
     public partial class FrmCapture : Form
     {
-        public FrmCapture()
+        Config cif = new Config();
+        int controlType = 0;//0 默认截图 1 上一次自动区域截图 2 对比模式
+
+
+        public FrmCapture(int type)
         {
+            controlType = type;
             InitializeComponent();
             this.TopMost = true;
             this.ShowInTaskbar = false;
@@ -22,8 +28,8 @@ namespace H_ScreenCapture
             this.StartPosition = FormStartPosition.Manual;
             m_rectScreen = Win32.GetDesktopRect();
             //this.Location = new Point(1920, m_rectScreen.Location.Y);
-            this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y);
-            this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height);
+            this.Location = new Point(m_rectScreen.Location.X, m_rectScreen.Location.Y - m_rectScreen.Location.Y / 4);
+            this.Size = new Size(m_rectScreen.Size.Width, m_rectScreen.Size.Height / 4);
 
             imageCroppingBox1.IsDrawMagnifier = true;
             Image imgScreen = this.GetFullScreen(true);
@@ -75,6 +81,31 @@ namespace H_ScreenCapture
             textBox1.Visible = false;
             textBox1.TextChanged += (s, ex) => this.SetTextBoxSize();
             textBox1.Validating += textBox1_Validating;
+            if (controlType == 1)
+            {
+                string str = cif.GetValue("Last_ScreenCapture");
+                if (str!="")
+                {
+                    string[] strArr = str.Split(',');
+                    imageCroppingBox1.IsLockSelected = true;
+                    imageCroppingBox1.IsSelected = true;
+                    imageCroppingBox1.SelectedRectangle = new Rectangle(
+                        Convert.ToInt32(strArr[0]),
+                        Convert.ToInt32(strArr[1]),
+                        Convert.ToInt32(strArr[2]),
+                        Convert.ToInt32(strArr[3]));
+                    this.SetToolBarLocation();                              //如果有选取 那么应该设置工具条的位置并且显示 以便后期绘制
+                    this.captureToolbar1.Visible = true;
+                    if (m_imgLastLayer != null) m_imgLastLayer.Dispose();
+                    m_imgLastLayer = imageCroppingBox1.GetSelectedImage();                          //默认图层为选取区域的图像
+                    if (m_imgCurrentLayer != null) m_imgCurrentLayer.Dispose();
+                    m_imgCurrentLayer = new Bitmap(m_imgLastLayer.Width, m_imgLastLayer.Height);    //绘制面板图层置空
+                    if (m_imgMosaic != null) m_imgMosaic.Dispose();
+                    m_imgMosaic = ImageHelper.Mosaic(m_imgLastLayer, 10);                           //设置当前区域的马赛克图像
+                    if (m_tbMosaic != null) m_tbMosaic.Dispose();
+                    m_tbMosaic = new TextureBrush(m_imgMosaic);
+                }
+            }
         }
         //绘图时候选择文字工具 文本框离开焦点的时候将文本绘制上去
         private void textBox1_Validating(object sender, CancelEventArgs e)
@@ -132,14 +163,14 @@ namespace H_ScreenCapture
                 { //如果选择的是文字工具 那么特殊处理
                     textBox1.Location = e.Location;                     //将文本框位置设置为鼠标点下的位子
                     textBox1.Visible = true;                            //显示文本框以便输入文字
-                    if (txtfont==null)
+                    if (txtfont == null)
                     {
                         textBox1.Font = new Font(textBox1.Font.Name, 14 + getSize());
                     }
                     else
                     {
                         textBox1.Font = txtfont;
-                    }                   
+                    }
                     textBox1.Focus();                                   //获得焦点
                     return;                                             //特殊处理的角色 直接返回
                 }
@@ -156,17 +187,14 @@ namespace H_ScreenCapture
             {
                 if (imageCroppingBox1.IsSelected)
                 {//如果是右键抬起并且有选择区域的情况 则有可能是右键菜单 或者 取消选择
-                    Console.WriteLine("1");
                     imageCroppingBox1.Clear();                          //取消选择
                     m_layer.Clear();                                    //同时情况历史图层
                 }
                 else
                 {//如果没有选择区域且右键抬起 则直接关闭窗体
-                    Console.WriteLine("2");
                     this.Close();
                     return;
                 }
-                Console.WriteLine("3");
                 this.captureToolbar1.Visible = false;                   //如果代码走到这里 则表示取消了选择 那么工具条应该被隐藏
                 captureToolbar1.ClearSelect();                          //清空工具条上的工具选择
                 panel1.Visible = false;                                 //配置面板也应该被关闭
@@ -327,11 +355,17 @@ namespace H_ScreenCapture
         }
 
 
-
+        /// <summary>
+        /// 双击完成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void imageCroppingBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (imageCroppingBox1.SelectedRectangle.Size == Size.Empty) return;
             Clipboard.SetImage(m_imgLastLayer);
+            string str = imageCroppingBox1.SelectedRectangle.X + "," + imageCroppingBox1.SelectedRectangle.Y + "," + imageCroppingBox1.SelectedRectangle.Size.Width + "," + imageCroppingBox1.SelectedRectangle.Size.Height;
+            cif.SaveValue("Last_ScreenCapture", str);
             this.Close();
         }
 
@@ -346,6 +380,8 @@ namespace H_ScreenCapture
                 case "btn_close": this.Close(); break;
                 case "btn_ok":
                     Clipboard.SetImage(m_imgLastLayer);
+                    string str = imageCroppingBox1.SelectedRectangle.X + "," + imageCroppingBox1.SelectedRectangle.Y + "," + imageCroppingBox1.SelectedRectangle.Size.Width + "," + imageCroppingBox1.SelectedRectangle.Size.Height;
+                    cif.SaveValue("Last_ScreenCapture", str);
                     this.Close();
                     break;
                 case "btn_out":
@@ -440,7 +476,7 @@ namespace H_ScreenCapture
                     }
                     else
                     {
-                        pictureBox1.Visible= false;
+                        pictureBox1.Visible = false;
                         colorBox1.Location = new Point(154, 3);
                         panel1.Size = new Size(314, 39);
                         imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板

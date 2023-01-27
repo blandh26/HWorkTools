@@ -307,7 +307,7 @@ namespace H_WorkTools
                 try
                 {
                     if (m_frmCapture == null || m_frmCapture.IsDisposed)
-                        m_frmCapture = new FrmCapture();
+                        m_frmCapture = new FrmCapture(0);
                     m_frmCapture.Show();
                 }
                 catch (Exception ex)
@@ -315,6 +315,19 @@ namespace H_WorkTools
                     Console.WriteLine(ex);
                 }
             });//截图快捷键
+            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.S, () =>
+            {
+                try
+                {
+                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
+                        m_frmCapture = new FrmCapture(1);
+                    m_frmCapture.Show();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            });//上一次区域截图快捷键
         }
         const int WM_HOTKEY = 0x312;
         //https://blog.csdn.net/u011555996/article/details/113785700 参考 msg 数字

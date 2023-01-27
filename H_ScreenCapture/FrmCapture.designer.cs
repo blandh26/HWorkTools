@@ -27,13 +27,13 @@
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.toolButton5 = new H_ScreenCapture.ToolButton();
             this.toolButton4 = new H_ScreenCapture.ToolButton();
             this.toolButton3 = new H_ScreenCapture.ToolButton();
             this.toolButton2 = new H_ScreenCapture.ToolButton();
             this.toolButton1 = new H_ScreenCapture.ToolButton();
             this.colorBox1 = new H_ScreenCapture.ColorBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.captureToolbar1 = new H_ScreenCapture.CaptureToolbar();
             this.imageCroppingBox1 = new H_ScreenCapture.ImageCroppingBox();
             this.panel1.SuspendLayout();
@@ -50,7 +50,7 @@
             this.panel1.Controls.Add(this.toolButton2);
             this.panel1.Controls.Add(this.toolButton1);
             this.panel1.Controls.Add(this.colorBox1);
-            this.panel1.Location = new System.Drawing.Point(42, 137);
+            this.panel1.Location = new System.Drawing.Point(28, 97);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(341, 39);
             this.panel1.TabIndex = 6;
@@ -65,17 +65,6 @@
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.ForeColor = System.Drawing.Color.Red;
-            this.textBox1.Location = new System.Drawing.Point(28, 26);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 18);
-            this.textBox1.TabIndex = 7;
             // 
             // toolButton5
             // 
@@ -143,10 +132,21 @@
             this.colorBox1.TabIndex = 2;
             this.colorBox1.Text = "colorBox1";
             // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox1.ForeColor = System.Drawing.Color.Red;
+            this.textBox1.Location = new System.Drawing.Point(28, 26);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 18);
+            this.textBox1.TabIndex = 7;
+            // 
             // captureToolbar1
             // 
             this.captureToolbar1.BackColor = System.Drawing.Color.White;
-            this.captureToolbar1.Location = new System.Drawing.Point(42, 90);
+            this.captureToolbar1.Location = new System.Drawing.Point(28, 50);
             this.captureToolbar1.Name = "captureToolbar1";
             this.captureToolbar1.Size = new System.Drawing.Size(594, 41);
             this.captureToolbar1.TabIndex = 1;
@@ -164,7 +164,7 @@
             this.imageCroppingBox1.Name = "imageCroppingBox1";
             this.imageCroppingBox1.PreViewRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.imageCroppingBox1.SelectedRectangle = new System.Drawing.Rectangle(0, 0, 1, 1);
-            this.imageCroppingBox1.Size = new System.Drawing.Size(1055, 449);
+            this.imageCroppingBox1.Size = new System.Drawing.Size(639, 152);
             this.imageCroppingBox1.TabIndex = 0;
             this.imageCroppingBox1.Text = "imageCroppingBox1";
             this.imageCroppingBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.imageCroppingBox1_Paint);
@@ -178,7 +178,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1076, 497);
+            this.ClientSize = new System.Drawing.Size(659, 171);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.captureToolbar1);

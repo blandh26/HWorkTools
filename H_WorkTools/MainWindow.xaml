@@ -61,7 +61,7 @@
                                 <Label Grid.Row="3" Grid.Column="0" Content="对比窗体标题" />
                                 <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="PhoneTextBo1x" materialDesign:HintAssist.Hint="Key" Text="A"/>
                                 <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
-                                <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Value="40" Minimum="0" Maximum="{Binding DiscreteHorizontal.Maximum}" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
+                                <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
                                 <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="ScreenCapture_Click" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Cursor="Hand"/>
                                 <TextBlock  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
                             </Grid>

@@ -98,6 +98,7 @@ namespace H_ScreenCapture
         [Description("获取当前是否已经选择区域"), Category("Customs")]
         public bool IsSelected {
             get { return _IsSelected; }
+            set { _IsSelected = value; }
         }
 
         private Rectangle _PreViewRectangle;
