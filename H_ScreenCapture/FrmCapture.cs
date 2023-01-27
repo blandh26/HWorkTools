@@ -61,7 +61,7 @@ namespace H_ScreenCapture
             m_sbFill = new SolidBrush(Color.Red);
 
             panel1.Parent = imageCroppingBox1;
-            panel1.BackColor = Color.White;
+            panel1.BackColor = Color.Gainsboro;
             panel1.Cursor = Cursors.Default;
             panel1.Visible = false;
             this.captureToolbar1.Parent = imageCroppingBox1;
@@ -69,11 +69,9 @@ namespace H_ScreenCapture
             this.captureToolbar1.Cursor = Cursors.Default;
             colorBox1.ColorChanged += (s, ex) =>
             {
-                sizeTrackBar1.Color = colorBox1.Color;
                 textBox1.ForeColor = colorBox1.Color;
                 m_sbFill.Color = colorBox1.Color;
             };
-
             textBox1.Visible = false;
             textBox1.TextChanged += (s, ex) => this.SetTextBoxSize();
             textBox1.Validating += textBox1_Validating;
@@ -134,6 +132,14 @@ namespace H_ScreenCapture
                 { //如果选择的是文字工具 那么特殊处理
                     textBox1.Location = e.Location;                     //将文本框位置设置为鼠标点下的位子
                     textBox1.Visible = true;                            //显示文本框以便输入文字
+                    if (txtfont==null)
+                    {
+                        textBox1.Font = new Font(textBox1.Font.Name, 14 + getSize());
+                    }
+                    else
+                    {
+                        textBox1.Font = txtfont;
+                    }                   
                     textBox1.Focus();                                   //获得焦点
                     return;                                             //特殊处理的角色 直接返回
                 }
@@ -234,7 +240,7 @@ namespace H_ScreenCapture
             {        //如果鼠标是十字架 说明正在后期绘制或者准备后期绘制
                 using (Pen p = new Pen(colorBox1.Color))
                 {
-                    Rectangle rect = new Rectangle(m_ptCurrent.X - sizeTrackBar1.Value / 2, m_ptCurrent.Y - sizeTrackBar1.Value / 2, sizeTrackBar1.Value, sizeTrackBar1.Value);
+                    Rectangle rect = new Rectangle(m_ptCurrent.X - getSize(), m_ptCurrent.Y - getSize(), getSize(), getSize());
                     using (SolidBrush sb = new SolidBrush(Color.FromArgb(50, 0, 0, 0)))
                     {
                         g.DrawRectangle(p, rect.X, rect.Y, rect.Width - 1, rect.Height - 1);
@@ -320,7 +326,7 @@ namespace H_ScreenCapture
             this.OnToolBarClick((sender as Control).Name);
         }
 
-      
+
 
         private void imageCroppingBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -421,8 +427,22 @@ namespace H_ScreenCapture
                         imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板
                         this.SetToolBarLocation();
                     }
+                    else if (captureToolbar1.GetSelectBtnName() == "btn_text")
+                    {
+                        pictureBox1.Visible = true;
+                        colorBox1.Location = new Point(182, 3);
+                        panel1.Size = new Size(341, 39);
+                        txtfont = null;
+                        textBox1.Font = new Font(textBox1.Font.Name, 14 + getSize());
+                        imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板
+                        panel1.Visible = true;
+                        this.SetToolBarLocation();
+                    }
                     else
                     {
+                        pictureBox1.Visible= false;
+                        colorBox1.Location = new Point(154, 3);
+                        panel1.Size = new Size(314, 39);
                         imageCroppingBox1.IsLockSelected = true;                            //否则锁定选取 并且显示配置面板
                         panel1.Visible = true;
                         this.SetToolBarLocation();
@@ -459,7 +479,7 @@ namespace H_ScreenCapture
             ptStart = (Point)((Size)ptStart - (Size)imageCroppingBox1.SelectedRectangle.Location);
             Size sz = new Size(Math.Abs(m_ptCurrent.X - m_ptLastMouseDown.X), Math.Abs(m_ptCurrent.Y - m_ptLastMouseDown.Y));
             Brush brush = m_sbFill;                                 //默认为填充画笔 否则使用马赛克画刷
-            using (Pen p = new Pen(brush, sizeTrackBar1.Value))     //根据画刷设置画笔
+            using (Pen p = new Pen(brush, getSize()))     //根据画刷设置画笔
             using (Graphics g = Graphics.FromImage(m_imgCurrentLayer))
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
@@ -524,6 +544,37 @@ namespace H_ScreenCapture
         {
             Size se = TextRenderer.MeasureText(textBox1.Text, textBox1.Font);
             textBox1.Size = se.IsEmpty ? new Size(50, textBox1.Font.Height) : se;
+        }
+
+        /// <summary>
+        /// 获取选中大小
+        /// </summary>
+        /// <returns></returns>
+        private int getSize()
+        {
+            if (toolButton1.IsSelected) return 1;
+            else if (toolButton2.IsSelected) return 3;
+            else if (toolButton3.IsSelected) return 5;
+            else if (toolButton4.IsSelected) return 8;
+            else if (toolButton5.IsSelected) return 12;
+            return 1;
+        }
+
+        Font txtfont = null;
+
+        /// <summary>
+        /// 设置字体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            FontDialog fd = new FontDialog();
+            fd.Font = textBox1.Font;
+            if (fd.ShowDialog() != DialogResult.OK) return;
+            textBox1.Font = fd.Font;
+            txtfont = fd.Font;
+            this.SetTextBoxSize();
         }
     }
 }

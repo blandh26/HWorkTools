@@ -148,8 +148,15 @@
     <Content Include="Resources\btn_save.png" />
     <Content Include="Resources\btn_text.png" />
     <Content Include="Resources\cancel.png" />
+    <None Include="Resources\font.png" />
     <Content Include="Resources\frm_out.ico" />
     <Content Include="Resources\QBtn_Glass_Hover.png" />
+    <None Include="Resources\size0.png" />
+    <None Include="Resources\size1.png" />
+    <None Include="Resources\size2.png" />
+    <None Include="Resources\size3.png" />
+    <None Include="Resources\size4.png" />
+    <None Include="Resources\size5.png" />
     <Content Include="Resources\src_image_none.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

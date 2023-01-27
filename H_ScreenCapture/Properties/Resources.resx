@@ -124,8 +124,14 @@
   <data name="btn_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_save.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="size1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\size1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="btn_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_arrow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="size0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\size0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btn_rect" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_rect.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -142,14 +148,23 @@
   <data name="btn_out" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_out.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="size2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\size2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="back_toolbar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\back_toolbar.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="size3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\size3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btn_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btn_brush" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_brush.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="size5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\size5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btn_ellips_fill" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_ellips_fill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,16 +178,22 @@
   <data name="btn_ellips" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_ellips.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="size4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\size4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="QBtn_Glass_Hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\QBtn_Glass_Hover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btn_mosaic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_mosaic.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="btn_line" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btn_line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="btn_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_close.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="btn_line" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btn_line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="font" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\font.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
