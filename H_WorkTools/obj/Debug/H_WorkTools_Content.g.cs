@@ -12,5 +12,8 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("opencv_videoio_ffmpeg460.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("opencvsharpextern.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("opencv_videoio_ffmpeg460_64.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("ffmpeg/ffmpeg.exe")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("ffmpeg/ffplay.exe")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("ffmpeg/ffprobe.exe")]
 
 
