@@ -15,15 +15,14 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using H_Util;
 using Newtonsoft.Json;
-using OpenCvSharp;
 using Clipboard = System.Windows.Forms.Clipboard;
 using System.Threading.Tasks;
-using OpenCvSharp.Extensions;
 using static H_Util.WhoUsePort;
 using RDPCOMAPILib;
 using System.Net;
 using Microsoft.Win32;
 using H_ScreenCapture;
+using System.Security.Principal;
 
 namespace H_WorkTools
 {
@@ -58,15 +57,12 @@ namespace H_WorkTools
         #region 通信
         private TcpP2p p2p = new TcpP2p();
         #endregion
+        bool IsVideo = false;//录屏按钮控制
         PortUserInfo[] portlist;
         private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
         string encrypt_key = "";//加密解密key
         Config cif = new Config();
         Hotkey hotkey = null;
-        Icon MouseLeftImg = null;//左键ico
-        Icon MousePointerImg = null;//正常状态ico
-        Icon MouseRightImg = null;//左键ico
-        Icon MouseWheelImg = null;//滑轮ico
         FrmCapture m_frmCapture;//截图
         SystemInfo sys = new SystemInfo();
 
@@ -150,76 +146,7 @@ namespace H_WorkTools
             #endregion
 
             #region 录屏
-            Stream MouseLeftImgStream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/MouseLeftImg.ico")).Stream;
-            Stream MousePointerImgStream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/MousePointerImg.ico")).Stream;
-            Stream MouseRightImgStream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/MouseRightImg.ico")).Stream;
-            Stream MouseWheelImgStream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/MouseWheelImg.ico")).Stream;
-            MouseLeftImg = new System.Drawing.Icon(MouseLeftImgStream);
-            MousePointerImg = new System.Drawing.Icon(MousePointerImgStream);
-            MouseRightImg = new System.Drawing.Icon(MouseRightImgStream);
-            MouseWheelImg = new System.Drawing.Icon(MouseWheelImgStream);
-            Btn_ScreenRecording_Start.IsEnabled = true;
-            Btn_ScreenRecording_Pause.IsEnabled = false;
-            Btn_ScreenRecording_Stop.IsEnabled = true;
-            if (!string.IsNullOrEmpty(cif.GetValue("ScreenRecordingFps")))
-            {
-                slFps.Value = Convert.ToDouble(cif.GetValue("ScreenRecordingFps"));
-            }
-            _timedIntervalTaskGetScreenImg = new TimedIntervalTask(() =>
-            {
-                if (_timedIntervalTaskGetScreenImg.IsRunning)
-                {
-                    _screenImgByteArray.Enqueue(GetScreenImgByteArray());
-                    _totalFrames++;
-                }
-            }, Convert.ToInt32(slFps.Value));
-
-            _timedIntervalTaskVideoWriter = new TimedIntervalTask(() =>
-            {
-                int count = _screenImgByteArray.Count;
-                if (count > 0)
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        Bitmap img = null;
-                        try
-                        {
-                            if (_screenImgByteArray.TryDequeue(out img))
-                            {
-                                using (Mat mat = BitmapConverter.ToMat(img))
-                                {
-                                    using (InputArray input = InputArray.Create(mat))
-                                    {
-                                        lock (_videoWriteingLock)
-                                        {
-                                            _videoWriter?.Write(input);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-                        finally
-                        {
-                            img?.Dispose();
-                            img = null;
-                        }
-                    }
-                }
-            }, 1000);
-
-            _timedIntervalTaskScreenMins = new TimedIntervalTask(() =>
-            {
-                var ts = TimeSpan.FromSeconds(_totalFrames / Convert.ToDouble(slFps.Value));
-
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    this.LabMins.Content = $"{ts.Hours} : {ts.Minutes} : {ts.Seconds} s";
-                }));
-            }, 200);
+            this.txtPath.Text = cif.GetValue("ScreenRecordingPath");
             #endregion
 
             #region 初始化语言
@@ -262,22 +189,6 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if ((_timedIntervalTaskGetScreenImg?.IsStarted ?? false) || (_timedIntervalTaskVideoWriter?.IsStarted ?? false))
-            {
-                if (!_timedIntervalTaskGetScreenImg.IsStop || !_timedIntervalTaskVideoWriter.IsStop)
-                {
-                    new MessageBoxCustom("退出提示", "录屏任务没有结束 ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
-                    e.Cancel = true;
-                    return;
-                }
-            }
-
-            if (_videoWriter != null)
-            {
-                new MessageBoxCustom("退出提示", "录屏任务没有结束 ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
-                e.Cancel = true;
-                return;
-            }
             Environment.Exit(0); //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。
         }
 
@@ -377,215 +288,165 @@ namespace H_WorkTools
         }
         #endregion
 
-        #region 录屏
-        #region 录屏定义变量
-        /// <summary>
-        /// 用来存放 桌面屏幕图片的线程安全队列
-        /// </summary>
-        private readonly ConcurrentQueue<Bitmap> _screenImgByteArray = new ConcurrentQueue<Bitmap>();
+        #region 录屏   
+        //ffmpeg进程
+        static Process ffmpegProcess = new Process();
+
+        //ffmpeg.exe实体文件路径，建议把ffmpeg.exe及其配套放在自己的Debug目录下
+        static string ffmpegPath = AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\ffmpeg.exe";
 
         /// <summary>
-        /// 声明一个 VideoWriter 对象，用来写入视频文件
+        /// 控制台输出信息
         /// </summary>
-        private VideoWriter _videoWriter = null;
-
-        /// <summary>
-        /// 视频写入中锁对象
-        /// </summary>
-        private readonly object _videoWriteingLock = new object();
-
-        /// <summary>
-        /// 声明一个 Rectangle 对象，用来指定矩形的位置和大小
-        /// </summary>
-        private readonly System.Drawing.Rectangle _bounds = Screen.PrimaryScreen.Bounds;//可以控制多显示录屏测试
-
-        /// <summary>
-        /// 视频的保存目录
-        /// </summary>
-        private string _saveDirectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}{Path.DirectorySeparatorChar}";
-
-        /// <summary>
-        /// 视频写入 任务
-        /// </summary>
-        private TimedIntervalTask _timedIntervalTaskVideoWriter;
-
-        /// <summary>
-        /// 获取屏幕 任务
-        /// </summary>
-        private TimedIntervalTask _timedIntervalTaskGetScreenImg;
-
-        /// <summary>
-        /// 录屏时长 任务
-        /// </summary>
-        private TimedIntervalTask _timedIntervalTaskScreenMins;
-
-        /// <summary>
-        /// 总帧数
-        /// </summary>
-        private int _totalFrames = 0;
-
-        /// <summary>
-        /// 获取鼠标位置的 Rectangle 对象值
-        /// </summary>
-        /// <returns></returns>
-        private static System.Drawing.Rectangle GetMousePositionRectangle()
+        private void Output(object sender, DataReceivedEventArgs e)
         {
-            return new System.Drawing.Rectangle(System.Windows.Forms.Control.MousePosition.X + -5, System.Windows.Forms.Control.MousePosition.Y + -5, 32, 32);
-        }
-
-        /// <summary>
-        /// 获取 桌面屏幕图片
-        /// </summary>
-        /// <returns></returns>
-        private Bitmap GetScreenImgByteArray()
-        {
-            Bitmap bitmap = new Bitmap(_bounds.Width, _bounds.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            using (Graphics graphics = Graphics.FromImage(bitmap))
+            if (!String.IsNullOrEmpty(e.Data))
             {
-                graphics.CopyFromScreen(System.Drawing.Point.Empty, System.Drawing.Point.Empty, _bounds.Size, CopyPixelOperation.SourceCopy);
-                switch (System.Windows.Forms.Control.MouseButtons)
-                {
-                    default:
-                        graphics.DrawIcon(MousePointerImg, GetMousePositionRectangle());
-                        break;
-
-                    case MouseButtons.Left:
-                        graphics.DrawIcon(MouseLeftImg, GetMousePositionRectangle());
-                        break;
-
-                    case MouseButtons.Right:
-                        graphics.DrawIcon(MouseRightImg, GetMousePositionRectangle());
-                        break;
-
-                    case MouseButtons.Middle:
-                        graphics.DrawIcon(MouseWheelImg, GetMousePositionRectangle());
-                        break;
-                }
-
-                return bitmap;
+                this.Dispatcher.Invoke(new Action(delegate { txtVideo.Text += Environment.NewLine + e.Data.ToString(); }));
             }
         }
-        #endregion
         /// <summary>
-        ///  录屏-开始和结束
+        ///  录屏开始和停止按钮
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ScreenRecording_Start_Click(object sender, EventArgs e)
+        private void ScreenRecording_Video_Click(object sender, EventArgs e)
         {
-            string path = "";
-            if (string.IsNullOrEmpty(cif.GetValue("ScreenRecordingPath")))
+            if (cif.GetValue("ScreenRecordingPath") == "")
             {
-                path = $"{_saveDirectory}ScreenVideo-{DateTime.Now:yyyyMMdd_HHmmss}.mp4";
-            }
-            else
-            {
-                path = $"{cif.GetValue("ScreenRecordingPath")}ScreenVideo-{DateTime.Now:yyyyMMdd_HHmmss}.mp4";
-            }
-            if (!Directory.Exists(Path.GetDirectoryName(path)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-            }
-            txtPath.Text = path;
-            cif.SaveValue("ScreenRecordingFps", slFps.Value.ToString());
-            _videoWriter = new VideoWriter(path, new FourCC(FourCC.XVID), Convert.ToDouble(slFps.Value), new OpenCvSharp.Size(_bounds.Width, _bounds.Height));
-
-            slFps.IsEnabled = false;
-            Btn_ScreenRecording_Start.IsEnabled = false;
-            Btn_ScreenRecording_Pause.IsEnabled = true;
-
-            _totalFrames = 0;
-            _timedIntervalTaskScreenMins.Startup();
-            _timedIntervalTaskVideoWriter.Startup();
-
-            _timedIntervalTaskGetScreenImg.IntervalTime = Convert.ToInt32(slFps.Value);
-            _timedIntervalTaskGetScreenImg.Startup();
-        }
-        /// <summary>
-        ///  录屏-暂停和继续
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ScreenRecording_Pause_Click(object sender, EventArgs e)
-        {
-            if (!_timedIntervalTaskGetScreenImg.IsStarted)
-            {
+                //先设置输出路径
                 return;
             }
-
-            if (_timedIntervalTaskGetScreenImg.IsRunning)
+            if (IsVideo)//true 停止
             {
-                _timedIntervalTaskGetScreenImg.Pause();
-                Btn_ScreenRecording_Pause.ToolTip = "继 续";
-                Btn_ScreenRecording_Pause.Foreground = new SolidColorBrush(Colors.Brown);
+                IsVideo = false;
+                ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
+                ffmpegProcess.Close();
+                ffmpegProcess.Dispose();
             }
-            else
+            else//false 录制
             {
-                _timedIntervalTaskGetScreenImg.GoOn();
-                Btn_ScreenRecording_Pause.ToolTip = "暂 停";
-                Btn_ScreenRecording_Pause.Foreground = new SolidColorBrush(Colors.White);
+                bool aa = false;
+                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
+                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
+                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
+                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
+                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
+                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
+                IsVideo = true;
+                string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
+                if (File.Exists(outFilePath))
+                {
+                    File.Delete(outFilePath);
+                }
+                string arguments = "-f dshow -i audio=\"麦克风 (Realtek(R) Audio)\"";
+                arguments += " -f dshow -i audio=\"virtual-audio-capturer\"";
+                arguments += " -filter_complex amix=inputs=2:duration=first:dropout_transition=0";
+                arguments += " -f dshow -i video=\"screen-capture-recorder\" -pix_fmt yuv420p ";
+                arguments += outFilePath;
+                /*转码，
+                 * 视频录制设备：gdigrab；
+                 * 录制对象：整个桌面desktop；
+                 * 音频录制方式：dshow；
+                 * 音频输入：virtual-audio-capturer；
+                 * 视频编码格式：h.264；
+                 * 视频帧率：15；
+                 * 硬件加速：若N卡加速：h264_nvenc；若集显加速：h264_qsv；若软件编码：libx264；
+                */
+                ffmpegProcess = new Process();
+
+                ProcessStartInfo startInfo = new ProcessStartInfo(ffmpegPath);
+                startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                startInfo.Arguments = arguments;
+                startInfo.UseShellExecute = false;//不使用操作系统外壳程序启动
+                startInfo.RedirectStandardError = true;//重定向标准错误流
+                startInfo.CreateNoWindow = true;//默认不显示窗口
+                startInfo.RedirectStandardInput = true;//启用模拟该进程控制台输入的开关
+                startInfo.RedirectStandardOutput = true;
+
+                ffmpegProcess.ErrorDataReceived += new DataReceivedEventHandler(Output);//把FFmpeg的输出写到StandardError流中
+                ffmpegProcess.StartInfo = startInfo;
+
+                ffmpegProcess.Start();//启动
+                ffmpegProcess.BeginErrorReadLine();//开始异步读取输出
             }
         }
+        
         /// <summary>
-        ///  录屏-结束
+        /// 注册dll  需要管理员权限
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ScreenRecording_Stop_Click(object sender, EventArgs e)
+        /// <param name="dllPath"></param>
+        /// <returns></returns>
+        private bool RegisterDll(String dllPath)
+
         {
-            if (!_timedIntervalTaskGetScreenImg.IsStarted)
+
+            bool result = true;
+
+            try
+
             {
-                return;
+
+                if (!File.Exists(dllPath))
+
+                {
+
+                    //Loger.Write(string.Format("“{0}”目录下无“XXX.dll”文件！", AppDomain.CurrentDomain.BaseDirectory));
+
+                    return false;
+
+                }
+
+                //拼接命令参数
+
+                string startArgs = string.Format("/s \"{0}\"", dllPath);
+
+
+
+                Process p = new Process();//创建一个新进程，以执行注册动作
+
+                p.StartInfo.FileName = "regsvr32";
+
+                p.StartInfo.Arguments = startArgs;
+
+
+
+                //以管理员权限注册dll文件
+
+                WindowsIdentity winIdentity = WindowsIdentity.GetCurrent(); //引用命名空间 System.Security.Principal
+
+                WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
+
+                if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
+
+                {
+
+                    p.StartInfo.Verb = "runas";//管理员权限运行
+
+                }
+
+                p.Start();
+
+                p.WaitForExit();
+
+                p.Close();
+
+                p.Dispose();
+
             }
 
-            _timedIntervalTaskGetScreenImg.Stop();
-            _timedIntervalTaskVideoWriter.IntervalTime = 500;
+            catch (Exception ex)
 
-            Btn_ScreenRecording_Stop.IsEnabled = false;
-            Btn_ScreenRecording_Pause.IsEnabled = false;
-
-            Task.Run(async () =>
             {
-                while (true)
-                {
-                    await Task.Delay(250);
-                    if (_screenImgByteArray.Count < 1)
-                    {
-                        _timedIntervalTaskVideoWriter.Stop();
-                        await Task.Delay(250);
-                        break;
-                    }
-                }
-                _timedIntervalTaskScreenMins.Stop();
-            }).ContinueWith(t =>
-            {
-                Task.Run(() =>
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        new MessageBoxCustom("录屏提示", "录屏视频已结束并保存完成 ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
-                    }));
-                });
 
-                lock (_videoWriteingLock)
-                {
-                    _videoWriter?.Dispose();
-                    _videoWriter = null;
-                }
+                result = false;         //记录日志，抛出异常
 
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    Btn_ScreenRecording_Pause.ToolTip = "暂 停";
-                    Btn_ScreenRecording_Pause.Foreground = new SolidColorBrush(Colors.White);
-                    Btn_ScreenRecording_Pause.IsEnabled = false;
+            }
 
-                    Btn_ScreenRecording_Start.IsEnabled = true;
-                    Btn_ScreenRecording_Stop.IsEnabled = true;
-                    slFps.IsEnabled = true;
-                }));
-            });
+            return result;
+
         }
+
         /// <summary>
         ///  录屏-打开目录
         /// </summary>
