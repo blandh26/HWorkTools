@@ -189,6 +189,13 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (IsVideo)
+            {
+                IsVideo = false;
+                ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
+                ffmpegProcess.Close();
+                ffmpegProcess.Dispose();
+            }
             Environment.Exit(0); //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。
         }
 
