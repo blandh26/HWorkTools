@@ -326,13 +326,13 @@ namespace H_WorkTools
             }
             else//false 录制
             {
-                bool aa = false;
-                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
-                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
-                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
-                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
-                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
-                aa = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
+                bool isRegiste = false;
+                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
+                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
+                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
+                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
+                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
+                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
                 IsVideo = true;
                 string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
                 if (File.Exists(outFilePath))
@@ -344,17 +344,7 @@ namespace H_WorkTools
                 arguments += " -filter_complex amix=inputs=2:duration=first:dropout_transition=0";
                 arguments += " -f dshow -i video=\"screen-capture-recorder\" -pix_fmt yuv420p ";
                 arguments += outFilePath;
-                /*转码，
-                 * 视频录制设备：gdigrab；
-                 * 录制对象：整个桌面desktop；
-                 * 音频录制方式：dshow；
-                 * 音频输入：virtual-audio-capturer；
-                 * 视频编码格式：h.264；
-                 * 视频帧率：15；
-                 * 硬件加速：若N卡加速：h264_nvenc；若集显加速：h264_qsv；若软件编码：libx264；
-                */
                 ffmpegProcess = new Process();
-
                 ProcessStartInfo startInfo = new ProcessStartInfo(ffmpegPath);
                 startInfo.WindowStyle = ProcessWindowStyle.Normal;
                 startInfo.Arguments = arguments;
@@ -371,80 +361,44 @@ namespace H_WorkTools
                 ffmpegProcess.BeginErrorReadLine();//开始异步读取输出
             }
         }
-        
+
         /// <summary>
         /// 注册dll  需要管理员权限
         /// </summary>
         /// <param name="dllPath"></param>
         /// <returns></returns>
         private bool RegisterDll(String dllPath)
-
         {
-
             bool result = true;
-
             try
-
             {
-
                 if (!File.Exists(dllPath))
-
                 {
-
                     //Loger.Write(string.Format("“{0}”目录下无“XXX.dll”文件！", AppDomain.CurrentDomain.BaseDirectory));
-
                     return false;
-
                 }
-
                 //拼接命令参数
-
                 string startArgs = string.Format("/s \"{0}\"", dllPath);
-
-
-
                 Process p = new Process();//创建一个新进程，以执行注册动作
-
                 p.StartInfo.FileName = "regsvr32";
-
                 p.StartInfo.Arguments = startArgs;
-
-
-
                 //以管理员权限注册dll文件
-
                 WindowsIdentity winIdentity = WindowsIdentity.GetCurrent(); //引用命名空间 System.Security.Principal
-
                 WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
-
                 if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
-
                 {
-
                     p.StartInfo.Verb = "runas";//管理员权限运行
-
                 }
-
                 p.Start();
-
                 p.WaitForExit();
-
                 p.Close();
-
                 p.Dispose();
-
             }
-
             catch (Exception ex)
-
             {
-
                 result = false;         //记录日志，抛出异常
-
             }
-
             return result;
-
         }
 
         /// <summary>
