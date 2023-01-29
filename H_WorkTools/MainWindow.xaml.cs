@@ -23,6 +23,8 @@ using System.Net;
 using Microsoft.Win32;
 using H_ScreenCapture;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
+using NAudio.Wave;
 
 namespace H_WorkTools
 {
@@ -146,6 +148,22 @@ namespace H_WorkTools
             #endregion
 
             #region 录屏
+            if (cif.GetValue("ScreenRecordingPath") == "")
+            {
+                cif.SaveValue("ScreenRecordingPath", path + "HScreenVideo");
+                if (!Directory.Exists(path + "HScreenVideo"))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(path + "HScreenVideo");//创建文件夹
+                    }
+                    catch (Exception e1)
+                    {
+                    }
+                }
+            }
+            cbAudio.ItemsSource = GetDevices();
+            cbAudio.SelectedIndex = 0;
             this.txtPath.Text = cif.GetValue("ScreenRecordingPath");
             #endregion
 
@@ -192,10 +210,9 @@ namespace H_WorkTools
             if (IsVideo)
             {
                 IsVideo = false;
-                ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
-                ffmpegProcess.Close();
-                ffmpegProcess.Dispose();
+                ScreenRecordHelper.Stop();
             }
+            ProcessHelper.ProcessKill("FFmpeg");//杀掉ffmpeg进程
             Environment.Exit(0); //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。
         }
 
@@ -309,9 +326,41 @@ namespace H_WorkTools
         {
             if (!String.IsNullOrEmpty(e.Data))
             {
-                this.Dispatcher.Invoke(new Action(delegate { txtVideo.Text += Environment.NewLine + e.Data.ToString(); }));
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    txtVideo.Text += Environment.NewLine + e.Data.ToString();
+                    VideoScrollViewer.ScrollToEnd();
+                }));
             }
         }
+
+        /// <summary>
+        /// 获取音频设备
+        /// </summary>
+        /// <returns></returns>
+        private List<WaveInCapabilities> GetDevices()
+        {
+            List<WaveInCapabilities> devices = new List<WaveInCapabilities>();
+            // 返回系统中可用的Wave-In设备数
+            int waveInDevices = WaveIn.DeviceCount;
+            for (int i = 0; i < waveInDevices; i++)
+            {
+                devices.Add(WaveIn.GetCapabilities(i));
+            }
+            return devices;
+        }
+
+        /// <summary>
+        ///  刷新设备
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ScreenRecording_Refresh_Click(object sender, EventArgs e)
+        {
+            cbAudio.ItemsSource = GetDevices();
+            cbAudio.SelectedIndex = 0;
+        }
+
         /// <summary>
         ///  录屏开始和停止按钮
         /// </summary>
@@ -319,14 +368,11 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void ScreenRecording_Video_Click(object sender, EventArgs e)
         {
-            if (cif.GetValue("ScreenRecordingPath") == "")
-            {
-                //先设置输出路径
-                return;
-            }
             if (IsVideo)//true 停止
             {
                 IsVideo = false;
+                this.BtnScreenRecordingVideo.ToolTip = "Start";
+                BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
                 ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
                 ffmpegProcess.Close();
                 ffmpegProcess.Dispose();
@@ -334,19 +380,22 @@ namespace H_WorkTools
             else//false 录制
             {
                 bool isRegiste = false;
-                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
-                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
-                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
-                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
-                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
-                isRegiste = RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
+                this.BtnScreenRecordingVideo.ToolTip = "Stop";
+                BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.Red);
+                txtVideo.Text = "";
+                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
+                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
+                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
+                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
+                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
+                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
                 IsVideo = true;
                 string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
                 if (File.Exists(outFilePath))
                 {
                     File.Delete(outFilePath);
                 }
-                string arguments = "-f dshow -i audio=\"麦克风 (Realtek(R) Audio)\"";
+                string arguments = "-f dshow -i audio=\""+ cbAudio.Text + "\"";
                 arguments += " -f dshow -i audio=\"virtual-audio-capturer\"";
                 arguments += " -filter_complex amix=inputs=2:duration=first:dropout_transition=0";
                 arguments += " -f dshow -i video=\"screen-capture-recorder\" -pix_fmt yuv420p ";
@@ -367,45 +416,6 @@ namespace H_WorkTools
                 ffmpegProcess.Start();//启动
                 ffmpegProcess.BeginErrorReadLine();//开始异步读取输出
             }
-        }
-
-        /// <summary>
-        /// 注册dll  需要管理员权限
-        /// </summary>
-        /// <param name="dllPath"></param>
-        /// <returns></returns>
-        private bool RegisterDll(String dllPath)
-        {
-            bool result = true;
-            try
-            {
-                if (!File.Exists(dllPath))
-                {
-                    //Loger.Write(string.Format("“{0}”目录下无“XXX.dll”文件！", AppDomain.CurrentDomain.BaseDirectory));
-                    return false;
-                }
-                //拼接命令参数
-                string startArgs = string.Format("/s \"{0}\"", dllPath);
-                Process p = new Process();//创建一个新进程，以执行注册动作
-                p.StartInfo.FileName = "regsvr32";
-                p.StartInfo.Arguments = startArgs;
-                //以管理员权限注册dll文件
-                WindowsIdentity winIdentity = WindowsIdentity.GetCurrent(); //引用命名空间 System.Security.Principal
-                WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
-                if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
-                {
-                    p.StartInfo.Verb = "runas";//管理员权限运行
-                }
-                p.Start();
-                p.WaitForExit();
-                p.Close();
-                p.Dispose();
-            }
-            catch (Exception ex)
-            {
-                result = false;         //记录日志，抛出异常
-            }
-            return result;
         }
 
         /// <summary>

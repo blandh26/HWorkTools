@@ -61,6 +61,7 @@
     <Compile Include="HttpListenerPost.cs" />
     <Compile Include="JpToEn.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="ScreenRecordHelper.cs" />
     <Compile Include="SocketLib.cs" />
     <Compile Include="SqlString.cs" />

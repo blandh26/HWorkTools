@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace H_Util
@@ -37,25 +38,10 @@ namespace H_Util
         /// <summary>
         /// 开始录制
         /// </summary>
-        /// <param name="outFilePath">录屏文件保存路径</param>
-        public static void Start(string outFilePath)
+        /// <param name="arguments">命令</param>
+        public static void Start(string arguments)
         {
-            if (File.Exists(outFilePath))
-            {
-                File.Delete(outFilePath);
-            }
-
-            string arguments = "-f gdigrab -framerate 15 -r 15 -i desktop -pix_fmt yuv420p -f dshow -i audio=" + "\"virtual-audio-capturer\"" + " -vcodec" + " h264_qsv" + " \"" + outFilePath + "\"";
-            /*转码，
-             * 视频录制设备：gdigrab；
-             * 录制对象：整个桌面desktop；
-             * 音频录制方式：dshow；
-             * 音频输入：virtual-audio-capturer；
-             * 视频编码格式：h.264；
-             * 视频帧率：15；
-             * 硬件加速：若N卡加速：h264_nvenc；若集显加速：h264_qsv；若软件编码：libx264；
-            */
-
+            ffmpegProcess = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo(ffmpegPath);
             startInfo.WindowStyle = ProcessWindowStyle.Normal;
             startInfo.Arguments = arguments;
@@ -63,7 +49,7 @@ namespace H_Util
             startInfo.RedirectStandardError = true;//重定向标准错误流
             startInfo.CreateNoWindow = true;//默认不显示窗口
             startInfo.RedirectStandardInput = true;//启用模拟该进程控制台输入的开关
-                                                   //startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardOutput = true;
 
             ffmpegProcess.ErrorDataReceived += new DataReceivedEventHandler(Output);//把FFmpeg的输出写到StandardError流中
             ffmpegProcess.StartInfo = startInfo;

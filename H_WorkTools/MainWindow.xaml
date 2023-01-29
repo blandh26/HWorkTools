@@ -135,6 +135,7 @@
                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="40"></RowDefinition>
                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                             </Grid.RowDefinitions>
                             <!--录屏设置-->
                             <Label Grid.Row="0" Grid.Column="0" Content="生产路径:" Margin="0,10,0,0"/>
@@ -143,15 +144,18 @@
                             <Button Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Click="ScreenRecording_Open_Click" Content="{materialDesign:PackIcon FolderOpenOutline,Size=20}" ToolTip="打开目录" Margin="10,0,0,0" Cursor="Hand"/>
 
                             <!--开始停止录屏-->
-                            <Label Grid.Row="1" Grid.Column="0" Content="录制时间:" Margin="0,20,0,0"/>
-                            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00 : 00 : 00 s" Margin="0,15,0,10" FontSize="18"/>
-                            <ToggleButton Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1" Click="ScreenRecording_Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{materialDesign:PackIcon Kind=Video}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
+                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="cbAudio" DisplayMemberPath="ProductName" SelectedValuePath="ManufacturerGuid" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
+                            <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" Click="ScreenRecording_Refresh_Click" Content="{materialDesign:PackIcon Refresh,Size=20}" ToolTip="刷新" Margin="10,0,0,0"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Content="录制时间:" Margin="0,20,0,0"/>
+                            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00 : 00 : 00 s" Margin="0,15,0,10" FontSize="18"/>
+                            <ToggleButton Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnScreenRecordingVideo" Click="ScreenRecording_Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="录屏" Content="{materialDesign:PackIcon Kind=Video}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
 
                             <!--输出内容-->
-                            <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Height="510" Width="410">
-                                <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Width="410" x:Name="txtVideo" ></TextBlock>
+                            <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Height="470" x:Name="VideoScrollViewer">
+                                <TextBlock  TextWrapping="Wrap" x:Name="txtVideo" ></TextBlock>
                             </ScrollViewer>
-                            
                         </Grid>
                         <!--截图录屏废弃-结束-->
                     </StackPanel>

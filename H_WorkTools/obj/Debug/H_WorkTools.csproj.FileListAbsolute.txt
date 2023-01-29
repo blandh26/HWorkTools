@@ -215,3 +215,5 @@ D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.csproj.CoreCompileInputs.ca
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.csproj.CopyComplete
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.exe
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.pdb
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.dll
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.xml
