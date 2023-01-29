@@ -216,7 +216,7 @@
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="50"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
                                 <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbLanguage" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" materialDesign:HintAssist.Hint="Language"/>
@@ -225,7 +225,7 @@
                                 <Label Grid.Row="2" Grid.Column="0" Content="开机启动" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
                                 <RadioButton Grid.Row="2" Grid.Column="1" x:Name="rbStart1" Content="是" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
                                 <RadioButton Grid.Row="2" Grid.Column="3" x:Name="rbStart2" Content="否" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
-                                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,-10"/>
+                                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,0"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="截图快捷键" >
