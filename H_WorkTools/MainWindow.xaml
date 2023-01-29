@@ -113,6 +113,31 @@
                     </StackPanel>
                 </TabItem>
                 <!--端口-结束-->
+                <!--闹钟-开始-->
+                <TabItem Width="48" Height="48">
+                    <TabItem.Header>
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Alarm" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel Margin="12">
+                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="提醒工具" />
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            </Grid>
+                    </StackPanel>
+                </TabItem>
+                <!--闹钟-结束-->
                 <!--录屏-开始-->
                 <TabItem Width="48" Height="48">
                     <TabItem.Header>
