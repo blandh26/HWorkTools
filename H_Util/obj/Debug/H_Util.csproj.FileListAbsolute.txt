@@ -10,3 +10,5 @@ D:\Code\HWorkTools\H_Util\obj\Debug\H_Util.csproj.AssemblyReference.cache
 D:\Code\HWorkTools\H_Util\obj\Debug\H_Util.csproj.CoreCompileInputs.cache
 D:\Code\HWorkTools\H_Util\obj\Debug\H_Util.dll
 D:\Code\HWorkTools\H_Util\obj\Debug\H_Util.pdb
+D:\Code\HWorkTools\H_Util\bin\Debug\x86\sqlite3.dll
+D:\Code\HWorkTools\H_Util\bin\Debug\x64\sqlite3.dll

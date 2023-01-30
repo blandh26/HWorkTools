@@ -58,6 +58,10 @@ namespace H_Util
             /// </summary>
             JoinApply,
             /// <summary>
+            /// 邀请申请
+            /// </summary>
+            InviteApply,
+            /// <summary>
             /// 加入失败共享结束或未共享
             /// </summary>
             JoinFail,
@@ -77,6 +81,10 @@ namespace H_Util
             /// 加入成功更新
             /// </summary>
             JoinUpdate,
+            /// <summary>
+            /// 加入拒绝
+            /// </summary>
+            InviteRefuse,
             /// <summary>
             /// 退出更新
             /// </summary>
@@ -129,7 +137,7 @@ namespace H_Util
 
             public int command = 0;       //命令枚举
             public int type = 0;                //消息类型枚举
-            public int msgState =0;  //消息状态枚举
+            public int msgState = 0;  //消息状态枚举
             public byte[] Data;                                //消息内容
             public string Filename = string.Empty;             //文件名称
         }

@@ -37,10 +37,6 @@ https://blog.csdn.net/MsTiang/article/details/123425123 Windows RDP设置多用�
 
 
 
-录屏没有 外设也可以录屏
-录屏按钮失败 不变化
-ICO设计
-托盘  退出  双击打开   
 待办
 1.远程协助 求助 
   直接调用共享按钮+推送秘钥给对方

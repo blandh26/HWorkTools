@@ -30,3 +30,5 @@ D:\Code\HWorkTools\H_ScreenCapture\obj\Debug\H_ScreenCapture.csproj.CoreCompileI
 D:\Code\HWorkTools\H_ScreenCapture\obj\Debug\H_ScreenCapture.csproj.CopyComplete
 D:\Code\HWorkTools\H_ScreenCapture\obj\Debug\H_ScreenCapture.dll
 D:\Code\HWorkTools\H_ScreenCapture\obj\Debug\H_ScreenCapture.pdb
+D:\Code\HWorkTools\H_ScreenCapture\bin\Debug\x86\sqlite3.dll
+D:\Code\HWorkTools\H_ScreenCapture\bin\Debug\x64\sqlite3.dll

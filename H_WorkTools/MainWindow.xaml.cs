@@ -603,6 +603,7 @@ namespace H_WorkTools
                 BtnDeskShare.Content = "停止共享";
                 BtnDeskShare.Foreground = new SolidColorBrush(Colors.Brown);
                 BtnDeskShareJoin.IsEnabled = false;
+                BtnDeskShareInvite.IsEnabled = false;
                 IsDeskShare = false;
                 cif.SaveValue("Ip", cbIp.SelectedValue.ToString());
                 cif.SaveValue("NickName", txtNiceName.Text);
@@ -633,6 +634,7 @@ namespace H_WorkTools
             BtnDeskShare.Content = "开始共享";
             BtnDeskShare.Foreground = new SolidColorBrush(Colors.White);
             BtnDeskShareJoin.IsEnabled = true;
+            BtnDeskShareInvite.IsEnabled = true;
             LvAudience.Items.Clear();
         }
 
@@ -645,6 +647,7 @@ namespace H_WorkTools
             {
                 BtnDeskShare.IsEnabled = true;
                 BtnDeskShareJoin.IsEnabled = true;
+                BtnDeskShareInvite.IsEnabled = true;
                 txtIp.IsEnabled = true;
                 TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
                 Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
@@ -677,7 +680,7 @@ namespace H_WorkTools
             }
             if (txtIp.Text != "")
             {
-                if (txtRdpKey.Text == "" || txtRdpKey.Text.Length != 4)
+                if (txtRdpPswKey.Text == "" || txtRdpPswKey.Text.Length != 4)
                 {
                     new MessageBoxCustom("系统提示", "输入密码", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
@@ -690,7 +693,7 @@ namespace H_WorkTools
                     Sendmsg.sendIP = cbIp.SelectedValue.ToString();
                     Sendmsg.sendName = txtNiceName.Text;
                     Sendmsg.sendProt = cif.GetValue("Tcp");
-                    Sendmsg.Data = Encoding.UTF8.GetBytes(txtRdpKey.Text);
+                    Sendmsg.Data = Encoding.UTF8.GetBytes(txtRdpPswKey.Text);
                     Sendmsg.recIP = ip.ToString();
                     Sendmsg.recProt = cif.GetValue("Tcp");
                     Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.JoinApply);
@@ -699,6 +702,7 @@ namespace H_WorkTools
                     {
                         BtnDeskShare.IsEnabled = false;
                         BtnDeskShareJoin.IsEnabled = false;
+                        BtnDeskShareInvite.IsEnabled = false;
                         txtIp.IsEnabled = false;
                         new MessageBoxCustom("系统提示", "加入请求失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         return;
@@ -708,7 +712,59 @@ namespace H_WorkTools
                 }
                 else
                 {
+                    BtnDeskShare.IsEnabled = true;
+                    BtnDeskShareJoin.IsEnabled = true;
+                    BtnDeskShareInvite.IsEnabled = true;
                     new MessageBoxCustom("系统提示", "输入正确IP后加入", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        ///  远程-邀请
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDeskShareInvite_Click(object sender, EventArgs e)
+        {
+            if (txtNiceName.Text == "")
+            {
+                new MessageBoxCustom("系统提示", "必须输入昵称", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                return;
+            }
+            rbMode2.IsChecked = true;//邀请默认控制模式
+            BtnDeskShare_Click(sender,  e);
+            if (txtIp.Text != "")
+            {
+                IPAddress ip;
+                if (IPAddress.TryParse(txtIp.Text, out ip))
+                {
+                    TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                    Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                    Sendmsg.sendIP = cbIp.SelectedValue.ToString();
+                    Sendmsg.sendName = txtNiceName.Text;
+                    Sendmsg.sendProt = cif.GetValue("Tcp");
+                    Sendmsg.Data = Encoding.UTF8.GetBytes(invitationString);
+                    Sendmsg.recIP = ip.ToString();
+                    Sendmsg.recProt = cif.GetValue("Tcp");
+                    Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.InviteApply);
+                    bool issend = p2p.Send(Sendmsg);
+                    if (!issend)
+                    {
+                        Stop();
+                        new MessageBoxCustom("系统提示", "邀请失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        return;
+                    }
+                    cif.SaveValue("Ip", cbIp.SelectedValue.ToString());
+                    cif.SaveValue("NickName", txtNiceName.Text);
+                }
+                else
+                {
+                    BtnDeskShare.IsEnabled = true;
+                    BtnDeskShareJoin.IsEnabled = true;
+                    BtnDeskShareInvite.IsEnabled = true;
+                    new MessageBoxCustom("系统提示", "输入正确IP后邀请", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
             }
@@ -824,7 +880,6 @@ namespace H_WorkTools
                                             Sendmsg.sendIP = cbIp.SelectedValue.ToString();
                                             Sendmsg.sendName = txtNiceName.Text;
                                             Sendmsg.sendProt = cif.GetValue("Tcp");
-                                            Sendmsg.Data = Encoding.UTF8.GetBytes(invitationString);
                                             Sendmsg.recIP = msgstr.sendIP;
                                             Sendmsg.recProt = cif.GetValue("Tcp");
                                             Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.JoinRefuse);
@@ -927,6 +982,7 @@ namespace H_WorkTools
                             LvAudience.Items.Remove(LvAudience.Items[index]);
                             #endregion                            
                             BtnDeskShareJoin.IsEnabled = true;
+                            BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
                             txtIp.IsEnabled = true;
                             return;
@@ -935,6 +991,7 @@ namespace H_WorkTools
                         {//加入失败密码错误
                             new MessageBoxCustom("系统提示", "加入失败，密码错误", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                             BtnDeskShareJoin.IsEnabled = true;
+                            BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
                             txtIp.IsEnabled = true;
                             return;
@@ -943,8 +1000,54 @@ namespace H_WorkTools
                         {//加入失败会议没有
                             new MessageBoxCustom("系统提示", "加入失败，未开启共享或已经结束", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                             BtnDeskShareJoin.IsEnabled = true;
+                            BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
                             txtIp.IsEnabled = true;
+                            return;
+                        }
+                        else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteApply))
+                        {//邀请请求
+                            bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                            if (Convert.ToBoolean(Result))
+                            {//同意邀请
+                                DeskShareView win = new DeskShareView(Encoding.UTF8.GetString(msgstr.Data), txtNiceName.Text, _LvAudienceUpdate);
+                                win.Show();
+                                //推送加入成功
+                                try
+                                {
+                                    TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                                    Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                                    Sendmsg.sendIP = cbIp.SelectedValue.ToString();
+                                    Sendmsg.sendName = txtNiceName.Text;
+                                    Sendmsg.sendProt = cif.GetValue("Tcp");
+                                    Sendmsg.recIP = msgstr.sendIP;
+                                    Sendmsg.recProt = cif.GetValue("Tcp");
+                                    Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.JoinUpdate);
+                                    p2p.Send(Sendmsg);
+                                }
+                                catch (Exception ex)
+                                {
+
+                                }
+                                return;
+                            }
+                            else
+                            {//邀请被拒
+                                TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                                Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                                Sendmsg.sendIP = cbIp.SelectedValue.ToString();
+                                Sendmsg.sendName = txtNiceName.Text;
+                                Sendmsg.sendProt = cif.GetValue("Tcp");
+                                Sendmsg.recIP = msgstr.sendIP;
+                                Sendmsg.recProt = cif.GetValue("Tcp");
+                                Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.InviteRefuse);
+                                p2p.Send(Sendmsg);
+                            }
+                            
+                        }
+                        else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteRefuse))
+                        {//邀请拒绝
+                            new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                     }

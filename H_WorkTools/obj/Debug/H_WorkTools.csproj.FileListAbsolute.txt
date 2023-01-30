@@ -217,3 +217,7 @@ D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.exe
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.pdb
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.xml
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\x86\sqlite3.dll
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\x64\sqlite3.dll
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\LiteDB.dll
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\LiteDB.xml
