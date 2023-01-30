@@ -48,10 +48,10 @@
                                         <Label Grid.Row="1" Grid.Column="0" Content="本地IP" Margin="0,10,0,0"/>
                                         <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
                                         <Label Grid.Row="2" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text="1111"/>
+                                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text=""/>
                                         <Label Grid.Row="3" Grid.Column="0" Content="模式" Margin="0,10,0,0"/>
-                                        <RadioButton Grid.Row="4" Grid.Column="1" x:Name="rbMode1" Content="共享" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
-                                        <RadioButton Grid.Row="4" Grid.Column="3" x:Name="rbMode2" Content="控制" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                        <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbMode1" Content="共享" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
+                                        <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbMode2" Content="控制" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
                                         <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="共享" x:Name="BtnDeskShare" Click="BtnDeskShare_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
                                         <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
                                     </Grid>
@@ -74,7 +74,7 @@
                                         <Label Grid.Row="0" Grid.Column="0" Content="加入IP"  Margin="0,10,0,0"/>
                                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" materialDesign:HintAssist.Hint="Key" Text="192.168.3.132" Margin="0,10,0,0"/>
                                         <Label Grid.Row="1" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text="1111"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text=""/>
                                         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="加入" x:Name="BtnDeskShareJoin" Click="BtnDeskShareJoin_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
                                         <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="求助" x:Name="BtnDeskShareInvite" Click="BtnDeskShareInvite_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
                                         <TextBlock  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>

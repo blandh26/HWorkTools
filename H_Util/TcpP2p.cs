@@ -82,9 +82,13 @@ namespace H_Util
             /// </summary>
             JoinUpdate,
             /// <summary>
-            /// 加入拒绝
+            /// 邀请拒绝
             /// </summary>
             InviteRefuse,
+            /// <summary>
+            /// 邀请退出
+            /// </summary>
+            InviteExit,
             /// <summary>
             /// 退出更新
             /// </summary>
