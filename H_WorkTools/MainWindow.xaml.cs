@@ -74,29 +74,6 @@ namespace H_WorkTools
         #region 窗体事件
         public MainWindow()
         {
-            #region 托盘设置
-            this.notifyIcon = new NotifyIcon();
-            this.notifyIcon.Text = "HWorkTools";//鼠标移入图标后显示的名称
-            this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
-            this.notifyIcon.Visible = true;
-            //打开菜单项
-            MenuItem show = new MenuItem("显示主窗体");
-            show.Click += new EventHandler(Show);
-            //退出菜单项
-            MenuItem exit = new MenuItem("退出");
-            exit.Click += new EventHandler(Close);
-            //关联托盘控件
-            MenuItem[] mis = new MenuItem[] { show, exit };
-            notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(mis);
-
-            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler((o, e) =>
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    this.Show(o, e);
-                }
-            });
-            #endregion
             //bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
             //Result = new MessageBoxCustom("adssad", "Are you sure, You want close         applicationapplicationapplicationapplicationapplication ? ", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
             //Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
@@ -159,6 +136,30 @@ namespace H_WorkTools
             _hwndSource.AddHook(WndProc);
 
             encrypt_key = cif.GetValue("Encrypt");
+
+            #region 托盘设置
+            this.notifyIcon = new NotifyIcon();
+            this.notifyIcon.Text = "HWorkTools";//鼠标移入图标后显示的名称
+            this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            this.notifyIcon.Visible = true;
+            //打开菜单项
+            MenuItem show = new MenuItem("显示主窗体");
+            show.Click += new EventHandler(Show);
+            //退出菜单项
+            MenuItem exit = new MenuItem("退出");
+            exit.Click += new EventHandler(Close);
+            //关联托盘控件
+            MenuItem[] mis = new MenuItem[] { show, exit };
+            notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(mis);
+
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler((o, ee) =>
+            {
+                if (ee.Button == MouseButtons.Left)
+                {
+                    this.Show(o, ee);
+                }
+            });
+            #endregion
             #region 窗体位置
             System.Drawing.Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             this.Top = 60;
