@@ -25,6 +25,7 @@ using H_ScreenCapture;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using NAudio.Wave;
+using MenuItem = System.Windows.Forms.MenuItem;
 
 namespace H_WorkTools
 {
@@ -67,10 +68,34 @@ namespace H_WorkTools
         Hotkey hotkey = null;
         FrmCapture m_frmCapture;//截图
         SystemInfo sys = new SystemInfo();
+        NotifyIcon notifyIcon;
 
         #region 窗体事件
         public MainWindow()
         {
+            #region 托盘设置
+            this.notifyIcon = new NotifyIcon();
+            this.notifyIcon.Text = "HWorkTools";//鼠标移入图标后显示的名称
+            this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            this.notifyIcon.Visible = true;
+            //打开菜单项
+            MenuItem show = new MenuItem("显示主窗体");
+            show.Click += new EventHandler(Show);
+            //退出菜单项
+            MenuItem exit = new MenuItem("退出");
+            exit.Click += new EventHandler(Close);
+            //关联托盘控件
+            MenuItem[] mis = new MenuItem[] { show, exit };
+            notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(mis);
+
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler((o, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    this.Show(o, e);
+                }
+            });
+            #endregion
             //bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
             //Result = new MessageBoxCustom("adssad", "Are you sure, You want close         applicationapplicationapplicationapplicationapplication ? ", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
             //Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
@@ -79,6 +104,45 @@ namespace H_WorkTools
             //    {
             //        Application.Current.Shutdown();
             //    }
+        }
+
+        /// <summary>
+        /// 显示窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Show(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = true;
+            this.WindowState = WindowState.Normal;
+            this.Activate();
+        }
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// 窗体状态改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            //判断是否选择的是最小化按钮 
+            if (this.WindowState == WindowState.Minimized)
+            {
+                //隐藏任务栏区图标 
+                this.ShowInTaskbar = false;
+                //图标显示在托盘区 
+                this.notifyIcon.Visible = true;
+            }
         }
 
         /// <summary>
@@ -370,51 +434,70 @@ namespace H_WorkTools
         {
             if (IsVideo)//true 停止
             {
-                IsVideo = false;
-                this.BtnScreenRecordingVideo.ToolTip = "Start";
-                BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
-                ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
-                ffmpegProcess.Close();
-                ffmpegProcess.Dispose();
+                try
+                {
+                    IsVideo = false;
+                    this.BtnScreenRecordingVideo.ToolTip = "Start";
+                    BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
+                    ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
+                    ffmpegProcess.Close();
+                    ffmpegProcess.Dispose();
+                }
+                catch (Exception)
+                {
+                }
             }
             else//false 录制
             {
-                bool isRegiste = false;
-                this.BtnScreenRecordingVideo.ToolTip = "Stop";
-                BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.Red);
-                txtVideo.Text = "";
-                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
-                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
-                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
-                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
-                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
-                isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
-                IsVideo = true;
-                string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
-                if (File.Exists(outFilePath))
+                try
                 {
-                    File.Delete(outFilePath);
+                    bool isRegiste = false;
+                    this.BtnScreenRecordingVideo.ToolTip = "Stop";
+                    BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.Red);
+                    txtVideo.Text = "";
+                    isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer.dll");
+                    isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\audio_sniffer-x64.dll");
+                    isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x64.dll");
+                    isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\racob-x86.dll");
+                    isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
+                    isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
+                    IsVideo = true;
+                    string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
+                    if (File.Exists(outFilePath))
+                    {
+                        File.Delete(outFilePath);
+                    }
+                    string arguments = " -f dshow -i audio=\"virtual-audio-capturer\"";
+                    if (cbAudio.Text != "")
+                    {
+                        arguments += "-f dshow -i audio=\"" + cbAudio.Text + "\"";
+                    }
+                    arguments += " -filter_complex amix=inputs=1:duration=first:dropout_transition=0";
+                    arguments += " -f dshow -i video=\"screen-capture-recorder\" -pix_fmt yuv420p ";
+                    arguments += outFilePath;
+                    ffmpegProcess = new Process();
+                    ProcessStartInfo startInfo = new ProcessStartInfo(ffmpegPath);
+                    startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    startInfo.Arguments = arguments;
+                    startInfo.UseShellExecute = false;//不使用操作系统外壳程序启动
+                    startInfo.RedirectStandardError = true;//重定向标准错误流
+                    startInfo.CreateNoWindow = true;//默认不显示窗口
+                    startInfo.RedirectStandardInput = true;//启用模拟该进程控制台输入的开关
+                    startInfo.RedirectStandardOutput = true;
+
+                    ffmpegProcess.ErrorDataReceived += new DataReceivedEventHandler(Output);//把FFmpeg的输出写到StandardError流中
+                    ffmpegProcess.StartInfo = startInfo;
+
+                    ffmpegProcess.Start();//启动
+                    ffmpegProcess.BeginErrorReadLine();//开始异步读取输出
                 }
-                string arguments = "-f dshow -i audio=\""+ cbAudio.Text + "\"";
-                arguments += " -f dshow -i audio=\"virtual-audio-capturer\"";
-                arguments += " -filter_complex amix=inputs=2:duration=first:dropout_transition=0";
-                arguments += " -f dshow -i video=\"screen-capture-recorder\" -pix_fmt yuv420p ";
-                arguments += outFilePath;
-                ffmpegProcess = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo(ffmpegPath);
-                startInfo.WindowStyle = ProcessWindowStyle.Normal;
-                startInfo.Arguments = arguments;
-                startInfo.UseShellExecute = false;//不使用操作系统外壳程序启动
-                startInfo.RedirectStandardError = true;//重定向标准错误流
-                startInfo.CreateNoWindow = true;//默认不显示窗口
-                startInfo.RedirectStandardInput = true;//启用模拟该进程控制台输入的开关
-                startInfo.RedirectStandardOutput = true;
-
-                ffmpegProcess.ErrorDataReceived += new DataReceivedEventHandler(Output);//把FFmpeg的输出写到StandardError流中
-                ffmpegProcess.StartInfo = startInfo;
-
-                ffmpegProcess.Start();//启动
-                ffmpegProcess.BeginErrorReadLine();//开始异步读取输出
+                catch (Exception)
+                {
+                    //录制失败
+                    BtnScreenRecordingVideo.IsChecked = false;
+                    BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
+                    IsVideo = false;
+                }
             }
         }
 

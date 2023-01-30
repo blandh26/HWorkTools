@@ -9,6 +9,7 @@
 		ResizeMode="CanMinimize"
         Loaded="MainWindow_Loaded"
         Closing="MainWindow_Closing"
+        StateChanged="MainWindow_StateChanged"
 		Title="MainWindow" Height="700" Width="480" >
     <Grid>
         <materialDesign:Card Grid.Row="1">
