@@ -1047,6 +1047,7 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteRefuse))
                         {//邀请拒绝
+                            Stop();
                             new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
