@@ -24,6 +24,7 @@ using Microsoft.Win32;
 using H_ScreenCapture;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using LiteDB;
 using NAudio.Wave;
 using MenuItem = System.Windows.Forms.MenuItem;
 
@@ -70,6 +71,7 @@ namespace H_WorkTools
         FrmCapture m_frmCapture;//截图
         SystemInfo sys = new SystemInfo();
         NotifyIcon notifyIcon;
+        LiteDatabase liteDB;//数据库
 
         #region 窗体事件
         public MainWindow()
@@ -130,6 +132,8 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            liteDB = new LiteDatabase(path + "worktools.db");//创建数据库
+            this.Title = "HWorkTools[" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]";//版本显示
             var hwnd = new WindowInteropHelper(this).Handle;
             AddClipboardFormatListener(hwnd);
             var _hwndSource = HwndSource.FromHwnd(hwnd);
@@ -1392,6 +1396,43 @@ namespace H_WorkTools
                 new MessageBoxCustom("adssad", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
 
             }
+        }
+        #endregion
+
+        #region 实体类
+        /// <summary>
+        /// 应用程序实体类
+        /// </summary>
+        public class ExeModel
+        {
+            public string title { get; set; }
+            public string ico { get; set; }
+            public string path { get; set; }
+        }
+
+        /// <summary>
+        /// 闹钟实体类
+        /// </summary>
+        public class AlarmModel
+        {
+            public string title { get; set; }
+            public string content { get; set; }
+            /// <summary>
+            /// 类型（1每日，2每周，3每月,4指定）
+            /// </summary>
+            public string alarmType { get; set; }
+            /// <summary>
+            /// 存储 123类型数据 4不存储
+            /// </summary>
+            public string alarm { get; set; }
+            public string date { get; set; }
+            public string time { get; set; }
+            /// <summary>
+            /// 提醒状态
+            /// 类型4 有2个状态 
+            /// 类型1，2，3 根据 存储个数对应数量  全状态 都1的时候  重置 
+            /// </summary>
+            public string state { get; set; }
         }
         #endregion
     }
