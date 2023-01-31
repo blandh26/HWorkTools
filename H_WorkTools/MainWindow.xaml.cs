@@ -27,7 +27,6 @@ using System.Text.RegularExpressions;
 using LiteDB;
 using NAudio.Wave;
 using MenuItem = System.Windows.Forms.MenuItem;
-using MaterialDesignThemes.Wpf;
 
 namespace H_WorkTools
 {
@@ -1402,72 +1401,6 @@ namespace H_WorkTools
 
         #region 应用中心
 
-        #region SAMPLE 3
-
-        public ICommand RunDialogCommand => new AnotherCommandImplementation(ExecuteRunDialog);
-
-        public ICommand RunExtendedDialogCommand => new AnotherCommandImplementation(ExecuteRunExtendedDialog);
-
-        private async void ExecuteRunDialog(object? _)
-        {
-            //let's set up a little MVVM, cos that's what the cool kids are doing:
-            var view = new SampleDialog
-            {
-                DataContext = new SampleDialogViewModel()
-            };
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", null, ClosingEventHandler, ClosedEventHandler);
-
-            //check the result...
-            Debug.WriteLine("Dialog was closed, the CommandParameter used to close it was: " + (result ?? "NULL"));
-        }
-
-        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-            => Debug.WriteLine("You can intercept the closing event, and cancel here.");
-
-        private void ClosedEventHandler(object sender, DialogClosedEventArgs eventArgs)
-            => Debug.WriteLine("You can intercept the closed event here (1).");
-
-        private async void ExecuteRunExtendedDialog(object? _)
-        {
-            //let's set up a little MVVM, cos that's what the cool kids are doing:
-            var view = new SampleDialog
-            {
-                DataContext = new SampleDialogViewModel()
-            };
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ExtendedOpenedEventHandler, ExtendedClosingEventHandler, ExtendedClosedEventHandler);
-
-            //check the result...
-            Debug.WriteLine("Dialog was closed, the CommandParameter used to close it was: " + (result ?? "NULL"));
-        }
-
-        private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventArgs)
-            => Debug.WriteLine("You could intercept the open and affect the dialog using eventArgs.Session.");
-
-        private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        {
-            Debug.WriteLine("You can intercept the closing event, cancel it, and do our own close after a little while.");
-            if (eventArgs.Parameter is bool parameter &&
-                parameter == false) return;
-
-            //OK, lets cancel the close...
-            eventArgs.Cancel();
-
-            //...now, lets update the "session" with some new content!
-            eventArgs.Session.UpdateContent(new SampleProgressDialog());
-            //note, you can also grab the session when the dialog opens via the DialogOpenedEventHandler
-
-            //lets run a fake operation for 3 seconds then close this baby.
-            Task.Delay(TimeSpan.FromSeconds(3))
-                .ContinueWith((t, _) => eventArgs.Session.Close(false), null,
-                    TaskScheduler.FromCurrentSynchronizationContext());
-        }
-
-        private void ExtendedClosedEventHandler(object sender, DialogClosedEventArgs eventArgs)
-            => Debug.WriteLine("You could intercept the closed event here (2).");
 
         #endregion
         #region 实体类
