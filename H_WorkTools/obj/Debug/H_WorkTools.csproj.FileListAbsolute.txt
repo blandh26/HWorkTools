@@ -165,8 +165,10 @@ D:\Code\HWorkTools\H_WorkTools\bin\Debug\H_WorkTools.exe
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\H_WorkTools.pdb
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\H_ScreenCapture.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\H_Util.dll
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\LiteDB.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\MaterialDesignColors.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\Newtonsoft.Json.Bson.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\Newtonsoft.Json.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\System.Buffers.dll
@@ -176,9 +178,11 @@ D:\Code\HWorkTools\H_WorkTools\bin\Debug\System.Numerics.Vectors.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\H_ScreenCapture.pdb
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\H_Util.pdb
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\LiteDB.xml
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\MaterialDesignColors.pdb
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\MaterialDesignThemes.Wpf.pdb
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.xml
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\Newtonsoft.Json.pdb
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\Newtonsoft.Json.xml
 D:\Code\HWorkTools\H_WorkTools\bin\Debug\Newtonsoft.Json.Bson.pdb
@@ -215,7 +219,3 @@ D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.csproj.CoreCompileInputs.ca
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.csproj.CopyComplete
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.exe
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.pdb
-D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.dll
-D:\Code\HWorkTools\H_WorkTools\bin\Debug\NAudio.xml
-D:\Code\HWorkTools\H_WorkTools\bin\Debug\LiteDB.dll
-D:\Code\HWorkTools\H_WorkTools\bin\Debug\LiteDB.xml

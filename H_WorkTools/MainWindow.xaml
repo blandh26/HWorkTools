@@ -14,6 +14,41 @@
     <Grid>
         <materialDesign:Card Grid.Row="1">
             <TabControl SnapsToDevicePixels="True" Style="{StaticResource MaterialDesignNavigationRailTabControl}" TabStripPlacement="Left">
+                <materialDesign:NavigationRailAssist.FloatingContent>
+                    <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnTopMost" Click="BtnTopMost_Click" Height="24" Width="24" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{materialDesign:PackIcon Kind=Pin}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=PinOff,Size=20}" Cursor="Hand" />
+                </materialDesign:NavigationRailAssist.FloatingContent>
+                <!--应用-开始-->
+                <TabItem Width="48" Height="48">
+                    <TabItem.Header>
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Apps" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel Margin="12">
+                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="应用中心" />
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                            </Grid.RowDefinitions>
+                            <!--<ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{materialDesign:PackIcon Kind=ClipboardPlus}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
+                            <ToggleButton Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{materialDesign:PackIcon Kind=DeleteEmptyOutline}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvClipboard" Height="500" Margin="0,10,0,0"
+                                      PreviewMouseMove="LvClipboard_OnPreviewMouseMove" Drop="LvClipboard_OnDrop" AllowDrop="True" MouseDoubleClick="LvClipboard_MouseDoubleClick">
+                            </ListView>-->
+                            <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
+                <!--应用-结束-->
                 <!--局域网共享桌面-开始-->
                 <TabItem Width="48" Height="48">
                     <TabItem.Header>
@@ -44,7 +79,7 @@
                                         </Grid.RowDefinitions>
                                         <!--停止共享-->
                                         <Label Grid.Row="0" Grid.Column="0" Content="NiceName" Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" materialDesign:HintAssist.Hint="Key" Text="bland" Margin="0,10,0,0"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" materialDesign:HintAssist.Hint="Key" Text="" Margin="0,10,0,0"/>
                                         <Label Grid.Row="1" Grid.Column="0" Content="本地IP" Margin="0,10,0,0"/>
                                         <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
                                         <Label Grid.Row="2" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
@@ -71,7 +106,7 @@
                                             <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                             <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0" Content="加入IP"  Margin="0,10,0,0"/>
+                                        <Label Grid.Row="0" Grid.Column="0" Content="IP"  Margin="0,10,0,0"/>
                                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" materialDesign:HintAssist.Hint="Key" Text="192.168.3.132" Margin="0,10,0,0"/>
                                         <Label Grid.Row="1" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
                                         <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text=""/>
@@ -212,8 +247,7 @@
                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                             </Grid.RowDefinitions>
-                            <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnTopMost" Click="BtnTopMost_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{materialDesign:PackIcon Kind=Pin}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=PinOff,Size=20}" Cursor="Hand" />
-                            <ToggleButton Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{materialDesign:PackIcon Kind=ClipboardPlus}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
+                            <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{materialDesign:PackIcon Kind=ClipboardPlus}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
                             <ToggleButton Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{materialDesign:PackIcon Kind=DeleteEmptyOutline}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
                             <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvClipboard" Height="500" Margin="0,10,0,0"
                                       PreviewMouseMove="LvClipboard_OnPreviewMouseMove" Drop="LvClipboard_OnDrop" AllowDrop="True" MouseDoubleClick="LvClipboard_MouseDoubleClick">
