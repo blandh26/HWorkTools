@@ -25,14 +25,23 @@
             <TextBox Text="{Binding InputString}" Margin="15,5" />
         </StackPanel>
         <StackPanel Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="2" >
-            <Image Name="myImage" ></Image>
-            <TextBox Text="{Binding InputString}" Margin="15,5" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" x:Name="image1" Height="40" Width="40" Stretch="UniformToFill"/>
+                <Button Content="Select" Click="BtnSelect_Click" Width="80" Grid.Row="0" Grid.Column="1" Margin="50,5,0,5" Cursor="Hand"/>
+            </Grid>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="120,0,0,0" >
             <Button Content="Cancel" Margin="0,0,10,0" Width="80"
                     Command="{Binding CancelCommand}"
                     Style="{StaticResource MaterialDesignOutlinedButton}" Cursor="Hand"/>
-            <Button Content="Sure"   Width="80"  Command="{Binding SureCommand}"/>
+            <Button Content="OK"   Width="80"  Command="{Binding SureCommand}" Click="BtnOk_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

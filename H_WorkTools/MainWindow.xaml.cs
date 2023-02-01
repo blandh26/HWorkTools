@@ -1610,7 +1610,6 @@ namespace H_WorkTools
                         {
                             System.Threading.Thread.Sleep(2000);
                             //TextValue = result.Data.ToString();
-                            LiteDatabase liteDB = new LiteDatabase(path + "worktools.db");//创建数据库
                         });
                     }
                 });
