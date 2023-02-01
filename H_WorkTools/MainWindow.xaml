@@ -4,270 +4,30 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:H_WorkTools"
-		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+		xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
 		mc:Ignorable="d"
 		ResizeMode="CanMinimize"
         Loaded="MainWindow_Loaded"
         Closing="MainWindow_Closing"
         StateChanged="MainWindow_StateChanged"
 		Title="HWorkTools" Height="700" Width="480" >
-    <Grid>
-        <materialDesign:Card Grid.Row="1">
-            <TabControl SnapsToDevicePixels="True" Style="{StaticResource MaterialDesignNavigationRailTabControl}" TabStripPlacement="Left">
-                <materialDesign:NavigationRailAssist.FloatingContent>
-                    <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnTopMost" Click="BtnTopMost_Click" Height="24" Width="24" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{materialDesign:PackIcon Kind=Pin}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=PinOff,Size=20}" Cursor="Hand" />
-                </materialDesign:NavigationRailAssist.FloatingContent>
-                <!--应用-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Apps" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="应用中心" />
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
-                            </Grid.RowDefinitions>
-                            <!--<ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{materialDesign:PackIcon Kind=ClipboardPlus}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
-                            <ToggleButton Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{materialDesign:PackIcon Kind=DeleteEmptyOutline}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
-                            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvClipboard" Height="500" Margin="0,10,0,0"
-                                      PreviewMouseMove="LvClipboard_OnPreviewMouseMove" Drop="LvClipboard_OnDrop" AllowDrop="True" MouseDoubleClick="LvClipboard_MouseDoubleClick">
-                            </ListView>-->
-                            <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
-                        </Grid>
-                    </StackPanel>
-                </TabItem>
-                <!--应用-结束-->
-                <!--局域网共享桌面-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Laptop" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="共享桌面" />
-                        <materialDesign:Card>
-                            <TabControl Style="{StaticResource MaterialDesignFilledTabControl}">                                
-                                <TabItem Header="共享">
-                                    <Grid >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <!--停止共享-->
-                                        <Label Grid.Row="0" Grid.Column="0" Content="NiceName" Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" materialDesign:HintAssist.Hint="Key" Text="" Margin="0,10,0,0"/>
-                                        <Label Grid.Row="1" Grid.Column="0" Content="本地IP" Margin="0,10,0,0"/>
-                                        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
-                                        <Label Grid.Row="2" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text=""/>
-                                        <Label Grid.Row="3" Grid.Column="0" Content="模式" Margin="0,10,0,0"/>
-                                        <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbMode1" Content="共享" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
-                                        <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbMode2" Content="控制" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
-                                        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="共享" x:Name="BtnDeskShare" Click="BtnDeskShare_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                        <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
-                                    </Grid>
-                                </TabItem>
-                                <TabItem Header="加入或求助">
-                                    <Grid >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                            <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0" Content="IP"  Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" materialDesign:HintAssist.Hint="Key" Text="192.168.3.132" Margin="0,10,0,0"/>
-                                        <Label Grid.Row="1" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" materialDesign:HintAssist.Hint="Key" MaxLength="4" Text=""/>
-                                        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="加入" x:Name="BtnDeskShareJoin" Click="BtnDeskShareJoin_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                        <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="求助" x:Name="BtnDeskShareInvite" Click="BtnDeskShareInvite_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                        <TextBlock  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
-                                    </Grid>
-                                </TabItem>
-                            </TabControl>
-                        </materialDesign:Card>
-                        <GroupBox Header="观众列表" Margin="0,12,0,0">
-                            <ListView x:Name="LvAudience" Height="250" ></ListView>
-                        </GroupBox>
-                    </StackPanel>
-                </TabItem>
-                <!--局域网共享桌面-结束-->
-                <!--端口-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Airport" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="端口工具" />
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0" Grid.Column="0" x:Name="txtPort" Text="" MaxLength="8" />
-                            <Button Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="查询" x:Name="BtnPortSelect" Click="BtnPortSelect_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                            <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Width="80" Content="杀掉" x:Name="BtnPortKill" Click="BtnPortKill_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                            <ListView  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvPort" Height="530" Margin="0,20,0,0"></ListView>
-                        </Grid>
-                    </StackPanel>
-                </TabItem>
-                <!--端口-结束-->
-                <!--闹钟-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Alarm" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="提醒工具" />
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            </Grid>
-                    </StackPanel>
-                </TabItem>
-                <!--闹钟-结束-->
-                <!--录屏-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="VideoVintage" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="截图、录屏" />
-                        <!--截图录屏废弃-开始-->
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="40"></RowDefinition>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <!--录屏设置-->
-                            <Label Grid.Row="0" Grid.Column="0" Content="生产路径:" Margin="0,10,0,0"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="txtPath" materialDesign:HintAssist.Hint="Path" Text="" Height="25" Margin="0,10,0,0" VerticalAlignment="Top"/>
-                            <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Click="ScreenRecording_Path_Click" Content="{materialDesign:PackIcon FolderOutline,Size=20}" ToolTip="设置路径" Margin="10,0,0,0"/>
-                            <Button Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Click="ScreenRecording_Open_Click" Content="{materialDesign:PackIcon FolderOpenOutline,Size=20}" ToolTip="打开目录" Margin="10,0,0,0" Cursor="Hand"/>
-
-                            <!--开始停止录屏-->
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
-                            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="cbAudio" DisplayMemberPath="ProductName" SelectedValuePath="ManufacturerGuid" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
-                            <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" Click="ScreenRecording_Refresh_Click" Content="{materialDesign:PackIcon Refresh,Size=20}" ToolTip="刷新" Margin="10,0,0,0"/>
-
-                            <Label Grid.Row="2" Grid.Column="0" Content="录制时间:" Margin="0,20,0,0"/>
-                            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00 : 00 : 00 s" Margin="0,15,0,10" FontSize="18"/>
-                            <ToggleButton Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnScreenRecordingVideo" Click="ScreenRecording_Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="录屏" Content="{materialDesign:PackIcon Kind=Video}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
-
-                            <!--输出内容-->
-                            <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Height="470" x:Name="VideoScrollViewer">
-                                <TextBlock  TextWrapping="Wrap" x:Name="txtVideo" ></TextBlock>
-                            </ScrollViewer>
-                        </Grid>
-                        <!--截图录屏废弃-结束-->
-                    </StackPanel>
-                </TabItem>
-                <!--录屏-结束-->
-                <!--剪贴板-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="ContentPaste" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="粘贴助手" />
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
-                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
-                            </Grid.RowDefinitions>
-                            <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{materialDesign:PackIcon Kind=ClipboardPlus}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
-                            <ToggleButton Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{materialDesign:PackIcon Kind=DeleteEmptyOutline}" materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
-                            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvClipboard" Height="500" Margin="0,10,0,0"
-                                      PreviewMouseMove="LvClipboard_OnPreviewMouseMove" Drop="LvClipboard_OnDrop" AllowDrop="True" MouseDoubleClick="LvClipboard_MouseDoubleClick">
-                            </ListView>
-                            <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
-                        </Grid>
-                    </StackPanel>
-                </TabItem>
-                <!--剪贴板-结束-->
-                <!--语言设置-开始-->
-                <TabItem Width="48" Height="48">
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon  Width="24" Height="24" HorizontalAlignment="Center" Kind="Translate" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="12">
-                        <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource btn_Language}" />
-                        <GroupBox Header="系统设置" Margin="0,0,0,8">
-                            <Grid >
+    <md:DialogHost Identifier="Root">
+        <Grid>
+            <md:Card Grid.Row="1">
+                <TabControl SnapsToDevicePixels="True" Style="{StaticResource MaterialDesignNavigationRailTabControl}" TabStripPlacement="Left">
+                    <md:NavigationRailAssist.FloatingContent>
+                        <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnTopMost" Click="BtnTopMost_Click" Height="24" Width="24" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{md:PackIcon Kind=Pin}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=PinOff,Size=20}" Cursor="Hand" />
+                    </md:NavigationRailAssist.FloatingContent>
+                    <!--应用-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Apps" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="应用中心" />
+                            <Grid Margin="0,0,0,10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
@@ -276,22 +36,103 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
-                                <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbLanguage" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" materialDesign:HintAssist.Hint="Language"/>
-                                <Label Grid.Row="1" Grid.Column="0" Content="剪贴板密码" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtClipboardPassword" Margin="0,15,0,0" MaxLength="32" materialDesign:HintAssist.Hint="Password"></TextBox>
-                                <Label Grid.Row="2" Grid.Column="0" Content="开机启动" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
-                                <RadioButton Grid.Row="2" Grid.Column="1" x:Name="rbStart1" Content="是" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
-                                <RadioButton Grid.Row="2" Grid.Column="3" x:Name="rbStart2" Content="否" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
-                                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,0"/>
+                                <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Command="{Binding UpdateCommand}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" x:Name="BtnExeDelete" Click="BtnExeDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteEmptyOutline}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" x:Name="BtnExeRefresh" Click="BtnExeRefresh_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=Refresh}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Refresh}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnExeSave" Click="BtnExeSave_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=ContentSave}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=ContentSave}" Cursor="Hand" />
+                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvExe" Height="570" Margin="0,10,0,0" AllowDrop="True"
+                                      PreviewMouseMove="LvExe_OnPreviewMouseMove" Drop="LvExe_OnDrop" MouseDoubleClick="LvExe_MouseDoubleClick">
+                                </ListView>
                             </Grid>
-                        </GroupBox>
-                        <GroupBox Header="截图快捷键" >
+                        </StackPanel>
+                    </TabItem>
+                    <!--应用-结束-->
+                    <!--局域网共享桌面-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Laptop" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="共享桌面" />
+                            <md:Card>
+                                <TabControl Style="{StaticResource MaterialDesignFilledTabControl}">
+                                    <TabItem Header="共享">
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <!--停止共享-->
+                                            <Label Grid.Row="0" Grid.Column="0" Content="NiceName" Margin="0,10,0,0"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" md:HintAssist.Hint="Key" Text="" Margin="0,10,0,0"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Content="本地IP" Margin="0,10,0,0"/>
+                                            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
+                                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" md:HintAssist.Hint="Key" MaxLength="4" Text=""/>
+                                            <Label Grid.Row="3" Grid.Column="0" Content="模式" Margin="0,10,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbMode1" Content="共享" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbMode2" Content="控制" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="共享" x:Name="BtnDeskShare" Click="BtnDeskShare_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="加入或求助">
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="IP"  Margin="0,10,0,0"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" md:HintAssist.Hint="Key" Text="192.168.3.132" Margin="0,10,0,0"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Content="密码"  Margin="0,10,0,0"/>
+                                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" md:HintAssist.Hint="Key" MaxLength="4" Text=""/>
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="加入" x:Name="BtnDeskShareJoin" Click="BtnDeskShareJoin_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                            <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="求助" x:Name="BtnDeskShareInvite" Click="BtnDeskShareInvite_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                            <TextBlock  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
+                            </md:Card>
+                            <GroupBox Header="观众列表" Margin="0,12,0,0">
+                                <ListView x:Name="LvAudience" Height="250" ></ListView>
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+                    <!--局域网共享桌面-结束-->
+                    <!--端口-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Airport" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="端口工具" />
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
@@ -303,41 +144,202 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="35"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="0" Grid.Column="0" x:Name="txtPort" Text="" MaxLength="8" />
+                                <Button Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="查询" x:Name="BtnPortSelect" Click="BtnPortSelect_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Width="80" Content="杀掉" x:Name="BtnPortKill" Click="BtnPortKill_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                <ListView  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvPort" Height="530" Margin="0,20,0,0"></ListView>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <!--端口-结束-->
+                    <!--闹钟-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Alarm" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="提醒工具" />
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <!--全屏截图-->
-                                <Label Grid.Row="0" Grid.Column="0" Content="全屏截图" />
-                                <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <TextBox Grid.Row="0" Grid.Column="4" x:Name="PhoneTextBox1" materialDesign:HintAssist.Hint="Key" Text="A"/>
-                                <!--截图-->
-                                <Label Grid.Row="1" Grid.Column="0" Content="截图" />
-                                <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <CheckBox Grid.Row="1" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <TextBox Grid.Row="1" Grid.Column="4" x:Name="PhoneTextBox" materialDesign:HintAssist.Hint="Key" Text="S"/>
-                                <!--截图对比-->
-                                <Label Grid.Row="2" Grid.Column="0" Content="截图对比" />
-                                <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                <TextBox Grid.Row="2" Grid.Column="4" x:Name="PhoneTextBox2" materialDesign:HintAssist.Hint="Key" Text="D"/>
-                                <Label Grid.Row="3" Grid.Column="0" Content="对比窗体标题" />
-                                <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="PhoneTextBo1x" materialDesign:HintAssist.Hint="Key" Text="A"/>
-                                <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
-                                <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
-                                <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="ScreenCapture_Click" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Cursor="Hand"/>
                             </Grid>
-                        </GroupBox>
-                    </StackPanel>
-                </TabItem>
-                <!--语言设置-结束-->
-            </TabControl>
-        </materialDesign:Card>
-    </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <!--闹钟-结束-->
+                    <!--录屏-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="VideoVintage" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="截图、录屏" />
+                            <!--截图录屏废弃-开始-->
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="40"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <!--录屏设置-->
+                                <Label Grid.Row="0" Grid.Column="0" Content="生产路径:" Margin="0,10,0,0"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="txtPath" md:HintAssist.Hint="Path" Text="" Height="25" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                                <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Click="ScreenRecording_Path_Click" Content="{md:PackIcon FolderOutline,Size=20}" ToolTip="设置路径" Margin="10,0,0,0"/>
+                                <Button Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Click="ScreenRecording_Open_Click" Content="{md:PackIcon FolderOpenOutline,Size=20}" ToolTip="打开目录" Margin="10,0,0,0" Cursor="Hand"/>
+
+                                <!--开始停止录屏-->
+                                <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
+                                <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="cbAudio" DisplayMemberPath="ProductName" SelectedValuePath="ManufacturerGuid" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
+                                <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" Click="ScreenRecording_Refresh_Click" Content="{md:PackIcon Refresh,Size=20}" ToolTip="刷新" Margin="10,0,0,0"/>
+
+                                <Label Grid.Row="2" Grid.Column="0" Content="录制时间:" Margin="0,20,0,0"/>
+                                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00 : 00 : 00 s" Margin="0,15,0,10" FontSize="18"/>
+                                <ToggleButton Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnScreenRecordingVideo" Click="ScreenRecording_Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="录屏" Content="{md:PackIcon Kind=Video}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
+
+                                <!--输出内容-->
+                                <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Height="470" x:Name="VideoScrollViewer">
+                                    <TextBlock  TextWrapping="Wrap" x:Name="txtVideo" ></TextBlock>
+                                </ScrollViewer>
+                            </Grid>
+                            <!--截图录屏废弃-结束-->
+                        </StackPanel>
+                    </TabItem>
+                    <!--录屏-结束-->
+                    <!--剪贴板-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="ContentPaste" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="粘贴助手" />
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
+                                </Grid.RowDefinitions>
+                                <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=ClipboardPlus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvClipboard" Height="500" Margin="0,10,0,0"
+                                      PreviewMouseMove="LvClipboard_OnPreviewMouseMove" Drop="LvClipboard_OnDrop" AllowDrop="True" MouseDoubleClick="LvClipboard_MouseDoubleClick">
+                                </ListView>
+                                <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <!--剪贴板-结束-->
+                    <!--语言设置-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon  Width="24" Height="24" HorizontalAlignment="Center" Kind="Translate" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource btn_Language}" />
+                            <GroupBox Header="系统设置" Margin="0,0,0,8">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
+                                    <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbLanguage" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" md:HintAssist.Hint="Language"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Content="剪贴板密码" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtClipboardPassword" Margin="0,15,0,0" MaxLength="32" md:HintAssist.Hint="Password"></TextBox>
+                                    <Label Grid.Row="2" Grid.Column="0" Content="开机启动" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                    <RadioButton Grid.Row="2" Grid.Column="1" x:Name="rbStart1" Content="是" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
+                                    <RadioButton Grid.Row="2" Grid.Column="3" x:Name="rbStart2" Content="否" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,0"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="截图快捷键" >
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="60"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="35"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <!--全屏截图-->
+                                    <Label Grid.Row="0" Grid.Column="0" Content="全屏截图" />
+                                    <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <TextBox Grid.Row="0" Grid.Column="4" x:Name="PhoneTextBox1" md:HintAssist.Hint="Key" Text="A"/>
+                                    <!--截图-->
+                                    <Label Grid.Row="1" Grid.Column="0" Content="截图" />
+                                    <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <CheckBox Grid.Row="1" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <TextBox Grid.Row="1" Grid.Column="4" x:Name="PhoneTextBox" md:HintAssist.Hint="Key" Text="S"/>
+                                    <!--截图对比-->
+                                    <Label Grid.Row="2" Grid.Column="0" Content="截图对比" />
+                                    <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
+                                    <TextBox Grid.Row="2" Grid.Column="4" x:Name="PhoneTextBox2" md:HintAssist.Hint="Key" Text="D"/>
+                                    <Label Grid.Row="3" Grid.Column="0" Content="对比窗体标题" />
+                                    <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="PhoneTextBo1x" md:HintAssist.Hint="Key" Text="A"/>
+                                    <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
+                                    <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
+                                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="ScreenCapture_Click" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Cursor="Hand"/>
+                                </Grid>
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+                    <!--语言设置-结束-->
+                </TabControl>
+            </md:Card>
+        </Grid>
+    </md:DialogHost>
 </Window>

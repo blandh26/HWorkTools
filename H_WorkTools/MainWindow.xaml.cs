@@ -27,6 +27,7 @@ using System.Text.RegularExpressions;
 using LiteDB;
 using NAudio.Wave;
 using MenuItem = System.Windows.Forms.MenuItem;
+using H_WorkTools.Dailog;
 
 namespace H_WorkTools
 {
@@ -76,6 +77,9 @@ namespace H_WorkTools
         #region 窗体事件
         public MainWindow()
         {
+            InitializeComponent();
+            MainWindowViewModel model = new MainWindowViewModel();
+            this.DataContext = model;
             //bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
             //Result = new MessageBoxCustom("adssad", "Are you sure, You want close         applicationapplicationapplicationapplicationapplication ? ", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
             //Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
@@ -1400,9 +1404,157 @@ namespace H_WorkTools
         #endregion
 
         #region 应用中心
+        #region 拖拽排序
+        private void LvExe_OnPreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var pos = e.GetPosition(LvExe);  // 获取位置
+
+                #region 源位置
+                HitTestResult result = VisualTreeHelper.HitTest(LvExe, pos);  //根据位置得到result
+                if (result == null)
+                {
+                    return;    //找不到 返回
+                }
+                var listBoxItem = Utils.FindVisualParent<ListBoxItem>(result.VisualHit);
+                if (listBoxItem == null || listBoxItem.Content != LvExe.SelectedItem)
+                {
+                    return;
+                }
+                #endregion
+
+                System.Windows.DataObject dataObj = new System.Windows.DataObject(listBoxItem.Content as TextBlock);
+                DragDrop.DoDragDrop(LvExe, dataObj, System.Windows.DragDropEffects.Move);  //调用方法
+            }
+        }
+
+        private void LvExe_OnDrop(object sender, System.Windows.DragEventArgs e)
+        {
+            var pos = e.GetPosition(LvExe);   //获取位置
+            var result = VisualTreeHelper.HitTest(LvExe, pos);   //根据位置得到result
+            if (result == null)
+            {
+                return;   //找不到 返回
+            }
+            #region 查找元数据
+            var sourcePerson = e.Data.GetData(typeof(TextBlock)) as TextBlock;
+            if (sourcePerson == null)
+            {
+                return;
+            }
+            #endregion
+
+            #region  查找目标数据
+            var listBoxItem = Utils.FindVisualParent<ListBoxItem>(result.VisualHit);
+            if (listBoxItem == null)
+            {
+                return;
+            }
+            var targetPerson = listBoxItem.Content as TextBlock;
+            if (ReferenceEquals(targetPerson, sourcePerson))
+            {
+                return;
+            }
+            #endregion
 
 
+            int sourceIndex = LvExe.Items.IndexOf(sourcePerson);
+            int targetIndex = LvExe.Items.IndexOf(targetPerson);
+
+            if (sourceIndex < targetIndex)  //从上面移动到下面
+            {
+                LvExe.Items.Remove(sourcePerson);  //删除源
+                Console.WriteLine(LvExe.Items.IndexOf(targetPerson) + 1);
+                LvExe.Items.Insert(LvExe.Items.IndexOf(targetPerson) + 1, sourcePerson);
+            }
+            else if (sourceIndex > targetIndex)
+            {
+                LvExe.Items.Remove(sourcePerson);  //删除源
+                Console.WriteLine(LvExe.Items.IndexOf(targetPerson));
+                LvExe.Items.Insert(LvExe.Items.IndexOf(targetPerson), sourcePerson);
+            }
+
+        }
         #endregion
+
+        /// <summary>
+        ///  双击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LvExe_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //if (IsClipboardDelete)
+            //{
+            //    LvClipboard.Items.Remove(LvClipboard.Items[LvClipboard.SelectedIndex]);
+            //    ClipboardCache();
+            //}
+            //else
+            //{
+            //    TextBlock text = LvClipboard.Items[LvClipboard.SelectedIndex] as TextBlock;
+            //    Clipboard.SetDataObject(text.Text);
+            //}
+        }
+
+        /// <summary>
+        ///  删除按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExeDelete_Click(object sender, EventArgs e)
+        {
+            if (BtnDelete.ToolTip.Equals("删除"))
+            {
+                BtnDelete.ToolTip = "取消删除";
+                IsClipboardDelete = true;
+            }
+            else
+            {
+                BtnDelete.ToolTip = "删除";
+                IsClipboardDelete = false;
+            }
+        }
+
+        /// <summary>
+        ///  刷新按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExeRefresh_Click(object sender, EventArgs e)
+        {
+            if (BtnDelete.ToolTip.Equals("删除"))
+            {
+                BtnDelete.ToolTip = "取消删除";
+                IsClipboardDelete = true;
+            }
+            else
+            {
+                BtnDelete.ToolTip = "删除";
+                IsClipboardDelete = false;
+            }
+        }
+
+        /// <summary>
+        ///  保存按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExeSave_Click(object sender, EventArgs e)
+        {
+            if (BtnDelete.ToolTip.Equals("删除"))
+            {
+                BtnDelete.ToolTip = "取消删除";
+                IsClipboardDelete = true;
+            }
+            else
+            {
+                BtnDelete.ToolTip = "删除";
+                IsClipboardDelete = false;
+            }
+        }
+        #endregion
+
         #region 实体类
         /// <summary>
         /// 应用程序实体类
@@ -1412,7 +1564,7 @@ namespace H_WorkTools
             public string title { get; set; }
             public string ico { get; set; }
             public string path { get; set; }
-            public string sort { get; set; }      
+            public string sort { get; set; }
         }
 
         /// <summary>
@@ -1440,5 +1592,30 @@ namespace H_WorkTools
             public string state { get; set; }
         }
         #endregion
+    }
+
+    internal class MainWindowViewModel : ViewModelBase
+    {
+        public DelegateCommand UpdateCommand
+        {
+            get
+            {
+                return new DelegateCommand(async (src) =>
+                {
+                    string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
+                    CommonDialogResult result = await CommonDialogShow.ShowInputDialog("Root", "Add") as CommonDialogResult;
+                    if (result.Button == CommonDialogButton.Ok)
+                    {
+                        await CommonDialogShow.ShowCurcularProgress("Root", () =>
+                        {
+                            System.Threading.Thread.Sleep(2000);
+                            //TextValue = result.Data.ToString();
+                            LiteDatabase liteDB = new LiteDatabase(path + "worktools.db");//创建数据库
+                        });
+                    }
+                });
+            }
+        }
+
     }
 }
