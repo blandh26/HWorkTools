@@ -17,7 +17,7 @@
                 <RowDefinition Height="36"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <md:ColorZone Mode="PrimaryMid"  Grid.Row="0"  Height="36">
+            <md:ColorZone Mode="PrimaryMid"  Grid.Row="0"  Height="36" PreviewMouseMove="Border_OnMouseLeftButtonDown">
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -35,8 +35,8 @@
                         <ToggleButton Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" x:Name="BtnTopMost" Click="BtnTopMost_Click"  Margin="0,0,0,0"
                                       Height="30" Width="30" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" HorizontalAlignment="Right"
                                       Content="{md:PackIcon Kind=Pin}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=PinOff,Size=20}" Cursor="Hand" />
-                        <md:PackIcon Grid.Row="0" Grid.Column="3" Width="24" Height="24" Kind="WindowMinimize" HorizontalAlignment="Right" Margin="12,5,5,5" MouseDown="Minimize_OnMouseDown"/>
-                        <md:PackIcon Grid.Row="0" Grid.Column="4" Width="24" Height="24" Kind="WindowClose" HorizontalAlignment="Right" Margin="12,5,17,5" MouseDown="Close_OnMouseDown"/>
+                        <md:PackIcon Grid.Row="0" Grid.Column="3" Width="24" Height="24" Kind="WindowMinimize" HorizontalAlignment="Right" Margin="12,5,5,5" MouseDown="Minimize_Click"/>
+                        <md:PackIcon Grid.Row="0" Grid.Column="4" Width="24" Height="24" Kind="WindowClose" HorizontalAlignment="Right" Margin="12,5,17,5" MouseDown="Close_Click"/>
                     </Grid>
                 </StackPanel>
             </md:ColorZone>
@@ -165,7 +165,7 @@
                     </TabItem>
                     <!--局域网共享桌面-结束-->
                     <!--端口-开始-->
-                    <TabItem Width="48" Height="48">
+                    <TabItem Width="48" Height="48" Padding="0,0,10,0">
                         <TabItem.Header>
                             <StackPanel Width="auto" Height="auto">
                                 <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Airport" />
@@ -332,7 +332,7 @@
                                     <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,0"/>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Header="截图快捷键" >
+                            <GroupBox Header="截图快捷键"  Margin="0,10,0,0">
                                 <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100"/>
@@ -373,6 +373,28 @@
                                     <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
                                     <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
                                     <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="ScreenCapture_Click" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Cursor="Hand"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="剪贴板快捷键" Margin="0,10,0,0">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="60"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft" Height="35"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                        <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Cursor="Hand"/>
                                 </Grid>
                             </GroupBox>
                         </StackPanel>

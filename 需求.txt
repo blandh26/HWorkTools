@@ -56,7 +56,6 @@ https://blog.csdn.net/MsTiang/article/details/123425123 Windows RDP设置多用�
 4.设计简介页面  弹出窗体 开源地址，作者姓名，博客地址，标题 简单描述，邮箱。
 
 
-自定义固定头部
 ----修正
 剪贴板 快捷键提供2中方案  ctrl 和shift   数字选择 小键盘和  字母上
 截图快捷键 动态配置

@@ -383,7 +383,22 @@ namespace H_WorkTools
             return hwnd;
         }
 
-        private void Minimize_OnMouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// 窗口移动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Border_OnMouseLeftButtonDown(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
+        }
+
+        /// <summary>
+        /// 最小化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Minimize_Click(object sender, EventArgs e)
         {
             this.WindowState = WindowState.Minimized;
         }
@@ -393,7 +408,7 @@ namespace H_WorkTools
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Close_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Close_Click(object sender, EventArgs e)
         {
             this.Close();
         }
