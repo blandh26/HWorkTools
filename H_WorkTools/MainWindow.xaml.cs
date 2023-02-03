@@ -182,7 +182,7 @@ namespace H_WorkTools
             #region 窗体位置
             System.Drawing.Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             this.Top = 60;
-            this.Left = rectangle.Width - 470;
+            this.Left = rectangle.Width - 450;
             #endregion
 
             #region 初始化远程
@@ -235,7 +235,7 @@ namespace H_WorkTools
             #region 录屏
             if (cif.GetValue("ScreenRecordingPath") == "")
             {
-                cif.SaveValue("ScreenRecordingPath", path + "HScreenVideo");
+                cif.SaveValue("ScreenRecordingPath", path + "HScreenVideo\\");
                 if (!Directory.Exists(path + "HScreenVideo"))
                 {
                     try
@@ -512,7 +512,7 @@ namespace H_WorkTools
                     isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
                     isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
                     IsVideo = true;
-                    string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
+                    string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo\\" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
                     if (File.Exists(outFilePath))
                     {
                         File.Delete(outFilePath);
@@ -520,7 +520,7 @@ namespace H_WorkTools
                     string arguments = " -f dshow -i audio=\"virtual-audio-capturer\"";
                     if (cbAudio.Text != "")
                     {
-                        arguments += "-f dshow -i audio=\"" + cbAudio.Text + "\"";
+                        arguments += " -f dshow -i audio=\"" + cbAudio.Text + "\"";
                     }
                     arguments += " -filter_complex amix=inputs=1:duration=first:dropout_transition=0";
                     arguments += " -f dshow -i video=\"screen-capture-recorder\" -pix_fmt yuv420p ";

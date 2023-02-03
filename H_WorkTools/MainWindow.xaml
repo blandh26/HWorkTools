@@ -10,7 +10,7 @@
         Loaded="MainWindow_Loaded"
         Closing="MainWindow_Closing"
         StateChanged="MainWindow_StateChanged"
-		Title="HWorkTools" Height="710" Width="480" >
+		Title="HWorkTools" Height="710" Width="450" >
     <md:DialogHost Identifier="Root">
         <Grid>
             <Grid.RowDefinitions>
@@ -120,11 +120,11 @@
                                             </Grid.RowDefinitions>
                                             <!--停止共享-->
                                             <Label Grid.Row="0" Grid.Column="0" Content="NiceName" Margin="10,10,0,0"/>
-                                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" md:HintAssist.Hint="Key" Text="" Margin="0,10,10,0"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" md:HintAssist.Hint="NiceName" Text="" Margin="0,10,10,0"/>
                                             <Label Grid.Row="1" Grid.Column="0" Content="本地IP" Margin="10,10,0,0"/>
-                                            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" Margin="0,0,10,0"/>
+                                            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="IP" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" Margin="0,0,10,0"/>
                                             <Label Grid.Row="2" Grid.Column="0" Content="密码"  Margin="10,10,0,0"/>
-                                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" md:HintAssist.Hint="Key" MaxLength="4" Text="" Margin="0,0,10,0"/>
+                                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" md:HintAssist.Hint="Password" MaxLength="4" Text="" Margin="0,0,10,0"/>
                                             <Label Grid.Row="3" Grid.Column="0" Content="模式" Margin="10,10,0,0"/>
                                             <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbMode1" Content="共享" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
                                             <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbMode2" Content="控制" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
@@ -148,9 +148,9 @@
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="0" Grid.Column="0" Content="IP"  Margin="10,10,0,0"/>
-                                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" md:HintAssist.Hint="Key" Text="192.168.3.132" Margin="0,10,10,0"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" md:HintAssist.Hint="IP" Text="192.168.3.132" Margin="0,10,10,0"/>
                                             <Label Grid.Row="1" Grid.Column="0" Content="密码"  Margin="10,10,0,0"/>
-                                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" md:HintAssist.Hint="Key" MaxLength="4" Text="" Margin="0,0,10,0"/>
+                                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" md:HintAssist.Hint="Password" MaxLength="4" Text="" Margin="0,0,10,0"/>
                                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="加入" x:Name="BtnDeskShareJoin" Click="BtnDeskShareJoin_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
                                             <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="求助" x:Name="BtnDeskShareInvite" Click="BtnDeskShareInvite_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
                                             <TextBlock  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="10,10,10,10">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
@@ -165,7 +165,7 @@
                     </TabItem>
                     <!--局域网共享桌面-结束-->
                     <!--端口-开始-->
-                    <TabItem Width="48" Height="48" Padding="0,0,10,0">
+                    <TabItem Width="48" Height="48">
                         <TabItem.Header>
                             <StackPanel Width="auto" Height="auto">
                                 <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Airport" />
@@ -176,19 +176,19 @@
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <TextBox Grid.Row="0" Grid.Column="0" x:Name="txtPort" Text="" MaxLength="8" />
-                                <Button Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="查询" x:Name="BtnPortSelect" Click="BtnPortSelect_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Width="80" Content="杀掉" x:Name="BtnPortKill" Click="BtnPortKill_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                <ListView  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvPort" Height="530" Margin="0,20,0,0"></ListView>
+                                <TextBox Grid.Row="0" Grid.Column="0" x:Name="txtPort" Text="" MaxLength="8" md:HintAssist.Hint="Port"/>
+                                <Button Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="查询" x:Name="BtnPortSelect" Click="BtnPortSelect_Click" FontSize="14" Cursor="Hand"/>
+                                <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Width="80" Content="杀掉" x:Name="BtnPortKill" Click="BtnPortKill_Click" FontSize="14" Cursor="Hand"/>
+                                <ListView  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvPort" Height="530" Margin="0,27,0,0"></ListView>
                             </Grid>
                         </StackPanel>
                     </TabItem>
