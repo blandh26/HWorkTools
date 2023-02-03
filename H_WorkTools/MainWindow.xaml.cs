@@ -132,6 +132,7 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            this.WindowStyle = WindowStyle.None;
             txtTitle.Text = "HWorkTools[" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]";//版本显示
             var hwnd = new WindowInteropHelper(this).Handle;
             AddClipboardFormatListener(hwnd);
@@ -380,6 +381,21 @@ namespace H_WorkTools
                 AddLvClipboardList();
             }
             return hwnd;
+        }
+
+        private void Minimize_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
         }
         #endregion
 
@@ -1526,7 +1542,14 @@ namespace H_WorkTools
                     pinfo.UseShellExecute = true;
                     pinfo.FileName = ((ExeModel)img.DataContext).path;
                     //启动进程
-                    Process p = Process.Start(pinfo);
+                    try
+                    {
+                        Process p = Process.Start(pinfo);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
                 else
                 {//删除
@@ -1540,6 +1563,7 @@ namespace H_WorkTools
                 }
             }
         }
+
         /// <summary>
         /// exe保存
         /// </summary>
@@ -1638,6 +1662,7 @@ namespace H_WorkTools
         }
         #endregion
     }
+
     #region 弹出框有关
     internal class MainWindowViewModel : ViewModelBase
     {
@@ -1661,10 +1686,6 @@ namespace H_WorkTools
                                     ExeModel model = JsonConvert.DeserializeObject<ExeModel>(result.Data.ToString());
                                     exemodel.Insert(model);
                                     db.Dispose();
-                                    App.Current.Dispatcher.Invoke((Action)(() =>
-                                    {
-                                        new MessageBoxCustom("adssad", "成功 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
-                                    }));
                                 }
                             }
                             catch (Exception ee)
