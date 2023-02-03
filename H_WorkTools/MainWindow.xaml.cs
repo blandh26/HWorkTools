@@ -28,6 +28,8 @@ using LiteDB;
 using NAudio.Wave;
 using MenuItem = System.Windows.Forms.MenuItem;
 using H_WorkTools.Dailog;
+using System.Windows.Media.Imaging;
+using HWorkTools;
 
 namespace H_WorkTools
 {
@@ -58,21 +60,23 @@ namespace H_WorkTools
         bool IsClipboardDelete = false;
         public delegate void AddLvClipboardListDelegate();
         public delegate void LvAudienceUpdate();//定义一个委托 关闭窗体调用
+        public delegate void LvExeRefresh();//定义一个委托 更新exe
+
         #endregion
         #region 通信
         private TcpP2p p2p = new TcpP2p();
         bool isInvite = false;//是否是求助模式
         #endregion
+
+        bool IsExeDelete = false;//应用中心 删除状态
         bool IsVideo = false;//录屏按钮控制
         PortUserInfo[] portlist;
         private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
         string encrypt_key = "";//加密解密key
         Config cif = new Config();
-        Hotkey hotkey = null;
         FrmCapture m_frmCapture;//截图
         SystemInfo sys = new SystemInfo();
         NotifyIcon notifyIcon;
-        LiteDatabase liteDB;//数据库
 
         #region 窗体事件
         public MainWindow()
@@ -80,14 +84,6 @@ namespace H_WorkTools
             InitializeComponent();
             MainWindowViewModel model = new MainWindowViewModel();
             this.DataContext = model;
-            //bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
-            //Result = new MessageBoxCustom("adssad", "Are you sure, You want close         applicationapplicationapplicationapplicationapplication ? ", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
-            //Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
-
-            //if (Result.Value)
-            //    {
-            //        Application.Current.Shutdown();
-            //    }
         }
 
         /// <summary>
@@ -136,8 +132,7 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            liteDB = new LiteDatabase(path + "worktools.db");//创建数据库
-            this.Title = "HWorkTools[" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]";//版本显示
+            txtTitle.Text = "HWorkTools[" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]";//版本显示
             var hwnd = new WindowInteropHelper(this).Handle;
             AddClipboardFormatListener(hwnd);
             var _hwndSource = HwndSource.FromHwnd(hwnd);
@@ -168,6 +163,21 @@ namespace H_WorkTools
                 }
             });
             #endregion
+
+            #region  应用中心
+            using (var db = new LiteDatabase(path + "worktools.db"))
+            {
+                var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                // 在 path 字段上创建唯一索引
+                exemodel.EnsureIndex(x => x.path, true);
+                List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.FindAll()));
+                for (int i = 0; i < list.Count; i++)
+                    list[i].ico = path + list[i].ico;
+                LvExe.ItemsSource = list;
+                db.Dispose();
+            }
+            #endregion
+
             #region 窗体位置
             System.Drawing.Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             this.Top = 60;
@@ -297,21 +307,20 @@ namespace H_WorkTools
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            hotkey = new Hotkey();
             #region  剪贴板 默认快捷键Ctrl + 1-10
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad0, () => { try { Clipboard.SetDataObject((LvClipboard.Items[0] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad1, () => { try { Clipboard.SetDataObject((LvClipboard.Items[1] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad2, () => { try { Clipboard.SetDataObject((LvClipboard.Items[2] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad3, () => { try { Clipboard.SetDataObject((LvClipboard.Items[3] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad4, () => { try { Clipboard.SetDataObject((LvClipboard.Items[4] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad5, () => { try { Clipboard.SetDataObject((LvClipboard.Items[5] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad6, () => { try { Clipboard.SetDataObject((LvClipboard.Items[6] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad7, () => { try { Clipboard.SetDataObject((LvClipboard.Items[7] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad8, () => { try { Clipboard.SetDataObject((LvClipboard.Items[8] as TextBlock).Text); } catch { } });
-            hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad0, () => { try { Clipboard.SetDataObject((LvClipboard.Items[0] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad1, () => { try { Clipboard.SetDataObject((LvClipboard.Items[1] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad2, () => { try { Clipboard.SetDataObject((LvClipboard.Items[2] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad3, () => { try { Clipboard.SetDataObject((LvClipboard.Items[3] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad4, () => { try { Clipboard.SetDataObject((LvClipboard.Items[4] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad5, () => { try { Clipboard.SetDataObject((LvClipboard.Items[5] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad6, () => { try { Clipboard.SetDataObject((LvClipboard.Items[6] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad7, () => { try { Clipboard.SetDataObject((LvClipboard.Items[7] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad8, () => { try { Clipboard.SetDataObject((LvClipboard.Items[8] as TextBlock).Text); } catch { } });
+            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
             #endregion
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.Escape, () => { try { Stop(); } catch { } });//停止共享
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.A, () =>
+            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.Escape, () => { try { Stop(); } catch { } });//停止共享
+            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.A, () =>
             {
                 try
                 {
@@ -324,7 +333,7 @@ namespace H_WorkTools
                     Console.WriteLine(ex);
                 }
             });//截图快捷键
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.S, () =>
+            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.S, () =>
             {
                 try
                 {
@@ -337,7 +346,7 @@ namespace H_WorkTools
                     Console.WriteLine(ex);
                 }
             });//上一次区域截图快捷键
-            hotkey.Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.D, () =>
+            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.D, () =>
             {
                 try
                 {
@@ -361,7 +370,7 @@ namespace H_WorkTools
             if (msg == WM_HOTKEY)
             {
                 int id = wParam.ToInt32();
-                if (Hotkey.keymap.TryGetValue(id, out var callback))
+                if (keymap.TryGetValue(id, out var callback))
                 {
                     callback();
                 }
@@ -1099,6 +1108,11 @@ namespace H_WorkTools
                             new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
+                        else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.ExElistUpdate))
+                        {//刷新exe列表
+                            ExeRefresh();
+                            return;
+                        }
                     }
                 }
             }
@@ -1410,7 +1424,6 @@ namespace H_WorkTools
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var pos = e.GetPosition(LvExe);  // 获取位置
-
                 #region 源位置
                 HitTestResult result = VisualTreeHelper.HitTest(LvExe, pos);  //根据位置得到result
                 if (result == null)
@@ -1424,13 +1437,14 @@ namespace H_WorkTools
                 }
                 #endregion
 
-                System.Windows.DataObject dataObj = new System.Windows.DataObject(listBoxItem.Content as TextBlock);
+                System.Windows.DataObject dataObj = new System.Windows.DataObject(listBoxItem.Content as ExeModel);
                 DragDrop.DoDragDrop(LvExe, dataObj, System.Windows.DragDropEffects.Move);  //调用方法
             }
         }
 
         private void LvExe_OnDrop(object sender, System.Windows.DragEventArgs e)
         {
+            Console.WriteLine("ooo");
             var pos = e.GetPosition(LvExe);   //获取位置
             var result = VisualTreeHelper.HitTest(LvExe, pos);   //根据位置得到result
             if (result == null)
@@ -1438,7 +1452,7 @@ namespace H_WorkTools
                 return;   //找不到 返回
             }
             #region 查找元数据
-            var sourcePerson = e.Data.GetData(typeof(TextBlock)) as TextBlock;
+            ExeModel sourcePerson = e.Data.GetData(typeof(ExeModel)) as ExeModel;
             if (sourcePerson == null)
             {
                 return;
@@ -1451,7 +1465,7 @@ namespace H_WorkTools
             {
                 return;
             }
-            var targetPerson = listBoxItem.Content as TextBlock;
+            ExeModel targetPerson = listBoxItem.Content as ExeModel;
             if (ReferenceEquals(targetPerson, sourcePerson))
             {
                 return;
@@ -1462,39 +1476,105 @@ namespace H_WorkTools
             int sourceIndex = LvExe.Items.IndexOf(sourcePerson);
             int targetIndex = LvExe.Items.IndexOf(targetPerson);
 
-            if (sourceIndex < targetIndex)  //从上面移动到下面
-            {
-                LvExe.Items.Remove(sourcePerson);  //删除源
-                Console.WriteLine(LvExe.Items.IndexOf(targetPerson) + 1);
-                LvExe.Items.Insert(LvExe.Items.IndexOf(targetPerson) + 1, sourcePerson);
-            }
-            else if (sourceIndex > targetIndex)
-            {
-                LvExe.Items.Remove(sourcePerson);  //删除源
-                Console.WriteLine(LvExe.Items.IndexOf(targetPerson));
-                LvExe.Items.Insert(LvExe.Items.IndexOf(targetPerson), sourcePerson);
-            }
+            List<ExeModel> list_temp = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(LvExe.ItemsSource));
+            list_temp.RemoveAt(sourceIndex);
+            list_temp.Insert(targetIndex, sourcePerson);
+            LvExe.ItemsSource = list_temp;
+            ExeSave();
+            ExeRefresh();
+        }
 
+        private void txtApp_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string txt = txtApp.Text.Trim();
+            try
+            {
+                if (txt == "")
+                {
+                    ExeRefresh();
+                }
+                else
+                {
+                    LvExe.ItemsSource = null;
+                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    {
+                        var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                        List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.Find(x => x.title.Contains(txt))));
+                        for (int i = 0; i < list.Count; i++)
+                            list[i].ico = path + list[i].ico;
+                        LvExe.ItemsSource = list;
+                        db.Dispose();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         #endregion
 
-        /// <summary>
-        ///  双击事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LvExe_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Image_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (IsClipboardDelete)
-            //{
-            //    LvClipboard.Items.Remove(LvClipboard.Items[LvClipboard.SelectedIndex]);
-            //    ClipboardCache();
-            //}
-            //else
-            //{
-            //    TextBlock text = LvClipboard.Items[LvClipboard.SelectedIndex] as TextBlock;
-            //    Clipboard.SetDataObject(text.Text);
-            //}
+            if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+            {
+                System.Windows.Controls.Image img = (System.Windows.Controls.Image)e.Source;
+                if (!IsExeDelete)
+                {//启动
+
+                    System.Diagnostics.ProcessStartInfo pinfo = new System.Diagnostics.ProcessStartInfo();
+                    pinfo.UseShellExecute = true;
+                    pinfo.FileName = ((ExeModel)img.DataContext).path;
+                    //启动进程
+                    Process p = Process.Start(pinfo);
+                }
+                else
+                {//删除
+                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    {
+                        var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                        exemodel.DeleteMany(x => x.path == ((ExeModel)img.DataContext).path);
+                        db.Dispose();
+                    }
+                    ExeRefresh();
+                }
+            }
+        }
+        /// <summary>
+        /// exe保存
+        /// </summary>
+        public void ExeSave()
+        {
+            using (var db = new LiteDatabase(path + "worktools.db"))
+            {
+                var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                exemodel.DeleteAll();
+                for (int i = 0; i < LvExe.Items.Count; i++)
+                {
+                    ExeModel model = (ExeModel)LvExe.Items[i];
+                    int index = model.ico.LastIndexOf("\\");  //返回“//”最后一次出现的位置
+                    model.ico = "ico\\" + model.ico.Substring(index + 1);  //截取文件名
+                    exemodel.Insert(model);
+                }
+                db.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// exe列表刷新
+        /// </summary>
+        public void ExeRefresh()
+        {
+            LvExe.ItemsSource = null;
+            using (var db = new LiteDatabase(path + "worktools.db"))
+            {
+                var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.FindAll()));
+                for (int i = 0; i < list.Count; i++)
+                    list[i].ico = path + list[i].ico;
+                LvExe.ItemsSource = list;
+                db.Dispose();
+            }
         }
 
         /// <summary>
@@ -1504,96 +1584,61 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void BtnExeDelete_Click(object sender, EventArgs e)
         {
-            if (BtnDelete.ToolTip.Equals("删除"))
+            if (BtnExeDelete.ToolTip.Equals("删除"))
             {
-                BtnDelete.ToolTip = "取消删除";
-                IsClipboardDelete = true;
+                BtnExeDelete.ToolTip = "取消删除";
+                IsExeDelete = true;
             }
             else
             {
-                BtnDelete.ToolTip = "删除";
-                IsClipboardDelete = false;
-            }
-        }
-
-        /// <summary>
-        ///  刷新按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnExeRefresh_Click(object sender, EventArgs e)
-        {
-            if (BtnDelete.ToolTip.Equals("删除"))
-            {
-                BtnDelete.ToolTip = "取消删除";
-                IsClipboardDelete = true;
-            }
-            else
-            {
-                BtnDelete.ToolTip = "删除";
-                IsClipboardDelete = false;
-            }
-        }
-
-        /// <summary>
-        ///  保存按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnExeSave_Click(object sender, EventArgs e)
-        {
-            if (BtnDelete.ToolTip.Equals("删除"))
-            {
-                BtnDelete.ToolTip = "取消删除";
-                IsClipboardDelete = true;
-            }
-            else
-            {
-                BtnDelete.ToolTip = "删除";
-                IsClipboardDelete = false;
+                BtnExeDelete.ToolTip = "删除";
+                IsExeDelete = false;
             }
         }
         #endregion
 
-        #region 实体类
+        #region 注册快捷键有关
         /// <summary>
-        /// 应用程序实体类
+        /// 注册快捷键
         /// </summary>
-        public class ExeModel
+        /// <param name="window">持有快捷键窗口</param>
+        /// <param name="fsModifiers">组合键</param>
+        /// <param name="key">快捷键</param>
+        /// <param name="callBack">回调函数</param>
+        public void Regist(Window window, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
         {
-            public string title { get; set; }
-            public string ico { get; set; }
-            public string path { get; set; }
-            public string sort { get; set; }
+            var hwnd = new WindowInteropHelper(window).Handle;
+            AddClipboardFormatListener(hwnd);
+            var _hwndSource = HwndSource.FromHwnd(hwnd);
+            MainWindow aa = new MainWindow();
+            _hwndSource.AddHook(aa.WndProc);
+
+            int id = keyid++;
+
+            var vk = KeyInterop.VirtualKeyFromKey(key);
+            if (!RegisterHotKey(hwnd, id, fsModifiers, (uint)vk))
+                throw new Exception("regist hotkey fail.");
+            keymap[id] = callBack;
         }
 
-        /// <summary>
-        /// 闹钟实体类
-        /// </summary>
-        public class AlarmModel
+        static int keyid = 10;
+        public static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
+
+        public delegate void HotKeyCallBackHanlder();
+
+        public enum HotkeyModifiers
         {
-            public string title { get; set; }
-            public string content { get; set; }
-            /// <summary>
-            /// 类型（1每日，2每周，3每月,4指定）
-            /// </summary>
-            public string alarmType { get; set; }
-            /// <summary>
-            /// 存储 123类型数据 4不存储
-            /// </summary>
-            public string alarm { get; set; }
-            public string date { get; set; }
-            public string time { get; set; }
-            /// <summary>
-            /// 提醒状态
-            /// 类型4 有2个状态 
-            /// 类型1，2，3 根据 存储个数对应数量  全状态 都1的时候  重置 
-            /// </summary>
-            public string state { get; set; }
+            MOD_ALT = 0x1,
+            MOD_CONTROL = 0x2,
+            MOD_SHIFT = 0x4,
+            MOD_WIN = 0x8,
+            MOD_ALT_CONTROL = (0x1 | 0x2),
+            MOD_ALT_SHIFT = (0x1 | 0x4),
+            MOD_CONTROLT_SHIFT = (0x2 | 0x4)
         }
         #endregion
     }
-
+    #region 弹出框有关
     internal class MainWindowViewModel : ViewModelBase
     {
         public DelegateCommand UpdateCommand
@@ -1608,8 +1653,37 @@ namespace H_WorkTools
                     {
                         await CommonDialogShow.ShowCurcularProgress("Root", () =>
                         {
-                            System.Threading.Thread.Sleep(2000);
-                            //TextValue = result.Data.ToString();
+                            try
+                            {
+                                using (var db = new LiteDatabase(path + "worktools.db"))
+                                {
+                                    var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                                    ExeModel model = JsonConvert.DeserializeObject<ExeModel>(result.Data.ToString());
+                                    exemodel.Insert(model);
+                                    db.Dispose();
+                                    App.Current.Dispatcher.Invoke((Action)(() =>
+                                    {
+                                        new MessageBoxCustom("adssad", "成功 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                                    }));
+                                }
+                            }
+                            catch (Exception ee)
+                            {
+                                App.Current.Dispatcher.Invoke((Action)(() =>
+                                {
+                                    new MessageBoxCustom("adssad", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                                }));
+                            }
+                            TcpP2p p2p = new TcpP2p();
+                            Config cif = new Config();
+                            TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                            Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                            Sendmsg.sendIP = src.ToString();
+                            Sendmsg.sendProt = cif.GetValue("Tcp");
+                            Sendmsg.recIP = src.ToString();
+                            Sendmsg.recProt = cif.GetValue("Tcp");
+                            Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.ExElistUpdate);
+                            p2p.Send(Sendmsg);
                         });
                     }
                 });
@@ -1617,4 +1691,8 @@ namespace H_WorkTools
         }
 
     }
+    #endregion
+
+
+
 }

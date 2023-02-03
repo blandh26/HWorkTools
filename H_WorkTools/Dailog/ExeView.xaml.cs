@@ -36,11 +36,13 @@ namespace H_WorkTools.Dailog
         public static extern bool DestroyIcon(
             IntPtr hIcon //A handle to the icon to be destroyed. The icon must not be in use.
         );
+
+        ExeViewModel model = new ExeViewModel();
+        string icoName = "";
+        string file = "";
         public ExeView(CommonDialogParams ps)
         {
             InitializeComponent();
-
-            ExeViewModel model=new ExeViewModel();
             this.DataContext = model;
             model.InitParams(ps);
         }
@@ -57,7 +59,7 @@ namespace H_WorkTools.Dailog
             //选择文件对话框
             var opfd = new System.Windows.Forms.OpenFileDialog { Filter = "*.exe|" };
             if (opfd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            var file = opfd.FileName;
+            file = opfd.FileName;
 
             //指定存放图标的文件夹
             string folderToSave = path + "ico\\";
@@ -81,7 +83,7 @@ namespace H_WorkTools.Dailog
 
                 using (var ico = Icon.FromHandle(hIcons[i]))
                 {
-                    if (i==0)
+                    if (i == 0)
                     {
                         icoName = DateTime.Now.ToString("yyyyMMddHHmmsss") + ".png";
                         using (var myIcon = ico.ToBitmap())
@@ -89,30 +91,14 @@ namespace H_WorkTools.Dailog
                             myIcon.Save(folderToSave + icoName, ImageFormat.Png);
                         }
                         image1.Source = new BitmapImage(new Uri(path + "ico\\" + icoName));
+                        model.Ico = "ico\\" + icoName;
+                        model.Path = file;
                         return;
                     }
-
-                   
-
                 }
                 //内存回收
                 DestroyIcon(hIcons[i]);
             }
         }
-
-        string icoName = "";
-
-        /// <summary>
-        ///  ok按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnOk_Click(object sender, EventArgs e)
-        {
-            string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
-            
-
-        }
-
     }
 }

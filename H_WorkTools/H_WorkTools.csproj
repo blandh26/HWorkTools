@@ -103,11 +103,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dailog\AlarmModel.cs" />
     <Compile Include="Dailog\CommonDialogShow.cs" />
     <Compile Include="Dailog\CurcularProgressView.xaml.cs">
       <DependentUpon>CurcularProgressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dailog\DelegateCommand.cs" />
+    <Compile Include="Dailog\ExeModel.cs" />
     <Compile Include="Dailog\ExeView.xaml.cs">
       <DependentUpon>ExeView.xaml</DependentUpon>
     </Compile>
@@ -134,7 +136,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Hotkey.cs" />
     <Compile Include="Dailog\ExeViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -233,9 +234,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="1.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FFmpeg\audio_sniffer-x64.dll" />

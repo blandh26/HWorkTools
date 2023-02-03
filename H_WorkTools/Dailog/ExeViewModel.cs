@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,28 @@ namespace H_WorkTools.Dailog
             get { return tipText; }
             set { tipText = value; RaisePropertyChanged(); }
         }
-        private string inputString;
 
-        public string InputString
+        private string txttitle;
+
+        public string TxtTitle
         {
-            get { return inputString; }
-            set { inputString = value; RaisePropertyChanged(); }
+            get { return txttitle; }
+            set { txttitle = value; RaisePropertyChanged(); }
+        }
+        private string ico;
+
+        public string Ico
+        {
+            get { return ico; }
+            set { ico = value; }
+        }
+
+        private string path;
+
+        public string Path
+        {
+            get { return path; }
+            set { path = value;  }
         }
 
         private void Cancel(object p)
@@ -44,11 +61,16 @@ namespace H_WorkTools.Dailog
 
         private void Sure(object p)
         {
-            if (string.IsNullOrEmpty(InputString))
+            if (string.IsNullOrEmpty(path))
                 return;
             if (DialogHost.IsDialogOpen(DialogHostName))
             {
-                DialogHost.Close(DialogHostName, new CommonDialogResult() { Button = CommonDialogButton.Ok, Data = inputString });
+                ExeModel model = new ExeModel();
+                model.title = txttitle;
+                model.ico = ico;
+                model.path = path;
+                string json = JsonConvert.SerializeObject(model);
+                DialogHost.Close(DialogHostName, new CommonDialogResult() { Button = CommonDialogButton.Ok, Data = json });
             }
         }
 

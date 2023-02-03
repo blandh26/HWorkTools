@@ -92,7 +92,11 @@ namespace H_Util
             /// <summary>
             /// 退出更新
             /// </summary>
-            ExitUpdate
+            ExitUpdate,
+            /// <summary>
+            /// 更新EXE列表
+            /// </summary>
+            ExElistUpdate
         }
         /// <summary>
         /// 消息类型
