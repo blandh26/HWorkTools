@@ -451,16 +451,17 @@ namespace H_WorkTools
         /// 获取音频设备
         /// </summary>
         /// <returns></returns>
-        private List<WaveInCapabilities> GetDevices()
+        private List<String> GetDevices()
         {
-            List<WaveInCapabilities> devices = new List<WaveInCapabilities>();
+            List<String> list = new List<String>();
             // 返回系统中可用的Wave-In设备数
             int waveInDevices = WaveIn.DeviceCount;
             for (int i = 0; i < waveInDevices; i++)
             {
-                devices.Add(WaveIn.GetCapabilities(i));
+                list.Add(WaveIn.GetCapabilities(i).ProductName);
             }
-            return devices;
+            list.Add("-");
+            return list;
         }
 
         /// <summary>
@@ -506,13 +507,13 @@ namespace H_WorkTools
                     isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder.dll");
                     isRegiste = ProcessHelper.RegisterDll(AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\screen-capture-recorder-x64.dll");
                     IsVideo = true;
-                    string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo\\" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
+                    string outFilePath = cif.GetValue("ScreenRecordingPath") + "HScreenVideo" + DateTime.Now.ToString("yyyyMMddHHmm") + ".mp4";
                     if (File.Exists(outFilePath))
                     {
                         File.Delete(outFilePath);
                     }
                     string arguments = " -f dshow -i audio=\"virtual-audio-capturer\"";
-                    if (cbAudio.Text != "")
+                    if (cbAudio.Text != "" && cbAudio.Text != "-")
                     {
                         arguments += " -f dshow -i audio=\"" + cbAudio.Text + "\"";
                     }

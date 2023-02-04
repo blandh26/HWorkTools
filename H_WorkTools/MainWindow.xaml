@@ -250,7 +250,7 @@
 
                                 <!--开始停止录屏-->
                                 <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
-                                <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="cbAudio" DisplayMemberPath="ProductName" SelectedValuePath="ManufacturerGuid" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="cbAudio" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}"/>
                                 <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" Click="ScreenRecording_Refresh_Click" Content="{md:PackIcon Refresh,Size=20}" ToolTip="刷新" Margin="10,0,0,0"/>
 
                                 <Label Grid.Row="2" Grid.Column="0" Content="录制时间:" Margin="0,20,0,0"/>
