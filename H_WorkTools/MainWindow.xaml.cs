@@ -182,7 +182,7 @@ namespace H_WorkTools
             #region 窗体位置
             System.Drawing.Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             this.Top = 60;
-            this.Left = rectangle.Width - 450;
+            this.Left = rectangle.Width - 440;
             #endregion
 
             #region 初始化远程
@@ -231,6 +231,7 @@ namespace H_WorkTools
             p2p.ReceivMsg += new TcpP2p.ShowMessage(P2P_ReceivMsg);
             #endregion
             #endregion
+             
 
             #region 录屏
             if (cif.GetValue("ScreenRecordingPath") == "")
@@ -411,6 +412,12 @@ namespace H_WorkTools
         private void Close_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        ////获取辅助按键
+        private void Txt_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            (sender as System.Windows.Controls.TextBox).Text = e.Key.ToString();   //显示点下的按键
         }
         #endregion
 

@@ -10,7 +10,7 @@
         Loaded="MainWindow_Loaded"
         Closing="MainWindow_Closing"
         StateChanged="MainWindow_StateChanged"
-		Title="HWorkTools" Height="710" Width="450" >
+		Title="HWorkTools" Height="710" Width="440" >
     <md:DialogHost Identifier="Root">
         <Grid>
             <Grid.RowDefinitions>
@@ -66,7 +66,7 @@
                                 <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtApp" Text="" MaxLength="30" TextChanged="txtApp_TextChanged"/>
                                 <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding UpdateCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
                                 <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnExeDelete" Click="BtnExeDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
-                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvExe" Height="540" Margin="0,10,0,0" AllowDrop="True" 
+                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvExe" Height="540" Margin="0,20,0,0" AllowDrop="True" 
                                           PreviewMouseMove="LvExe_OnPreviewMouseMove" Drop="LvExe_OnDrop"
                                           Background ="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                           ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
@@ -355,21 +355,21 @@
                                     <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                     <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                     <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                    <TextBox Grid.Row="0" Grid.Column="4" x:Name="PhoneTextBox1" md:HintAssist.Hint="Key" Text="A"/>
+                                    <TextBox Grid.Row="0" Grid.Column="4" x:Name="PhoneTextBox1" md:HintAssist.Hint="Key" Text="A" KeyUp="Txt_KeyUp"/>
                                     <!--截图-->
                                     <Label Grid.Row="1" Grid.Column="0" Content="截图" />
                                     <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                     <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                     <CheckBox Grid.Row="1" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                    <TextBox Grid.Row="1" Grid.Column="4" x:Name="PhoneTextBox" md:HintAssist.Hint="Key" Text="S"/>
+                                    <TextBox Grid.Row="1" Grid.Column="4" x:Name="PhoneTextBox" md:HintAssist.Hint="Key" Text="S" KeyUp="Txt_KeyUp"/>
                                     <!--截图对比-->
                                     <Label Grid.Row="2" Grid.Column="0" Content="截图对比" />
                                     <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                     <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                     <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
-                                    <TextBox Grid.Row="2" Grid.Column="4" x:Name="PhoneTextBox2" md:HintAssist.Hint="Key" Text="D"/>
+                                    <TextBox Grid.Row="2" Grid.Column="4" x:Name="PhoneTextBox2" md:HintAssist.Hint="Key" Text="D" KeyUp="Txt_KeyUp"/>
                                     <Label Grid.Row="3" Grid.Column="0" Content="对比窗体标题" />
-                                    <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="PhoneTextBo1x" md:HintAssist.Hint="Key" Text="A"/>
+                                    <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="PhoneTextBo1x" md:HintAssist.Hint="Key" Text="A" />
                                     <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
                                     <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
                                     <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="ScreenCapture_Click" Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Cursor="Hand"/>
