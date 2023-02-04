@@ -39,15 +39,31 @@ namespace H_WorkTools
     public partial class MainWindow : System.Windows.Window
     {
         #region 系统api
+        /// <summary>
+        /// 注册快捷键
+        /// </summary>
+        /// <param name="hWnd">要定义热键的窗口的句柄</param>
+        /// <param name="id">定义热键ID（不能与其它ID重复）</param>
+        /// <param name="fsModifiers">标识热键是否在按Alt、Ctrl、Shift、Windows等键时才会生效</param>
+        /// <param name="vk">定义热键的内容</param>
+        /// <returns></returns>
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool RegisterHotKey(IntPtr hWnd, int id, HotkeyModifiers fsModifiers, uint vk);
-
+        /// <summary>
+        /// 卸载快捷键
+        /// </summary>
+        /// <param name="hWnd">定义热键的内容</param>
+        /// <param name="id">定义热键ID</param>
+        /// <returns></returns>
         [DllImport("user32.dll")]
         static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         [DllImport("user32.dll")]
         public static extern bool AddClipboardFormatListener(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
         #endregion
         #region 远程
         protected RDPSession _rdpSession = null;
@@ -60,8 +76,6 @@ namespace H_WorkTools
         bool IsClipboardDelete = false;
         public delegate void AddLvClipboardListDelegate();
         public delegate void LvAudienceUpdate();//定义一个委托 关闭窗体调用
-        public delegate void LvExeRefresh();//定义一个委托 更新exe
-
         #endregion
         #region 通信
         private TcpP2p p2p = new TcpP2p();
@@ -231,7 +245,6 @@ namespace H_WorkTools
             p2p.ReceivMsg += new TcpP2p.ShowMessage(P2P_ReceivMsg);
             #endregion
             #endregion
-             
 
             #region 录屏
             if (cif.GetValue("ScreenRecordingPath") == "")
@@ -284,6 +297,7 @@ namespace H_WorkTools
                 }
             }
             #endregion
+
         }
 
         /// <summary>
@@ -294,10 +308,16 @@ namespace H_WorkTools
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (IsVideo)
-            {
+            {//判断是否启动录像中
                 IsVideo = false;
-                ScreenRecordHelper.Stop();
+                FFmpeg_Stop();
             }
+            try
+            {//卸载快捷键
+                var hwnd = new WindowInteropHelper(this).Handle;
+                UnRegist(hwnd, () => { });//停止共享
+            }
+            catch (Exception) { }
             ProcessHelper.ProcessKill("FFmpeg");//杀掉ffmpeg进程
             Environment.Exit(0); //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。
         }
@@ -309,59 +329,43 @@ namespace H_WorkTools
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            #region  剪贴板 默认快捷键Ctrl + 1-10
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad0, () => { try { Clipboard.SetDataObject((LvClipboard.Items[0] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad1, () => { try { Clipboard.SetDataObject((LvClipboard.Items[1] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad2, () => { try { Clipboard.SetDataObject((LvClipboard.Items[2] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad3, () => { try { Clipboard.SetDataObject((LvClipboard.Items[3] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad4, () => { try { Clipboard.SetDataObject((LvClipboard.Items[4] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad5, () => { try { Clipboard.SetDataObject((LvClipboard.Items[5] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad6, () => { try { Clipboard.SetDataObject((LvClipboard.Items[6] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad7, () => { try { Clipboard.SetDataObject((LvClipboard.Items[7] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad8, () => { try { Clipboard.SetDataObject((LvClipboard.Items[8] as TextBlock).Text); } catch { } });
-            Regist(this, HotkeyModifiers.MOD_CONTROL, Key.NumPad9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
+            #region 截图、共享、剪贴板 快捷键赋值
+            ScreenCaptureOpacity.Value = Convert.ToInt32(cif.GetValue("ScreenCapture_Opacity"));
+            string ScreenCapture_Key = cif.GetValue("ScreenCapture_Key");
+            string[] sckList = ScreenCapture_Key.Split('|');
+            cbScreenCaptureCtrl.IsChecked = sckList[0] == "1" ? true : false;
+            cbScreenCaptureAlt.IsChecked = sckList[1] == "1" ? true : false;
+            cbScreenCaptureShift.IsChecked = sckList[2] == "1" ? true : false;
+            txtScreenCaptureKey.Text = sckList[3];
+            string ScreenCapture_LastKey = cif.GetValue("ScreenCapture_LastKey");
+            string[] sckLastList = ScreenCapture_LastKey.Split('|');
+            cbLastCtrl.IsChecked = sckLastList[0] == "1" ? true : false;
+            cbLastAlt.IsChecked = sckLastList[1] == "1" ? true : false;
+            cbLastShift.IsChecked = sckLastList[2] == "1" ? true : false;
+            txtLastKey.Text = sckLastList[3];
+            string ScreenCapture_DiffKey = cif.GetValue("ScreenCapture_DiffKey");
+            string[] sckDiffList = ScreenCapture_DiffKey.Split('|');
+            cbDiffCtrl.IsChecked = sckDiffList[0] == "1" ? true : false;
+            cbDiffAlt.IsChecked = sckDiffList[1] == "1" ? true : false;
+            cbDiffShift.IsChecked = sckDiffList[2] == "1" ? true : false;
+            txtDiffKey.Text = sckDiffList[3];
+
+            ScreenCaptureOpacity.Value=Convert.ToInt32(cif.GetValue("ScreenCapture_Opacity"));
+            ScreenCaptureTitle.Text=cif.GetValue("ScreenCapture_Title");
+
+            string DeskShare = cif.GetValue("DeskShare");
+            string[] dList = DeskShare.Split('|');
+            cbDeskShare.SelectedIndex = Convert.ToInt32(dList[0]);
+            txtDeskShareKey.Text = dList[1];
+            string Clipboard = cif.GetValue("Clipboard");
+            string[] cList = Clipboard.Split('|');
+            cbClipboardCtrl.SelectedIndex = Convert.ToInt32(cList[0]);
+            cbClipboardNumber.SelectedIndex = Convert.ToInt32(cList[1]);
+
             #endregion
-            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.Escape, () => { try { Stop(); } catch { } });//停止共享
-            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.A, () =>
-            {
-                try
-                {
-                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
-                        m_frmCapture = new FrmCapture(0);
-                    m_frmCapture.Show();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            });//截图快捷键
-            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.S, () =>
-            {
-                try
-                {
-                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
-                        m_frmCapture = new FrmCapture(1);
-                    m_frmCapture.Show();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            });//上一次区域截图快捷键
-            Regist(this, HotkeyModifiers.MOD_ALT_SHIFT, Key.D, () =>
-            {
-                try
-                {
-                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
-                        m_frmCapture = new FrmCapture(2);
-                    m_frmCapture.Show();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            });//上一次区域截图快捷键
+            RegistAll();//注册所有快捷键
         }
+
         const int WM_HOTKEY = 0x312;
         //https://blog.csdn.net/u011555996/article/details/113785700 参考 msg 数字
         /// <summary>
@@ -418,18 +422,6 @@ namespace H_WorkTools
         private void Txt_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             (sender as System.Windows.Controls.TextBox).Text = e.Key.ToString();   //显示点下的按键
-        }
-        #endregion
-
-        #region 截图
-        /// <summary>
-        ///  设置截图快捷键
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ScreenCapture_Click(object sender, EventArgs e)
-        {
-
         }
         #endregion
 
@@ -493,12 +485,7 @@ namespace H_WorkTools
             {
                 try
                 {
-                    IsVideo = false;
-                    this.BtnScreenRecordingVideo.ToolTip = "Start";
-                    BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
-                    ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
-                    ffmpegProcess.Close();
-                    ffmpegProcess.Dispose();
+                    FFmpeg_Stop();
                 }
                 catch (Exception)
                 {
@@ -556,6 +543,19 @@ namespace H_WorkTools
                     IsVideo = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// 停止共享
+        /// </summary>
+        public void FFmpeg_Stop()
+        {
+            IsVideo = false;
+            this.BtnScreenRecordingVideo.ToolTip = "Start";
+            BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
+            ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
+            ffmpegProcess.Close();
+            ffmpegProcess.Dispose();
         }
 
         /// <summary>
@@ -678,25 +678,28 @@ namespace H_WorkTools
         /// </summary>
         public void Stop()
         {
-            try
+            if (!IsDeskShare)
             {
-                IsDeskShare = true;
-                invitationString = "";
-                if (_rdpSession != null)
+                try
                 {
-                    _rdpSession.Close();
-                    _rdpSession = null;
+                    IsDeskShare = true;
+                    invitationString = "";
+                    if (_rdpSession != null)
+                    {
+                        _rdpSession.Close();
+                        _rdpSession = null;
+                    }
                 }
+                catch (Exception ex)
+                { }
+                rbMode1.IsEnabled = true;
+                rbMode2.IsEnabled = true;
+                BtnDeskShare.Content = "共享";
+                BtnDeskShare.Foreground = new SolidColorBrush(Colors.White);
+                BtnDeskShareJoin.IsEnabled = true;
+                BtnDeskShareInvite.IsEnabled = true;
+                LvAudience.Items.Clear();
             }
-            catch (Exception ex)
-            { }
-            rbMode1.IsEnabled = true;
-            rbMode2.IsEnabled = true;
-            BtnDeskShare.Content = "共享";
-            BtnDeskShare.Foreground = new SolidColorBrush(Colors.White);
-            BtnDeskShareJoin.IsEnabled = true;
-            BtnDeskShareInvite.IsEnabled = true;
-            LvAudience.Items.Clear();
         }
 
         /// <summary>
@@ -1450,8 +1453,39 @@ namespace H_WorkTools
             catch (Exception)
             {
                 new MessageBoxCustom("adssad", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
-
             }
+            #region 快捷键重新设置
+            try
+            {//卸载快捷键
+                var hwnd = new WindowInteropHelper(this).Handle;
+                UnRegist(hwnd, () => { });//停止共享
+            }
+            catch (Exception) { }
+            #endregion
+           
+            #region 截图、共享、剪贴板 快捷键保存
+            cif.SaveValue("ScreenCapture_Key",
+                (cbScreenCaptureCtrl.IsChecked == true ? "1" : "0") + "|" +
+                (cbScreenCaptureAlt.IsChecked == true ? "1" : "0") + "|" +
+                (cbScreenCaptureShift.IsChecked == true ? "1" : "0") + "|" +
+                txtScreenCaptureKey.Text);
+            cif.SaveValue("ScreenCapture_LastKey",
+                (cbLastCtrl.IsChecked == true ? "1" : "0") + "|" +
+                (cbLastAlt.IsChecked == true ? "1" : "0") + "|" +
+                (cbLastShift.IsChecked == true ? "1" : "0") + "|" +
+                txtLastKey.Text);
+            cif.SaveValue("ScreenCapture_DiffKey",
+                (cbDiffCtrl.IsChecked == true ? "1" : "0") + "|" +
+                (cbDiffAlt.IsChecked == true ? "1" : "0") + "|" +
+                (cbDiffShift.IsChecked == true ? "1" : "0") + "|" +
+                txtDiffKey.Text);
+            cif.SaveValue("ScreenCapture_Opacity", ScreenCaptureOpacity.Value.ToString());
+            cif.SaveValue("ScreenCapture_Title", ScreenCaptureTitle.Text);
+            cif.SaveValue("DeskShare", cbDeskShare.SelectedIndex + "|" + txtDeskShareKey.Text);
+            cif.SaveValue("Clipboard", cbClipboardCtrl.SelectedIndex + "|" + cbClipboardNumber.SelectedIndex);
+            #endregion
+
+            RegistAll();//注册快捷键
         }
         #endregion
 
@@ -1552,6 +1586,11 @@ namespace H_WorkTools
         }
         #endregion
 
+        /// <summary>
+        /// 应用双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Image_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
@@ -1644,6 +1683,12 @@ namespace H_WorkTools
         #endregion
 
         #region 注册快捷键有关
+
+        static int keyid = 10;
+        public static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
+
+        public delegate void HotKeyCallBackHanlder();
+
         /// <summary>
         /// 注册快捷键
         /// </summary>
@@ -1663,14 +1708,26 @@ namespace H_WorkTools
 
             var vk = KeyInterop.VirtualKeyFromKey(key);
             if (!RegisterHotKey(hwnd, id, fsModifiers, (uint)vk))
-                throw new Exception("regist hotkey fail.");
+            {
+                throw new Exception();
+            }
             keymap[id] = callBack;
         }
 
-        static int keyid = 10;
-        public static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
-
-        public delegate void HotKeyCallBackHanlder();
+        /// <summary>
+        /// 注销快捷键
+        /// </summary>
+        /// <param name="hWnd">持有快捷键窗口的句柄</param>
+        /// <param name="callBack">回调函数</param>
+        public static void UnRegist(IntPtr hWnd, HotKeyCallBackHanlder callBack)
+        {
+            foreach (KeyValuePair<int, HotKeyCallBackHanlder> var in keymap)
+            {
+                UnregisterHotKey(hWnd, var.Key);
+            }
+            RemoveClipboardFormatListener(hWnd);
+            keymap.Clear();
+        }
 
         public enum HotkeyModifiers
         {
@@ -1680,7 +1737,158 @@ namespace H_WorkTools
             MOD_WIN = 0x8,
             MOD_ALT_CONTROL = (0x1 | 0x2),
             MOD_ALT_SHIFT = (0x1 | 0x4),
-            MOD_CONTROLT_SHIFT = (0x2 | 0x4)
+            MOD_CONTROLT_SHIFT = (0x2 | 0x4),
+            MOD_CONTROLT_SHIFT_ALT = (0x1 | 0x2 | 0x4)
+        }
+
+        /// <summary>
+        /// select 转enum
+        /// </summary>
+        /// <param name="select">select</param>
+        public HotkeyModifiers GetHotkeyModifiers(string select)
+        {
+            switch (select)
+            {
+                case "Alt+Shift": return HotkeyModifiers.MOD_ALT_SHIFT;
+                case "Alt+Ctrl": return HotkeyModifiers.MOD_ALT_CONTROL;
+                case "Ctrl+Shift": return HotkeyModifiers.MOD_CONTROLT_SHIFT;
+                case "Alt": return HotkeyModifiers.MOD_ALT;
+                case "Shift": return HotkeyModifiers.MOD_SHIFT;
+                case "Ctrl": return HotkeyModifiers.MOD_CONTROL;
+            }
+            return HotkeyModifiers.MOD_WIN;
+        }
+
+        /// <summary>
+        /// 注册所有快捷键
+        /// </summary>
+        /// <exception cref="Exception"></exception>
+        public void RegistAll()
+        {
+            #region  剪贴板 默认快捷键Ctrl + 1-10
+            try
+            {
+                HotkeyModifiers key = GetHotkeyModifiers(cbClipboardCtrl.Text);
+                if (cbClipboardNumber.SelectedIndex == 1)
+                {
+                    Regist(this, key, Key.NumPad0, () => { try { Clipboard.SetDataObject((LvClipboard.Items[0] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad1, () => { try { Clipboard.SetDataObject((LvClipboard.Items[1] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad2, () => { try { Clipboard.SetDataObject((LvClipboard.Items[2] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad3, () => { try { Clipboard.SetDataObject((LvClipboard.Items[3] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad4, () => { try { Clipboard.SetDataObject((LvClipboard.Items[4] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad5, () => { try { Clipboard.SetDataObject((LvClipboard.Items[5] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad6, () => { try { Clipboard.SetDataObject((LvClipboard.Items[6] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad7, () => { try { Clipboard.SetDataObject((LvClipboard.Items[7] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad8, () => { try { Clipboard.SetDataObject((LvClipboard.Items[8] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.NumPad9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
+
+                }
+                else
+                {
+                    Regist(this, key, Key.D0, () => { try { Clipboard.SetDataObject((LvClipboard.Items[0] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D1, () => { try { Clipboard.SetDataObject((LvClipboard.Items[1] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D2, () => { try { Clipboard.SetDataObject((LvClipboard.Items[2] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D3, () => { try { Clipboard.SetDataObject((LvClipboard.Items[3] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D4, () => { try { Clipboard.SetDataObject((LvClipboard.Items[4] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D5, () => { try { Clipboard.SetDataObject((LvClipboard.Items[5] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D6, () => { try { Clipboard.SetDataObject((LvClipboard.Items[6] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D7, () => { try { Clipboard.SetDataObject((LvClipboard.Items[7] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D8, () => { try { Clipboard.SetDataObject((LvClipboard.Items[8] as TextBlock).Text); } catch { } });
+                    Regist(this, key, Key.D9, () => { try { Clipboard.SetDataObject((LvClipboard.Items[9] as TextBlock).Text); } catch { } });
+                }
+            }
+            catch (Exception)
+            {
+                new MessageBoxCustom("adssad", "剪贴板快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                return;
+            }
+            #endregion
+
+            #region 停止共享快捷键
+            try
+            {
+                HotkeyModifiers key = GetHotkeyModifiers(cbDeskShare.Text);
+                Regist(this, key, (Key)Enum.Parse(typeof(Key), txtDeskShareKey.Text), () =>
+                { try { Stop(); } catch { } });//停止共享
+            }
+            catch (Exception)
+            {
+                new MessageBoxCustom("adssad", "停止共享快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                return;
+            }
+            #endregion
+
+            #region 截图快捷键
+            try
+            {
+                uint keyNumber = 0;
+                if (Convert.ToBoolean(cbLastCtrl.IsChecked))
+                    keyNumber = keyNumber | 0x2;
+                if (Convert.ToBoolean(cbLastAlt.IsChecked))
+                    keyNumber = keyNumber | 0x1;
+                if (Convert.ToBoolean(cbLastShift.IsChecked))
+                    keyNumber = keyNumber | 0x4;
+                Regist(this, (HotkeyModifiers)keyNumber, (Key)Enum.Parse(typeof(Key), txtScreenCaptureKey.Text), () =>
+                {
+                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
+                        m_frmCapture = new FrmCapture(0);
+                    m_frmCapture.Show();
+                });
+            }
+            catch
+            {
+                new MessageBoxCustom("adssad", "截图快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                return;
+            }
+            #endregion
+
+            #region 截图上一次快捷键
+            try
+            {
+                uint keyNumber = 0;
+                if (Convert.ToBoolean(cbLastCtrl.IsChecked))
+                    keyNumber = keyNumber | 0x2;
+                if (Convert.ToBoolean(cbLastAlt.IsChecked))
+                    keyNumber = keyNumber | 0x1;
+                if (Convert.ToBoolean(cbLastShift.IsChecked))
+                    keyNumber = keyNumber | 0x4;
+                Regist(this, (HotkeyModifiers)keyNumber, (Key)Enum.Parse(typeof(Key), txtLastKey.Text), () =>
+                {
+                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
+                        m_frmCapture = new FrmCapture(1);
+                    m_frmCapture.Show();
+                });
+            }
+            catch
+            {
+                new MessageBoxCustom("adssad", "截图上一次快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                return;
+            }
+            #endregion
+
+            #region 截图对比快捷键
+            try
+            {
+                uint keyNumber = 0;
+                if (Convert.ToBoolean(cbDiffCtrl.IsChecked))
+                    keyNumber = keyNumber | 0x2;
+                if (Convert.ToBoolean(cbDiffAlt.IsChecked))
+                    keyNumber = keyNumber | 0x1;
+                if (Convert.ToBoolean(cbDiffShift.IsChecked))
+                    keyNumber = keyNumber | 0x4;
+                Regist(this, (HotkeyModifiers)keyNumber, (Key)Enum.Parse(typeof(Key), txtDiffKey.Text), () =>
+                {
+                    if (m_frmCapture == null || m_frmCapture.IsDisposed)
+                        m_frmCapture = new FrmCapture(2);
+                    m_frmCapture.Show();
+                });
+            }
+            catch
+            {
+                new MessageBoxCustom("adssad", "截图对比快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                return;
+            }
+            #endregion
         }
         #endregion
     }
