@@ -8,8 +8,7 @@
              mc:Ignorable="d"              
              Canvas.Top="200"
              Canvas.Left="0"
-             d:DesignHeight="100" d:DesignWidth="100"
-             Height="400" Width="400">
+             Height="360" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,54 +20,100 @@
             <RowDefinition Height="120"/>
             <RowDefinition Height="40"/>
             <RowDefinition/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <md:ColorZone Mode="PrimaryMid"  Grid.Row="0" Grid.ColumnSpan="2">
             <TextBlock Text="{Binding Title}" Padding="5" FontSize="14" Margin="5,0"/>
         </md:ColorZone>
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtTitle}" Margin="15,5" md:HintAssist.Hint="Title" Height="30" TextWrapping="Wrap" MaxLength="20"/>
-        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtTitle}" Margin="15,5" md:HintAssist.Hint="Title" Height="100" AcceptsReturn="True" MaxLength="1000" 
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtTitle}" Margin="15,5" md:HintAssist.Hint="Content" Height="100" AcceptsReturn="True" MaxLength="1000" 
                  TextWrapping="Wrap" VerticalAlignment="Top"  VerticalScrollBarVisibility="Auto" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
-        <ComboBox Grid.Row="3" Grid.Column="0" x:Name="cbType" Margin="15,5">
+        <ComboBox Grid.Row="3" Grid.Column="0" x:Name="cbType" Margin="15,5" SelectionChanged="cbType_SelectionChanged">
             <ComboBoxItem>指定</ComboBoxItem>
             <ComboBoxItem>每周</ComboBoxItem>
             <ComboBoxItem>每月</ComboBoxItem>
         </ComboBox>
-        <md:TimePicker x:Name="PresetTimePicker" Is24Hours="True" Grid.Row="3" Grid.Column="1"/>
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,5">
-            <ScrollViewer Height="60" Width="370">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="55"/>
-                        <ColumnDefinition Width="55"/>
-                        <ColumnDefinition Width="55"/>
-                        <ColumnDefinition Width="55"/>
-                        <ColumnDefinition Width="55"/>
-                        <ColumnDefinition Width="55"/>
-                        <ColumnDefinition Width="55"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                    </Grid.RowDefinitions>
-                    <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="False" Content="周一"/>
-                    <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" Content="周二"/>
-                    <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="False" Content="周三"/>
-                    <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="False" Content="周四"/>
-                    <CheckBox Grid.Row="0" Grid.Column="4" IsChecked="False" Content="周五"/>
-                    <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="False" Content="周六"/>
-                    <CheckBox Grid.Row="0" Grid.Column="6" IsChecked="False" Content="周日"/>
-                </Grid>
-            </ScrollViewer>
-        </StackPanel>
-        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="120,0,0,0" >
+        <md:TimePicker Grid.Row="3" Grid.Column="1" x:Name="TimePicker" Is24Hours="True" Margin="15,5"/>
+        <!--指定日期-->
+        <DatePicker x:Name="DatePicker" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="15,5" Visibility="Hidden"/>
+
+        <!--每周-->
+        <Grid  Grid.Row="4" Grid.ColumnSpan="2" Margin="15,5" x:Name="StackPanel_W" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="53"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="False" Content="周一"/>
+            <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" Content="周二"/>
+            <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="False" Content="周三"/>
+            <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="False" Content="周四"/>
+            <CheckBox Grid.Row="0" Grid.Column="4" IsChecked="False" Content="周五"/>
+            <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="False" Content="周六"/>
+            <CheckBox Grid.Row="0" Grid.Column="6" IsChecked="False" Content="周日"/>
+        </Grid>
+        <!--每月-->
+        <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="15,5" x:Name="StackPanel_M" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="False" Content="1"/>
+            <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" Content="2"/>
+            <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="False" Content="3"/>
+            <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="False" Content="4"/>
+            <CheckBox Grid.Row="0" Grid.Column="4" IsChecked="False" Content="5"/>
+            <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="False" Content="6"/>
+            <CheckBox Grid.Row="0" Grid.Column="6" IsChecked="False" Content="7"/>
+            <CheckBox Grid.Row="0" Grid.Column="7" IsChecked="False" Content="8"/>
+            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="False" Content="9"/>
+            <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="False" Content="10"/>
+            <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="False" Content="11"/>
+            <CheckBox Grid.Row="1" Grid.Column="3" IsChecked="False" Content="12"/>
+            <CheckBox Grid.Row="1" Grid.Column="4" IsChecked="False" Content="13"/>
+            <CheckBox Grid.Row="1" Grid.Column="5" IsChecked="False" Content="14"/>
+            <CheckBox Grid.Row="1" Grid.Column="6" IsChecked="False" Content="15"/>
+            <CheckBox Grid.Row="1" Grid.Column="7" IsChecked="False" Content="16"/>
+            <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="False" Content="17"/>
+            <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="False" Content="18"/>
+            <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="False" Content="19"/>
+            <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="False" Content="20"/>
+            <CheckBox Grid.Row="2" Grid.Column="4" IsChecked="False" Content="21"/>
+            <CheckBox Grid.Row="2" Grid.Column="5" IsChecked="False" Content="22"/>
+            <CheckBox Grid.Row="2" Grid.Column="6" IsChecked="False" Content="23"/>
+            <CheckBox Grid.Row="2" Grid.Column="7" IsChecked="False" Content="24"/>
+            <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="False" Content="25"/>
+            <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="False" Content="26"/>
+            <CheckBox Grid.Row="3" Grid.Column="2" IsChecked="False" Content="27"/>
+            <CheckBox Grid.Row="3" Grid.Column="3" IsChecked="False" Content="28"/>
+            <CheckBox Grid.Row="3" Grid.Column="4" IsChecked="False" Content="29"/>
+            <CheckBox Grid.Row="3" Grid.Column="5" IsChecked="False" Content="30"/>
+            <CheckBox Grid.Row="3" Grid.Column="6" IsChecked="False" Content="31"/>
+        </Grid>
+
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="200,0,0,0" >
             <Button Content="Cancel" Margin="0,0,10,0" Width="80"
                     Command="{Binding CancelCommand}"
                     Style="{StaticResource MaterialDesignOutlinedButton}" Cursor="Hand"/>
