@@ -64,7 +64,7 @@
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                 </Grid.RowDefinitions>
                                 <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtApp" Text="" MaxLength="30" TextChanged="txtApp_TextChanged"/>
-                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding UpdateCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AppInsertCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
                                 <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnExeDelete" Click="BtnExeDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
                                 <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvExe" Height="540" Margin="0,20,0,0" AllowDrop="True" 
                                           PreviewMouseMove="LvExe_OnPreviewMouseMove" Drop="LvExe_OnDrop"
@@ -205,15 +205,22 @@
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                 </Grid.RowDefinitions>
+                                <!--Command="{Binding UpdateCommand}"-->
+                                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtAlarm" Text="" MaxLength="30" TextChanged="txtApp_TextChanged"/>
+                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AlarmInsertCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
+                                <!--Click="BtnAlarmDelete_Click"-->
+                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnAlarmDelete" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvAlarm" Height="540" Margin="0,20,0,0" AllowDrop="True" >
+                                </ListView>
                             </Grid>
                         </StackPanel>
                     </TabItem>
@@ -254,7 +261,7 @@
                                 <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" Click="ScreenRecording_Refresh_Click" Content="{md:PackIcon Refresh,Size=20}" ToolTip="刷新" Margin="10,0,0,0"/>
 
                                 <Label Grid.Row="2" Grid.Column="0" Content="录制时间:" Margin="0,20,0,0"/>
-                                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00 : 00 : 00 s" Margin="0,15,0,10" FontSize="18"/>
+                                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00:00:00.000" Margin="0,15,0,10" FontSize="18"/>
                                 <ToggleButton Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnScreenRecordingVideo" Click="ScreenRecording_Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="录屏" Content="{md:PackIcon Kind=Video}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
 
                                 <!--输出内容-->

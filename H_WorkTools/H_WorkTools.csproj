@@ -110,9 +110,13 @@
     </Compile>
     <Compile Include="Dailog\DelegateCommand.cs" />
     <Compile Include="Dailog\ExeModel.cs" />
+    <Compile Include="Dailog\AlarmView.xaml.cs">
+      <DependentUpon>AlarmView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dailog\ExeView.xaml.cs">
       <DependentUpon>ExeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dailog\AlarmViewModel.cs" />
     <Compile Include="Dailog\ViewModelBase.cs" />
     <Compile Include="DeskShareView.cs">
       <SubType>Form</SubType>
@@ -121,6 +125,10 @@
       <DependentUpon>DeskShareView.cs</DependentUpon>
     </Compile>
     <Page Include="Dailog\CurcularProgressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dailog\AlarmView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

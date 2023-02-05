@@ -350,8 +350,8 @@ namespace H_WorkTools
             cbDiffShift.IsChecked = sckDiffList[2] == "1" ? true : false;
             txtDiffKey.Text = sckDiffList[3];
 
-            ScreenCaptureOpacity.Value=Convert.ToInt32(cif.GetValue("ScreenCapture_Opacity"));
-            ScreenCaptureTitle.Text=cif.GetValue("ScreenCapture_Title");
+            ScreenCaptureOpacity.Value = Convert.ToInt32(cif.GetValue("ScreenCapture_Opacity"));
+            ScreenCaptureTitle.Text = cif.GetValue("ScreenCapture_Title");
 
             string DeskShare = cif.GetValue("DeskShare");
             string[] dList = DeskShare.Split('|');
@@ -433,6 +433,16 @@ namespace H_WorkTools
         static string ffmpegPath = AppDomain.CurrentDomain.BaseDirectory + "FFmpeg\\ffmpeg.exe";
 
         /// <summary>
+        /// 录屏计时线程
+        /// </summary>
+        System.Threading.Timer FFmpegTimmer;
+
+        /// <summary>
+        /// 录屏计时
+        /// </summary>
+        DateTime dt;
+
+        /// <summary>
         /// 控制台输出信息
         /// </summary>
         private void Output(object sender, DataReceivedEventArgs e)
@@ -496,6 +506,19 @@ namespace H_WorkTools
             {
                 try
                 {
+                    dt=DateTime.Now;
+                    LabMins.Foreground = new SolidColorBrush(Colors.Red);
+                    FFmpegTimmer = new System.Threading.Timer(state =>
+                    {
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            TimeSpan ts1 = new TimeSpan(DateTime.Now.Ticks);
+                            TimeSpan ts2 = new TimeSpan(dt.Ticks);
+                            TimeSpan ts = ts1.Subtract(ts2).Duration();
+                            LabMins.Content = ts.ToString(@"hh\:mm\:ss\.fff");
+                        }));
+                    }, null, 0, 1);
+
                     bool isRegiste = false;
                     this.BtnScreenRecordingVideo.ToolTip = "Stop";
                     BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.Red);
@@ -541,22 +564,26 @@ namespace H_WorkTools
                     //录制失败
                     BtnScreenRecordingVideo.IsChecked = false;
                     BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
+                    LabMins.Foreground = new SolidColorBrush(Colors.Black);
                     IsVideo = false;
                 }
             }
         }
 
         /// <summary>
-        /// 停止共享
+        /// 停止录屏
         /// </summary>
         public void FFmpeg_Stop()
         {
             IsVideo = false;
             this.BtnScreenRecordingVideo.ToolTip = "Start";
             BtnScreenRecordingVideo.Foreground = new SolidColorBrush(Colors.White);
+            LabMins.Foreground = new SolidColorBrush(Colors.Black);
             ffmpegProcess.StandardInput.WriteLine("q");//在这个进程的控制台中模拟输入q,用于停止录制
             ffmpegProcess.Close();
             ffmpegProcess.Dispose();
+            LabMins.Content = (new TimeSpan(0, 0, 0, 0)).ToString();
+            FFmpegTimmer.Dispose();
         }
 
         /// <summary>
@@ -1463,7 +1490,7 @@ namespace H_WorkTools
             }
             catch (Exception) { }
             #endregion
-           
+
             #region 截图、共享、剪贴板 快捷键保存
             cif.SaveValue("ScreenCapture_Key",
                 (cbScreenCaptureCtrl.IsChecked == true ? "1" : "0") + "|" +
@@ -1897,14 +1924,14 @@ namespace H_WorkTools
     #region 弹出框有关
     internal class MainWindowViewModel : ViewModelBase
     {
-        public DelegateCommand UpdateCommand
+        public DelegateCommand AppInsertCommand
         {
             get
             {
                 return new DelegateCommand(async (src) =>
                 {
                     string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
-                    CommonDialogResult result = await CommonDialogShow.ShowInputDialog("Root", "Add") as CommonDialogResult;
+                    CommonDialogResult result = await CommonDialogShow.ShowInsertExe("Root", "Add") as CommonDialogResult;
                     if (result.Button == CommonDialogButton.Ok)
                     {
                         await CommonDialogShow.ShowCurcularProgress("Root", () =>
@@ -1940,8 +1967,52 @@ namespace H_WorkTools
                     }
                 });
             }
-        }
+        } 
 
+        public DelegateCommand AlarmInsertCommand
+        {
+            get
+            {
+                return new DelegateCommand(async (src) =>
+                {
+                    string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
+                    CommonDialogResult result = await CommonDialogShow.ShowInsertAlarm("Root", "Add","",true) as CommonDialogResult;
+                    if (result.Button == CommonDialogButton.Ok)
+                    {
+                        await CommonDialogShow.ShowCurcularProgress("Root", () =>
+                        {
+                            //try
+                            //{
+                            //    using (var db = new LiteDatabase(path + "worktools.db"))
+                            //    {
+                            //        var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                            //        ExeModel model = JsonConvert.DeserializeObject<ExeModel>(result.Data.ToString());
+                            //        exemodel.Insert(model);
+                            //        db.Dispose();
+                            //    }
+                            //}
+                            //catch (Exception ee)
+                            //{
+                            //    App.Current.Dispatcher.Invoke((Action)(() =>
+                            //    {
+                            //        new MessageBoxCustom("adssad", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            //    }));
+                            //}
+                            //TcpP2p p2p = new TcpP2p();
+                            //Config cif = new Config();
+                            //TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                            //Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                            //Sendmsg.sendIP = src.ToString();
+                            //Sendmsg.sendProt = cif.GetValue("Tcp");
+                            //Sendmsg.recIP = src.ToString();
+                            //Sendmsg.recProt = cif.GetValue("Tcp");
+                            //Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.ExElistUpdate);
+                            //p2p.Send(Sendmsg);
+                        });
+                    }
+                });
+            }
+        }
     }
     #endregion
 

@@ -10,18 +10,18 @@ namespace H_WorkTools.Dailog
 {
     internal class CommonDialogShow
     {
-        public static async Task<object> ShowInputDialog(string host, string title)
+        public static async Task<object> ShowInsertExe(string host, string title)
         {
             CommonDialogParams ps = new CommonDialogParams()
             { DialogHost = host, DialogTitle = title };
             return await DialogHost.Show(new ExeView(ps), host);
         }
-        //public static async Task<object> ShowMessageDialog(string host, string title, string tipText, bool isQuestion)
-        //{
-        //    CommonDialogParams ps = new CommonDialogParams()
-        //    { DialogHost = host, DialogTitle = title, DialogTipText = tipText, IsQuestion=isQuestion };
-        //    return await DialogHost.Show(new MessageView(ps), host);
-        //}
+        public static async Task<object> ShowInsertAlarm(string host, string title, string tipText, bool isQuestion)
+        {
+            CommonDialogParams ps = new CommonDialogParams()
+            { DialogHost = host, DialogTitle = title };
+            return await DialogHost.Show(new AlarmView(ps), host);
+        }
         public static async Task<object> ShowCurcularProgress(string host, Action action)
         {
             DialogHost.Show(new CurcularProgressView(), host);
