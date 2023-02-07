@@ -267,7 +267,7 @@ namespace H_WorkTools
                                 }
                                 if (isShow)
                                 {
-                                    new MessageBoxCustom(model.title, model.content, MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                                    new MessageBoxCustom(model.title, model.content, MessageType.Success, MessageButtons.Ok).ShowDialog();
                                     model.lastTime = dt.ToString("yyyy-MM-dd HH:mm");
                                     alarmmodel.Update(model);
                                 }
