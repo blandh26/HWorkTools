@@ -96,7 +96,11 @@ namespace H_Util
             /// <summary>
             /// 更新EXE列表
             /// </summary>
-            ExElistUpdate
+            ExElistUpdate,
+            /// <summary>
+            /// 更新闹钟列表
+            /// </summary>
+            AlarmlistUpdate
         }
         /// <summary>
         /// 消息类型

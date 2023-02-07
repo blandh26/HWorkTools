@@ -83,6 +83,9 @@ namespace H_WorkTools
         #endregion
 
         bool IsExeDelete = false;//应用中心 删除状态
+        bool IsAlarmDelete = false;//闹铃 删除状态
+        bool IsAlarmAdd = false;//闹铃 新增状态
+        System.Threading.Timer AlarmTimer;//闹铃 定时任务
         bool IsVideo = false;//录屏按钮控制
         PortUserInfo[] portlist;
         private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
@@ -191,6 +194,94 @@ namespace H_WorkTools
                 LvExe.ItemsSource = list;
                 db.Dispose();
             }
+            #endregion
+
+            #region  闹铃
+            txtAlarmTimer.Text = cif.GetValue("Alarm");
+            using (var db = new LiteDatabase(path + "worktools.db"))
+            {
+                var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                // 在 path 字段上创建唯一索引
+                alarmmodel.EnsureIndex(x => x.id, true);
+                List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
+                for (int i = 0; i < list.Count; i++)
+                    list[i].data = GetAlarmType(list[i]);
+                LvAlarm.ItemsSource = list;
+                db.Dispose();
+            }
+            AlarmTimer = new System.Threading.Timer(state =>
+            {
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    {
+                        var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                        List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
+                        foreach (AlarmModel model in list)
+                        {
+                            try
+                            {
+                                bool isShow = false;
+                                DateTime dt = DateTime.Now;
+                                if (model.alarmType == "0")//指定日期
+                                {
+                                    if (string.IsNullOrEmpty(model.lastTime) && Convert.ToDateTime(model.data + " " + model.time) <= dt)
+                                    {
+                                        isShow = true;
+                                    }
+                                }
+                                else if (model.alarmType == "1")//每周
+                                {
+                                    if (model.data.Contains(Convert.ToInt32(dt.DayOfWeek).ToString()) && Convert.ToInt32(model.time.Replace(":", "")) <= Convert.ToInt32(dt.ToString("HHmm")))
+                                    {
+                                        if (string.IsNullOrEmpty(model.lastTime))
+                                        {
+                                            isShow = true;
+                                        }
+                                        else
+                                        {
+                                            if (Convert.ToDateTime(model.lastTime).ToString("yyyyMMdd") != dt.ToString("yyyyMMdd"))
+                                            {
+                                                isShow = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (model.alarmType == "2")//每月
+                                {
+                                    string[] daiList = model.data.Split(',');
+                                    if (daiList.Contains(Convert.ToInt32(dt.ToString("dd")).ToString()) && Convert.ToInt32(model.time.Replace(":", "")) <= Convert.ToInt32(dt.ToString("HHmm")))
+                                    {
+                                        if (string.IsNullOrEmpty(model.lastTime))
+                                        {
+                                            isShow = true;
+                                        }
+                                        else
+                                        {
+                                            if (Convert.ToDateTime(model.lastTime).ToString("yyyyMMdd") != dt.ToString("yyyyMMdd"))
+                                            {
+                                                isShow = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (isShow)
+                                {
+                                    new MessageBoxCustom(model.title, model.content, MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                                    model.lastTime = dt.ToString("yyyy-MM-dd HH:mm");
+                                    alarmmodel.Update(model);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                        db.Dispose();
+                    }
+                    AlarmRefresh();
+                }));
+            }, null, 0, Convert.ToInt32(cif.GetValue("Alarm")));
             #endregion
 
             #region 窗体位置
@@ -311,6 +402,10 @@ namespace H_WorkTools
             {//判断是否启动录像中
                 IsVideo = false;
                 FFmpeg_Stop();
+            }
+            if (AlarmTimer != null)
+            {
+                AlarmTimer.Dispose();
             }
             try
             {//卸载快捷键
@@ -506,7 +601,7 @@ namespace H_WorkTools
             {
                 try
                 {
-                    dt=DateTime.Now;
+                    dt = DateTime.Now;
                     LabMins.Foreground = new SolidColorBrush(Colors.Red);
                     FFmpegTimmer = new System.Threading.Timer(state =>
                     {
@@ -1182,6 +1277,11 @@ namespace H_WorkTools
                             ExeRefresh();
                             return;
                         }
+                        else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.AlarmlistUpdate))
+                        {//刷新闹钟列表
+                            AlarmRefresh();
+                            return;
+                        }
                     }
                 }
             }
@@ -1432,6 +1532,10 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void SetLanguage_Click(object sender, EventArgs e)
         {
+            if (txtAlarmTimer.Text != "")
+            {
+                cif.SaveValue("Alarm", txtAlarmTimer.Text.ToString());
+            }
             cif.SaveValue("Language", cbLanguage.SelectedValue.ToString());
             string requestedCulture = @"Resources/Language/" + cbLanguage.SelectedValue.ToString() + ".xaml";
             List<ResourceDictionary> dictionaryList = new List<ResourceDictionary>();
@@ -1544,7 +1648,6 @@ namespace H_WorkTools
 
         private void LvExe_OnDrop(object sender, System.Windows.DragEventArgs e)
         {
-            Console.WriteLine("ooo");
             var pos = e.GetPosition(LvExe);   //获取位置
             var result = VisualTreeHelper.HitTest(LvExe, pos);   //根据位置得到result
             if (result == null)
@@ -1919,12 +2022,213 @@ namespace H_WorkTools
             #endregion
         }
         #endregion
+
+        #region 闹铃
+
+        private void txtAlarm_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string txt = txtAlarm.Text.Trim();
+            try
+            {
+                if (txt == "")
+                {
+                    AlarmRefresh();
+                }
+                else
+                {
+                    LvAlarm.ItemsSource = null;
+                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    {
+                        var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                        List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.Find(x => x.title.Contains(txt)).OrderBy(x => x.lastTime)));
+                        for (int i = 0; i < list.Count; i++)
+                            list[i].data = GetAlarmType(list[i]);
+                        LvAlarm.ItemsSource = list;
+                        db.Dispose();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// 闹钟列表刷新
+        /// </summary>
+        public void AlarmRefresh()
+        {
+            LvExe.ItemsSource = null;
+            using (var db = new LiteDatabase(path + "worktools.db"))
+            {
+                var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
+                for (int i = 0; i < list.Count; i++)
+                    list[i].data = GetAlarmType(list[i]);
+                LvAlarm.ItemsSource = list;
+                db.Dispose();
+            }
+        }
+
+        public string GetAlarmType(AlarmModel t)
+        {
+            switch (t.alarmType)
+            {
+                case "0":
+                    return "[指定] " + t.data + " " + t.time;
+                case "1":
+                    return "[每周] " + t.data;
+                case "2":
+                    return "[每月] " + t.data;
+            }
+            return "";
+        }
+
+        /// <summary>
+        ///  新增按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AlarmInsert_Click(object sender, EventArgs e)
+        {
+            AlarmTemp.json = "";
+        }
+
+        /// <summary>
+        ///  双击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LvAlarm_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AlarmModel model = (AlarmModel)((System.Windows.Controls.ListViewItem)sender).Content; //Casting back to the binded Track
+            if (IsAlarmDelete)
+            {//删除
+                using (var db = new LiteDatabase(path + "worktools.db"))
+                {
+                    var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                    alarmmodel.DeleteMany(x => x.id == model.id);
+                    db.Dispose();
+                }
+                AlarmRefresh();
+            }
+            else
+            {
+                using (var db = new LiteDatabase(path + "worktools.db"))
+                {
+                    var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                    model = alarmmodel.FindOne(x => x.id == model.id);
+                    AlarmTemp.json = JsonConvert.SerializeObject(model);
+                    db.Dispose();
+                }
+                var vm = this.DataContext as MainWindowViewModel;
+                vm.AlarmInsertCommand.Execute("");
+            }
+        }
+
+        /// <summary>
+        ///  删除按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AlarmDelete_Click(object sender, EventArgs e)
+        {
+            if (BtnAlarmDelete.ToolTip.Equals("删除"))
+            {
+                BtnAlarmDelete.ToolTip = "取消删除";
+                IsAlarmDelete = true;
+            }
+            else
+            {
+                BtnAlarmDelete.ToolTip = "删除";
+                IsAlarmDelete = false;
+            }
+        }
+        #endregion
+
+        private void Button_Click1(object sender, MouseButtonEventArgs e)
+        {
+            var pos = e.GetPosition(LvAlarm);  // 获取位置
+
+            #region 源位置
+            HitTestResult result = VisualTreeHelper.HitTest(LvAlarm, pos);  //根据位置得到result
+            if (result == null)
+            {
+                return;    //找不到 返回
+            }
+            var listBoxItem = Utils.FindVisualParent<ListBoxItem>(result.VisualHit);
+            if (listBoxItem == null || listBoxItem.Content != LvAlarm.SelectedItem)
+            {
+                return;
+            }
+            #endregion
+
+            System.Windows.DataObject dataObj = new System.Windows.DataObject(listBoxItem.Content as TextBlock);
+            DragDrop.DoDragDrop(LvAlarm, dataObj, System.Windows.DragDropEffects.Move);  //调用方法
+        }
     }
 
     #region 弹出框有关
     internal class MainWindowViewModel : ViewModelBase
     {
-        public DelegateCommand AppInsertCommand
+        public MainWindowViewModel()
+        {
+            Action<object> a = new Action<object>(AlarmInsert);
+            AlarmInsertCommand = new DelegateCommand(a);
+        }
+        public DelegateCommand AlarmInsertCommand { get; private set; }
+        public async void AlarmInsert(object src)
+        {
+            string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
+            string showtitle = "";
+            if (AlarmTemp.json == "")
+                showtitle = "Add";
+            else
+                showtitle = "Edit";
+            CommonDialogResult result = await CommonDialogShow.ShowInsertAlarm("Root", "Add") as CommonDialogResult;
+            if (result.Button == CommonDialogButton.Ok)
+            {
+                await CommonDialogShow.ShowCurcularProgress("Root", () =>
+                {
+                    try
+                    {
+                        using (var db = new LiteDatabase(path + "worktools.db"))
+                        {
+                            var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                            AlarmModel model = JsonConvert.DeserializeObject<AlarmModel>(result.Data.ToString());
+                            if (AlarmTemp.json == "")
+                            {
+                                alarmmodel.Insert(model);
+                            }
+                            else
+                            {
+                                alarmmodel.Update(model);
+                            }
+                            db.Dispose();
+                        }
+                    }
+                    catch (Exception ee)
+                    {
+                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        {
+                            new MessageBoxCustom("adssad", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                        }));
+                    }
+                    TcpP2p p2p = new TcpP2p();
+                    Config cif = new Config();
+                    TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
+                    Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
+                    Sendmsg.sendIP = src.ToString();
+                    Sendmsg.sendProt = cif.GetValue("Tcp");
+                    Sendmsg.recIP = src.ToString();
+                    Sendmsg.recProt = cif.GetValue("Tcp");
+                    Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.AlarmlistUpdate);
+                    p2p.Send(Sendmsg);
+                });
+            }
+            System.Diagnostics.Debug.WriteLine("MouseDoubleClick Command.");
+        }
+        private DelegateCommand AppInsertCommand
         {
             get
             {
@@ -1967,55 +2271,8 @@ namespace H_WorkTools
                     }
                 });
             }
-        } 
-
-        public DelegateCommand AlarmInsertCommand
-        {
-            get
-            {
-                return new DelegateCommand(async (src) =>
-                {
-                    string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
-                    CommonDialogResult result = await CommonDialogShow.ShowInsertAlarm("Root", "Add","",true) as CommonDialogResult;
-                    if (result.Button == CommonDialogButton.Ok)
-                    {
-                        await CommonDialogShow.ShowCurcularProgress("Root", () =>
-                        {
-                            //try
-                            //{
-                            //    using (var db = new LiteDatabase(path + "worktools.db"))
-                            //    {
-                            //        var exemodel = db.GetCollection<ExeModel>("ExeModel");
-                            //        ExeModel model = JsonConvert.DeserializeObject<ExeModel>(result.Data.ToString());
-                            //        exemodel.Insert(model);
-                            //        db.Dispose();
-                            //    }
-                            //}
-                            //catch (Exception ee)
-                            //{
-                            //    App.Current.Dispatcher.Invoke((Action)(() =>
-                            //    {
-                            //        new MessageBoxCustom("adssad", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
-                            //    }));
-                            //}
-                            //TcpP2p p2p = new TcpP2p();
-                            //Config cif = new Config();
-                            //TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
-                            //Sendmsg.type = Convert.ToInt32(TcpP2p.msgType.SendText);
-                            //Sendmsg.sendIP = src.ToString();
-                            //Sendmsg.sendProt = cif.GetValue("Tcp");
-                            //Sendmsg.recIP = src.ToString();
-                            //Sendmsg.recProt = cif.GetValue("Tcp");
-                            //Sendmsg.command = Convert.ToInt32(TcpP2p.msgCommand.ExElistUpdate);
-                            //p2p.Send(Sendmsg);
-                        });
-                    }
-                });
-            }
         }
+
     }
     #endregion
-
-
-
 }

@@ -16,10 +16,10 @@ namespace H_WorkTools.Dailog
             { DialogHost = host, DialogTitle = title };
             return await DialogHost.Show(new ExeView(ps), host);
         }
-        public static async Task<object> ShowInsertAlarm(string host, string title, string tipText, bool isQuestion)
+        public static async Task<object> ShowInsertAlarm(string host, string title)
         {
             CommonDialogParams ps = new CommonDialogParams()
-            { DialogHost = host, DialogTitle = title };
+            { DialogHost = host, DialogTitle = title};
             return await DialogHost.Show(new AlarmView(ps), host);
         }
         public static async Task<object> ShowCurcularProgress(string host, Action action)
@@ -76,6 +76,10 @@ namespace H_WorkTools.Dailog
         /// 对话框的提示语
         /// </summary>
         public string DialogTipText { get; set; }
+        /// <summary>
+        /// 数据
+        /// </summary>
+        public string Json { get; set; }
         /// <summary>
         /// 如果是输入框，则可设置默认值
         /// </summary>

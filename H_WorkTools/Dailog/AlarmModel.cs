@@ -11,23 +11,26 @@ namespace H_WorkTools.Dailog
     /// </summary>
     public class AlarmModel
     {
+        public string id { get; set; }
         public string title { get; set; }
         public string content { get; set; }
         /// <summary>
-        /// 类型（1每日，2每周，3每月,4指定）
+        /// 类型
+        /// 1：指定
+        /// 2：每周
+        /// 3：每月
         /// </summary>
         public string alarmType { get; set; }
         /// <summary>
-        /// 存储 123类型数据 4不存储
+        /// 1：指定(存年月日)
+        /// 2：每周（存2）
+        /// 3：每月（存3）
         /// </summary>
-        public string alarm { get; set; }
-        public string date { get; set; }
+        public string data { get; set; }
         public string time { get; set; }
         /// <summary>
-        /// 提醒状态
-        /// 类型4 有2个状态 
-        /// 类型1，2，3 根据 存储个数对应数量  全状态 都1的时候  重置 
+        /// 最后提醒时间
         /// </summary>
-        public string state { get; set; }
+        public string lastTime { get; set; }
     }
 }

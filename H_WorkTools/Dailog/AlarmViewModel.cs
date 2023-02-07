@@ -30,45 +30,71 @@ namespace H_WorkTools.Dailog
             set { tipText = value; RaisePropertyChanged(); }
         }
 
-        private string txttitle;
+
+        #region 表单
+        private string txtID;
+
+        public string TxtID
+        {
+            get { return txtID; }
+            set { txtID = value; RaisePropertyChanged(); }
+        }
+        private string txtTitle;
 
         public string TxtTitle
         {
-            get { return txttitle; }
-            set { txttitle = value; RaisePropertyChanged(); }
+            get { return txtTitle; }
+            set { txtTitle = value; RaisePropertyChanged(); }
         }
-        private string ico;
+        private string txtContent;
 
-        public string Ico
+        public string TxtContent
         {
-            get { return ico; }
-            set { ico = value; }
+            get { return txtContent; }
+            set { txtContent = value; RaisePropertyChanged(); }
         }
+        private string cbType;
 
-        private string path;
-
-        public string Path
+        public string CbType
         {
-            get { return path; }
-            set { path = value;  }
+            get { return cbType; }
+            set { cbType = value; RaisePropertyChanged(); }
         }
+        private string txtTime;
+
+        public string TxtTime
+        {
+            get { return txtTime; }
+            set { txtTime = value; RaisePropertyChanged(); }
+        }
+        private string txtDate;
+
+        public string TxtDate
+        {
+            get { return txtDate; }
+            set { txtDate = value; RaisePropertyChanged(); }
+        }
+        #endregion
 
         private void Cancel(object p)
         {
             if (DialogHost.IsDialogOpen(DialogHostName))
-                DialogHost.Close(DialogHostName, new CommonDialogResult() {Button=CommonDialogButton.Cancel,Data=null });
+                DialogHost.Close(DialogHostName, new CommonDialogResult() { Button = CommonDialogButton.Cancel, Data = null });
         }
 
         private void Sure(object p)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(txtTitle))
                 return;
             if (DialogHost.IsDialogOpen(DialogHostName))
             {
                 AlarmModel model = new AlarmModel();
-                //model.title = txttitle;
-                //model.ico = ico;
-                //model.path = path;
+                model.id = txtID;
+                model.title = txtTitle;
+                model.content = txtContent;
+                model.alarmType = cbType;
+                model.data = txtDate;                
+                model.time = txtTime;
                 string json = JsonConvert.SerializeObject(model);
                 DialogHost.Close(DialogHostName, new CommonDialogResult() { Button = CommonDialogButton.Ok, Data = json });
             }
@@ -82,6 +108,15 @@ namespace H_WorkTools.Dailog
         {
             DialogHostName = p.DialogHost;
             Title = p.DialogTitle;
+            if (AlarmTemp.json != "")
+            {
+                AlarmModel model = JsonConvert.DeserializeObject<AlarmModel>(AlarmTemp.json);
+                txtTitle = model.title;
+                txtContent = model.content;
+                cbType = model.alarmType;
+                txtDate = model.data;
+                txtTime = model.time;
+            }
         }
     }
 }

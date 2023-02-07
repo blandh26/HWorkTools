@@ -90,6 +90,75 @@
                         </StackPanel>
                     </TabItem>
                     <!--应用-结束-->
+                    <!--闹钟-开始-->
+                    <TabItem Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Alarm" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="提醒工具" />
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <!--Command="{Binding UpdateCommand}"-->
+                                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtAlarm" Text="" MaxLength="30" TextChanged="txtAlarm_TextChanged"/>
+                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AlarmInsertCommand}" Click="AlarmInsert_Click" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
+                                <!--Click="BtnAlarmDelete_Click"-->
+                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnAlarmDelete" Click="AlarmDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvAlarm" 
+                                          Height="540" Margin="0,20,0,0" 
+                                          Background ="Transparent" 
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                          ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Width="auto" Height="auto" Margin="3">
+                                                <Grid Width="330" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="130"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBox Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Path=title}" IsReadOnly="True" TextWrapping="Wrap" VerticalAlignment="Top"  VerticalScrollBarVisibility="Auto" />
+                                                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Path=content}" IsReadOnly="True" TextWrapping="Wrap" VerticalAlignment="Top"  VerticalScrollBarVisibility="Auto"  />
+                                                    <Label Grid.Row="2" Grid.Column="0" Content="{Binding Path=data}"/>
+                                                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding Path=lastTime}" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}">
+                                            <Style.Setters>
+                                                <EventSetter Event="MouseDoubleClick" Handler="LvAlarm_MouseDoubleClick" />
+                                            </Style.Setters>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <!--闹钟-结束-->
                     <!--局域网共享桌面-开始-->
                     <TabItem Width="48" Height="48">
                         <TabItem.Header>
@@ -193,38 +262,6 @@
                         </StackPanel>
                     </TabItem>
                     <!--端口-结束-->
-                    <!--闹钟-开始-->
-                    <TabItem Width="48" Height="48">
-                        <TabItem.Header>
-                            <StackPanel Width="auto" Height="auto">
-                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Alarm" />
-                            </StackPanel>
-                        </TabItem.Header>
-                        <StackPanel Margin="12">
-                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="提醒工具" />
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <!--Command="{Binding UpdateCommand}"-->
-                                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtAlarm" Text="" MaxLength="30" TextChanged="txtApp_TextChanged"/>
-                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AlarmInsertCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
-                                <!--Click="BtnAlarmDelete_Click"-->
-                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnAlarmDelete" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
-                                <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvAlarm" Height="540" Margin="0,20,0,0" AllowDrop="True" >
-                                </ListView>
-                            </Grid>
-                        </StackPanel>
-                    </TabItem>
-                    <!--闹钟-结束-->
                     <!--录屏-开始-->
                     <TabItem Width="48" Height="48">
                         <TabItem.Header>
@@ -329,14 +366,17 @@
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                                <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
                                             <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbLanguage" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" md:HintAssist.Hint="Language"/>
                                             <Label Grid.Row="1" Grid.Column="0" Content="剪贴板密码" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
                                             <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtClipboardPassword" Margin="0,15,0,0" MaxLength="32" md:HintAssist.Hint="Password"></TextBox>
-                                            <Label Grid.Row="2" Grid.Column="0" Content="开机启动" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
-                                            <RadioButton Grid.Row="2" Grid.Column="1" x:Name="rbStart1" Content="是" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
-                                            <RadioButton Grid.Row="2" Grid.Column="3" x:Name="rbStart2" Content="否" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Content="闹铃(ms)" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtAlarmTimer" Margin="0,15,0,0" MaxLength="8" md:HintAssist.Hint="Alarm"></TextBox>
+                                            <Label Grid.Row="3" Grid.Column="0" Content="开机启动" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbStart1" Content="是" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbStart2" Content="否" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
                                         </Grid>
                                     </GroupBox>
                                     <GroupBox Header="截图"  Margin="0,5,0,0">
