@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle("H.Tools")]
+[assembly: AssemblyTitle("H_Tools")]
 [assembly: AssemblyDescription("blandh26@gmail.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NttData")]
-[assembly: AssemblyProduct("H.Tools")]
+[assembly: AssemblyProduct("H_Tools")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
