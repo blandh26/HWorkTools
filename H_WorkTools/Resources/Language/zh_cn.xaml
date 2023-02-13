@@ -42,5 +42,16 @@
     <s:String x:Key="Password2">共享</s:String>
     <s:String x:Key="BtnDeskShareJoin">求助</s:String>
     <s:String x:Key="DeskShareText2">求助模式:输入求助人IP后点击求助。加入模式：输入加入IP后点击加入按钮。</s:String>
-
+    <s:String x:Key="LvAudience">观众列表</s:String>
+    <s:String x:Key="PortTitle">端口工具</s:String>
+    <s:String x:Key="PortSelect">查询</s:String>
+    <s:String x:Key="PortKill">杀进程</s:String>
+    <s:String x:Key="ScreenRecordingTitle">录屏工具</s:String>
+    <s:String x:Key="ScreenRecordingSetPath">设置路径</s:String>
+    <s:String x:Key="ScreenRecordingOpenPath">打开目录</s:String>
+    <s:String x:Key="ScreenRecording_Refresh_Click">刷新</s:String>
+    <s:String x:Key="ScreenRecording_Video_Click">录屏</s:String>
+    <s:String x:Key="ScreenRecordingPath">生产路径：</s:String>
+    <s:String x:Key="ScreenRecordingTime">录制时间:</s:String>
+    <s:String x:Key="ScreenRecordingAudio">音频设备：</s:String>
 </ResourceDictionary>
