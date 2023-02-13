@@ -1584,7 +1584,7 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("设置提示", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.Ok).ShowDialog();
             }
             #region 快捷键重新设置
             try
@@ -1618,6 +1618,9 @@ namespace H_WorkTools
             #endregion
 
             RegistAll();//注册快捷键
+
+            new MessageBoxCustom("设置提示", "语言设置需要重启软件", MessageType.Success, MessageButtons.Ok).ShowDialog();
+
         }
         #endregion
 
