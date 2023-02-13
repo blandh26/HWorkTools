@@ -183,31 +183,47 @@ namespace H_WorkTools
             #endregion
 
             #region  应用中心
-            using (var db = new LiteDatabase(path + "worktools.db"))
+            try
             {
-                var exemodel = db.GetCollection<ExeModel>("ExeModel");
-                // 在 path 字段上创建唯一索引
-                exemodel.EnsureIndex(x => x.path, true);
-                List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.FindAll()));
-                for (int i = 0; i < list.Count; i++)
-                    list[i].ico = path + list[i].ico;
-                LvExe.ItemsSource = list;
-                db.Dispose();
+                using (var db = new LiteDatabase(path + "worktools.db"))
+                {
+                    var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                    // 在 path 字段上创建唯一索引
+                    exemodel.EnsureIndex(x => x.path, true);
+                    List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.FindAll()));
+                    for (int i = 0; i < list.Count; i++)
+                        list[i].ico = path + list[i].ico;
+                    LvExe.ItemsSource = list;
+                    db.Dispose();
+                }
+            }
+            catch (Exception eee)
+            {
+                Log.WriteErrorLog("应用中心-加载时间");
+                Log.WriteErrorLog(eee.Message);
             }
             #endregion
 
             #region  闹铃
             txtAlarmTimer.Text = cif.GetValue("Alarm");
-            using (var db = new LiteDatabase(path + "worktools.db"))
+            try
             {
-                var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
-                // 在 path 字段上创建唯一索引
-                alarmmodel.EnsureIndex(x => x.id, true);
-                List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
-                for (int i = 0; i < list.Count; i++)
-                    list[i].data = GetAlarmType(list[i]);
-                LvAlarm.ItemsSource = list;
-                db.Dispose();
+                using (var db = new LiteDatabase(path + "worktools.db"))
+                {
+                    var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                    // 在 path 字段上创建唯一索引
+                    alarmmodel.EnsureIndex(x => x.id, true);
+                    List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
+                    for (int i = 0; i < list.Count; i++)
+                        list[i].data = GetAlarmType(list[i]);
+                    LvAlarm.ItemsSource = list;
+                    db.Dispose();
+                }
+            }
+            catch (Exception eee1)
+            {
+                Log.WriteErrorLog("闹铃-加载时间");
+                Log.WriteErrorLog(eee1.Message);
             }
             AlarmTimer = new System.Threading.Timer(state =>
             {
@@ -272,8 +288,10 @@ namespace H_WorkTools
                                     alarmmodel.Update(model);
                                 }
                             }
-                            catch (Exception)
+                            catch (Exception eee2)
                             {
+                                Log.WriteErrorLog("闹铃定时任务-加载时间");
+                                Log.WriteErrorLog(eee2.Message);
                                 continue;
                             }
                         }
@@ -1702,14 +1720,22 @@ namespace H_WorkTools
                 else
                 {
                     LvExe.ItemsSource = null;
-                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    try
                     {
-                        var exemodel = db.GetCollection<ExeModel>("ExeModel");
-                        List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.Find(x => x.title.Contains(txt))));
-                        for (int i = 0; i < list.Count; i++)
-                            list[i].ico = path + list[i].ico;
-                        LvExe.ItemsSource = list;
-                        db.Dispose();
+                        using (var db = new LiteDatabase(path + "worktools.db"))
+                        {
+                            var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                            List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.Find(x => x.title.Contains(txt))));
+                            for (int i = 0; i < list.Count; i++)
+                                list[i].ico = path + list[i].ico;
+                            LvExe.ItemsSource = list;
+                            db.Dispose();
+                        }
+                    }
+                    catch (Exception eee3)
+                    {
+                        Log.WriteErrorLog("应用中心检索");
+                        Log.WriteErrorLog(eee3.Message);
                     }
                 }
             }
@@ -1748,11 +1774,19 @@ namespace H_WorkTools
                 }
                 else
                 {//删除
-                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    try
                     {
-                        var exemodel = db.GetCollection<ExeModel>("ExeModel");
-                        exemodel.DeleteMany(x => x.path == ((ExeModel)img.DataContext).path);
-                        db.Dispose();
+                        using (var db = new LiteDatabase(path + "worktools.db"))
+                        {
+                            var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                            exemodel.DeleteMany(x => x.path == ((ExeModel)img.DataContext).path);
+                            db.Dispose();
+                        }
+                    }
+                    catch (Exception eee4)
+                    {
+                        Log.WriteErrorLog("删除应用");
+                        Log.WriteErrorLog(eee4.Message);
                     }
                     ExeRefresh();
                 }
@@ -1764,18 +1798,26 @@ namespace H_WorkTools
         /// </summary>
         public void ExeSave()
         {
-            using (var db = new LiteDatabase(path + "worktools.db"))
+            try
             {
-                var exemodel = db.GetCollection<ExeModel>("ExeModel");
-                exemodel.DeleteAll();
-                for (int i = 0; i < LvExe.Items.Count; i++)
+                using (var db = new LiteDatabase(path + "worktools.db"))
                 {
-                    ExeModel model = (ExeModel)LvExe.Items[i];
-                    int index = model.ico.LastIndexOf("\\");  //返回“//”最后一次出现的位置
-                    model.ico = "ico\\" + model.ico.Substring(index + 1);  //截取文件名
-                    exemodel.Insert(model);
+                    var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                    exemodel.DeleteAll();
+                    for (int i = 0; i < LvExe.Items.Count; i++)
+                    {
+                        ExeModel model = (ExeModel)LvExe.Items[i];
+                        int index = model.ico.LastIndexOf("\\");  //返回“//”最后一次出现的位置
+                        model.ico = "ico\\" + model.ico.Substring(index + 1);  //截取文件名
+                        exemodel.Insert(model);
+                    }
+                    db.Dispose();
                 }
-                db.Dispose();
+            }
+            catch (Exception eee5)
+            {
+                Log.WriteErrorLog("删除应用");
+                Log.WriteErrorLog(eee5.Message);
             }
         }
 
@@ -1784,14 +1826,22 @@ namespace H_WorkTools
         /// </summary>
         public void ExeRefresh()
         {
-            using (var db = new LiteDatabase(path + "worktools.db"))
+            try
             {
-                var exemodel = db.GetCollection<ExeModel>("ExeModel");
-                List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.FindAll()));
-                for (int i = 0; i < list.Count; i++)
-                    list[i].ico = path + list[i].ico;
-                LvExe.ItemsSource = list;
-                db.Dispose();
+                using (var db = new LiteDatabase(path + "worktools.db"))
+                {
+                    var exemodel = db.GetCollection<ExeModel>("ExeModel");
+                    List<ExeModel> list = JsonConvert.DeserializeObject<List<ExeModel>>(JsonConvert.SerializeObject(exemodel.FindAll()));
+                    for (int i = 0; i < list.Count; i++)
+                        list[i].ico = path + list[i].ico;
+                    LvExe.ItemsSource = list;
+                    db.Dispose();
+                }
+            }
+            catch (Exception eee6)
+            {
+                Log.WriteErrorLog("exe列表刷新");
+                Log.WriteErrorLog(eee6.Message);
             }
         }
 
@@ -2039,14 +2089,22 @@ namespace H_WorkTools
                 else
                 {
                     LvAlarm.ItemsSource = null;
-                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    try
                     {
-                        var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
-                        List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.Find(x => x.title.Contains(txt)).OrderBy(x => x.lastTime)));
-                        for (int i = 0; i < list.Count; i++)
-                            list[i].data = GetAlarmType(list[i]);
-                        LvAlarm.ItemsSource = list;
-                        db.Dispose();
+                        using (var db = new LiteDatabase(path + "worktools.db"))
+                        {
+                            var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                            List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.Find(x => x.title.Contains(txt)).OrderBy(x => x.lastTime)));
+                            for (int i = 0; i < list.Count; i++)
+                                list[i].data = GetAlarmType(list[i]);
+                            LvAlarm.ItemsSource = list;
+                            db.Dispose();
+                        }
+                    }
+                    catch (Exception eee7)
+                    {
+                        Log.WriteErrorLog("闹铃搜索");
+                        Log.WriteErrorLog(eee7.Message);
                     }
                 }
             }
@@ -2060,14 +2118,22 @@ namespace H_WorkTools
         /// </summary>
         public void AlarmRefresh()
         {
-            using (var db = new LiteDatabase(path + "worktools.db"))
+            try
             {
-                var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
-                List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
-                for (int i = 0; i < list.Count; i++)
-                    list[i].data = GetAlarmType(list[i]);
-                LvAlarm.ItemsSource = list;
-                db.Dispose();
+                using (var db = new LiteDatabase(path + "worktools.db"))
+                {
+                    var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                    List<AlarmModel> list = JsonConvert.DeserializeObject<List<AlarmModel>>(JsonConvert.SerializeObject(alarmmodel.FindAll().OrderBy(x => x.lastTime)));
+                    for (int i = 0; i < list.Count; i++)
+                        list[i].data = GetAlarmType(list[i]);
+                    LvAlarm.ItemsSource = list;
+                    db.Dispose();
+                }
+            }
+            catch (Exception eee8)
+            {
+                Log.WriteErrorLog("闹钟列表刷新");
+                Log.WriteErrorLog(eee8.Message);
             }
         }
 
@@ -2105,22 +2171,38 @@ namespace H_WorkTools
             AlarmModel model = (AlarmModel)((System.Windows.Controls.ListViewItem)sender).Content; //Casting back to the binded Track
             if (IsAlarmDelete)
             {//删除
-                using (var db = new LiteDatabase(path + "worktools.db"))
+                try
                 {
-                    var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
-                    alarmmodel.DeleteMany(x => x.id == model.id);
-                    db.Dispose();
+                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    {
+                        var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                        alarmmodel.DeleteMany(x => x.id == model.id);
+                        db.Dispose();
+                    }
+                }
+                catch (Exception eee9)
+                {
+                    Log.WriteErrorLog("闹钟删除");
+                    Log.WriteErrorLog(eee9.Message);
                 }
                 AlarmRefresh();
             }
             else
             {
-                using (var db = new LiteDatabase(path + "worktools.db"))
+                try
                 {
-                    var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
-                    model = alarmmodel.FindOne(x => x.id == model.id);
-                    AlarmTemp.json = JsonConvert.SerializeObject(model);
-                    db.Dispose();
+                    using (var db = new LiteDatabase(path + "worktools.db"))
+                    {
+                        var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
+                        model = alarmmodel.FindOne(x => x.id == model.id);
+                        AlarmTemp.json = JsonConvert.SerializeObject(model);
+                        db.Dispose();
+                    }
+                }
+                catch (Exception eee10)
+                {
+                    Log.WriteErrorLog("闹钟修改");
+                    Log.WriteErrorLog(eee10.Message);
                 }
                 var vm = this.DataContext as MainWindowViewModel;
                 vm.AlarmInsertCommand.Execute("");
