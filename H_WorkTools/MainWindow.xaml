@@ -275,7 +275,6 @@
                         </TabItem.Header>
                         <StackPanel Margin="12">
                             <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource ScreenRecordingTitle}" />
-                            <!--截图录屏废弃-开始-->
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
@@ -310,7 +309,6 @@
                                     <TextBlock  TextWrapping="Wrap" x:Name="txtVideo" ></TextBlock>
                                 </ScrollViewer>
                             </Grid>
-                            <!--截图录屏废弃-结束-->
                         </StackPanel>
                     </TabItem>
                     <!--录屏-结束-->
@@ -354,10 +352,10 @@
                             </StackPanel>
                         </TabItem.Header>
                         <StackPanel Margin="12">
-                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource btn_Language}" />
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource SystemTitle}" />
                             <ScrollViewer Height="610" Width="395">
                                 <StackPanel Margin="0,0,12,0">
-                                    <GroupBox Header="系统设置" Margin="0,0,0,0">
+                                    <GroupBox Header="{DynamicResource SystemTitle}" Margin="0,0,0,0">
                                         <Grid >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100"/>
@@ -374,16 +372,16 @@
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource btn_Language_label}" Grid.ColumnSpan="2" />
                                             <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbLanguage" DisplayMemberPath="title" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" md:HintAssist.Hint="Language"/>
-                                            <Label Grid.Row="1" Grid.Column="0" Content="剪贴板密码" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource txtClipboardPassword}" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
                                             <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtClipboardPassword" Margin="0,15,0,0" MaxLength="32" md:HintAssist.Hint="Password"></TextBox>
-                                            <Label Grid.Row="2" Grid.Column="0" Content="闹铃(ms)" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Alarmms}" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
                                             <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtAlarmTimer" Margin="0,15,0,0" MaxLength="8" md:HintAssist.Hint="Alarm"></TextBox>
-                                            <Label Grid.Row="3" Grid.Column="0" Content="开机启动" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
-                                            <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbStart1" Content="是" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
-                                            <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbStart2" Content="否" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource IsStart}" Grid.ColumnSpan="2" Margin="0,15,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbStart1" Content="{DynamicResource rbStart1}" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbStart2" Content="{DynamicResource rbStart2}" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Header="截图"  Margin="0,5,0,0">
+                                    <GroupBox Header="{DynamicResource ScreenCaptureTitle}"  Margin="0,5,0,0">
                                         <Grid >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100"/>
@@ -401,31 +399,31 @@
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                             </Grid.RowDefinitions>
                                             <!--全屏截图-->
-                                            <Label Grid.Row="0" Grid.Column="0" Content="截图" />
+                                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource ScreenCapture}" />
                                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="cbScreenCaptureCtrl" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <CheckBox Grid.Row="0" Grid.Column="2" x:Name="cbScreenCaptureAlt" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <CheckBox Grid.Row="0" Grid.Column="3" x:Name="cbScreenCaptureShift" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <TextBox Grid.Row="0" Grid.Column="4" x:Name="txtScreenCaptureKey" md:HintAssist.Hint="Key" Text="A" KeyUp="Txt_KeyUp"/>
                                             <!--截图-->
-                                            <Label Grid.Row="1" Grid.Column="0" Content="截图" />
+                                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource ScreenCaptureLast}" />
                                             <CheckBox Grid.Row="1" Grid.Column="1" x:Name="cbLastCtrl" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <CheckBox Grid.Row="1" Grid.Column="2" x:Name="cbLastAlt" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <CheckBox Grid.Row="1" Grid.Column="3" x:Name="cbLastShift" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <TextBox Grid.Row="1" Grid.Column="4" x:Name="txtLastKey" md:HintAssist.Hint="Key" Text="S" KeyUp="Txt_KeyUp"/>
                                             <!--截图对比-->
-                                            <Label Grid.Row="2" Grid.Column="0" Content="截图对比" />
+                                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource ScreenCaptureDiff}" />
                                             <CheckBox Grid.Row="2" Grid.Column="1" x:Name="cbDiffCtrl" IsChecked="False" Content="Ctrl" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <CheckBox Grid.Row="2" Grid.Column="2" x:Name="cbDiffAlt" IsChecked="True" Content="Alt" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <CheckBox Grid.Row="2" Grid.Column="3" x:Name="cbDiffShift" IsChecked="True" Content="Shift" Style="{StaticResource MaterialDesignLightCheckBox}" />
                                             <TextBox Grid.Row="2" Grid.Column="4" x:Name="txtDiffKey" md:HintAssist.Hint="Key" Text="D" KeyUp="Txt_KeyUp"/>
-                                            <Label Grid.Row="3" Grid.Column="0" Content="对比窗体标题" />
+                                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource ScreenCaptureDiffTitle}" />
                                             <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="ScreenCaptureTitle" md:HintAssist.Hint="Key" Text="A" />
-                                            <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
+                                            <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource ScreenCaptureOpacity}" />
                                             <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" x:Name="ScreenCaptureOpacity" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
-                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0" Text="{Binding AlarmViewcbType0}">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0" Text="{DynamicResource ScreenCaptureText}"></TextBlock>
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Header="其他快捷键" Margin="0,5,0,0">
+                                    <GroupBox Header="{DynamicResource OtherTitle}" Margin="0,5,0,0">
                                         <Grid >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100"/>
@@ -437,7 +435,7 @@
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <!--停止共享桌面-->
-                                            <Label Grid.Row="0" Grid.Column="0" Content="停止共享桌面" />
+                                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Stop}" />
                                             <ComboBox Grid.Row="0" Grid.Column="1" x:Name="cbDeskShare" HorizontalAlignment="Left">
                                                 <ComboBoxItem Content="Alt+Shift"></ComboBoxItem>
                                                 <ComboBoxItem Content="Alt+Ctrl"></ComboBoxItem>
@@ -448,7 +446,7 @@
                                             </ComboBox>
                                             <TextBox Grid.Row="0" Grid.Column="2" x:Name="txtDeskShareKey" md:HintAssist.Hint="Key" Text="Escape" KeyUp="Txt_KeyUp"/>
                                             <!--剪贴板快捷键-->
-                                            <Label Grid.Row="1" Grid.Column="0" Content="剪贴板" />
+                                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Clipboard}" />
                                             <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cbClipboardCtrl" HorizontalAlignment="Left">
                                                 <ComboBoxItem Content="Alt+Shift"></ComboBoxItem>
                                                 <ComboBoxItem Content="Alt+Ctrl"></ComboBoxItem>
@@ -458,12 +456,12 @@
                                                 <ComboBoxItem Content="Ctrl"></ComboBoxItem>
                                             </ComboBox>
                                             <ComboBox Grid.Row="1" Grid.Column="2" x:Name="cbClipboardNumber" HorizontalAlignment="Left">
-                                                <ComboBoxItem Content="键盘数字"></ComboBoxItem>
-                                                <ComboBoxItem Content="小键盘"></ComboBoxItem>
+                                                <ComboBoxItem Content="{DynamicResource cbClipboardNumber1}"></ComboBoxItem>
+                                                <ComboBoxItem Content="{DynamicResource cbClipboardNumber2}"></ComboBoxItem>
                                             </ComboBox>
                                         </Grid>
                                     </GroupBox>
-                                    <Button Height="Auto" Content="{DynamicResource btn_SetLanguage_label}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,0"/>
+                                    <Button Height="Auto" Content="{DynamicResource SetLanguage_Click}" FontSize="14" Click="SetLanguage_Click" Cursor="Hand" Margin="0,10,0,0"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </StackPanel>
