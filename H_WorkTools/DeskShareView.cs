@@ -1,4 +1,6 @@
-﻿using System;
+﻿using H_Util;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +18,11 @@ namespace H_WorkTools
     {
         string connectionString, niceName, mode;
         bool isControl = true;
+        string jsonLanguage = "";
+        Config cif = new Config();
         LvAudienceUpdate lvAudienceUpdate;
+        private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
+
         public DeskShareView(string _connectionString, string _niceName, LvAudienceUpdate  _lvAudienceUpdate)
         {
             connectionString = _connectionString.Substring(1);
@@ -88,12 +94,14 @@ namespace H_WorkTools
             {
                 if (isControl)
                 {
+                    toolStripMenuItem1.Text = "释放";
                     axRDPViewer1.RequestControl(RDPCOMAPILib.CTRL_LEVEL.CTRL_LEVEL_INTERACTIVE);
                     isControl = false;
                     toolStripMenuItem1.Image = H_WorkTools.Properties.Resources._2;
                 }
                 else
                 {
+                    toolStripMenuItem1.Text = "控制";
                     axRDPViewer1.RequestControl(RDPCOMAPILib.CTRL_LEVEL.CTRL_LEVEL_VIEW);
                     isControl = true;
                     toolStripMenuItem1.Image = H_WorkTools.Properties.Resources._1;
@@ -127,6 +135,23 @@ namespace H_WorkTools
         private void OnConnectionFailed(object sender, EventArgs e)
         {
 
-        }       
+        }
+
+        public string getLanguage(string key)
+        {
+            try
+            {
+                if (jsonLanguage == "")
+                {
+                    jsonLanguage = System.IO.File.ReadAllText(path + "Language" + "\\" + cif.GetValue("Language") + ".json");
+                }
+                Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonLanguage);
+                return dic.Where(S => S.Key == key).Select(S => S.Value).First().ToString();
+            }
+            catch (Exception ee)
+            {
+                return "";
+            }
+        }
     }
 }

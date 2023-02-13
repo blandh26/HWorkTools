@@ -225,3 +225,7 @@ D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.exe
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\H_WorkTools.pdb
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\Dailog\AlarmView.g.cs
 D:\Code\HWorkTools\H_WorkTools\obj\Debug\Dailog\AlarmView.baml
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\Language\en_us.json
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\Language\jp_jp.json
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\Language\kr_kr.json
+D:\Code\HWorkTools\H_WorkTools\bin\Debug\Language\zh_cn.json

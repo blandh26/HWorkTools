@@ -81,7 +81,7 @@ namespace H_WorkTools
         private TcpP2p p2p = new TcpP2p();
         bool isInvite = false;//是否是求助模式
         #endregion
-
+        string jsonLanguage = "";
         bool IsExeDelete = false;//应用中心 删除状态
         bool IsAlarmDelete = false;//闹铃 删除状态
         bool IsAlarmAdd = false;//闹铃 新增状态
@@ -149,6 +149,7 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            string aa = getLanguage("author1");
             this.WindowStyle = WindowStyle.None;
             txtTitle.Text = "HWorkTools[" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]";//版本显示
             var hwnd = new WindowInteropHelper(this).Handle;
@@ -2248,6 +2249,22 @@ namespace H_WorkTools
 
             System.Windows.DataObject dataObj = new System.Windows.DataObject(listBoxItem.Content as TextBlock);
             DragDrop.DoDragDrop(LvAlarm, dataObj, System.Windows.DragDropEffects.Move);  //调用方法
+        }
+
+        public string getLanguage(string key) {
+            try
+            {
+                if (jsonLanguage=="")
+                {
+                    jsonLanguage=System.IO.File.ReadAllText(path+ "Language"+"\\"+cif.GetValue("Language")+".json");
+                }
+                Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonLanguage);
+                return dic.Where(S => S.Key == key).Select(S => S.Value).First().ToString();
+            }
+            catch (Exception ee)
+            {
+                return "";
+            }
         }
     }
 
