@@ -26,13 +26,13 @@
         <md:ColorZone Mode="PrimaryMid"  Grid.Row="0" Grid.ColumnSpan="2">
             <TextBlock Text="{Binding Title}" Padding="5" FontSize="14" Margin="5,0"/>
         </md:ColorZone>
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtTitle}" Margin="15,5" md:HintAssist.Hint="Title" Height="30" TextWrapping="Wrap" MaxLength="20"/>
-        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtContent}" Margin="15,5" md:HintAssist.Hint="Content" Height="100" AcceptsReturn="True" MaxLength="1000" 
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtTitle}" Margin="15,5" md:HintAssist.Hint="{DynamicResource AlarmViewTitle}" Height="30" TextWrapping="Wrap" MaxLength="20"/>
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TxtContent}" Margin="15,5" md:HintAssist.Hint="{DynamicResource AlarmViewContent}" Height="100" AcceptsReturn="True" MaxLength="1000" 
                  TextWrapping="Wrap" VerticalAlignment="Top"  VerticalScrollBarVisibility="Auto" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
         <ComboBox Grid.Row="3" Grid.Column="0" x:Name="cbType" Margin="15,5" SelectionChanged="cbType_SelectionChanged" SelectedIndex="{Binding CbType}">
-            <ComboBoxItem>指定</ComboBoxItem>
-            <ComboBoxItem>每周</ComboBoxItem>
-            <ComboBoxItem>每月</ComboBoxItem>
+            <ComboBoxItem Content="{DynamicResource AlarmViewcbType0}"/>
+            <ComboBoxItem Content="{DynamicResource AlarmViewcbType1}"/>
+            <ComboBoxItem Content="{DynamicResource AlarmViewcbType2}"/>
         </ComboBox>
         <md:TimePicker Grid.Row="3" Grid.Column="1" x:Name="TimePicker" Is24Hours="True" Margin="15,5" Text="{Binding TxtTime}"/>
         <!--指定日期-->
@@ -55,13 +55,13 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="False" DataContext="1" Content="周一"/>
-            <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="False" DataContext="2" Content="周三"/>
-            <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="False" DataContext="3" Content="周四"/>
-            <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" DataContext="4" Content="周二"/>
-            <CheckBox Grid.Row="0" Grid.Column="4" IsChecked="False" DataContext="5" Content="周五"/>
-            <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="False" DataContext="6" Content="周六"/>
-            <CheckBox Grid.Row="0" Grid.Column="6" IsChecked="False" DataContext="7" Content="周日"/>
+            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="False" DataContext="1" Content="{DynamicResource AlarmViewW1}"/>
+            <CheckBox Grid.Row="0" Grid.Column="2" IsChecked="False" DataContext="2" Content="{DynamicResource AlarmViewW2}"/>
+            <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="False" DataContext="3" Content="{DynamicResource AlarmViewW3}"/>
+            <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="False" DataContext="4" Content="{DynamicResource AlarmViewW4}"/>
+            <CheckBox Grid.Row="0" Grid.Column="4" IsChecked="False" DataContext="5" Content="{DynamicResource AlarmViewW5}"/>
+            <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="False" DataContext="6" Content="{DynamicResource AlarmViewW6}"/>
+            <CheckBox Grid.Row="0" Grid.Column="6" IsChecked="False" DataContext="7" Content="{DynamicResource AlarmViewW7}"/>
         </Grid>
         <!--每月-->
         <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="15,5" x:Name="StackPanel_M" Visibility="Hidden">
@@ -115,10 +115,10 @@
             <CheckBox Grid.Row="3" Grid.Column="6" IsChecked="False" DataContext="31" Content="31"/>
         </Grid>
         <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="200,0,0,0" >
-            <Button Content="Cancel" Margin="0,0,10,0" Width="80"
+            <Button Content="{DynamicResource AlarmViewCancel}" Margin="0,0,10,0" Width="80"
                     Command="{Binding CancelCommand}" 
                     Style="{StaticResource MaterialDesignOutlinedButton}" Cursor="Hand"/>
-            <Button Content="OK"   Width="80"  Command="{Binding SureCommand}" Click="Button_Click"/>
+            <Button Content="{DynamicResource AlarmViewOk}"   Width="80"  Command="{Binding SureCommand}" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

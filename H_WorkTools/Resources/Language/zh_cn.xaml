@@ -2,10 +2,45 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:s="clr-namespace:System;assembly=mscorlib"
                      xmlns:local="clr-namespace:WpfApplication">
-    <s:String x:Key="btn_ScreenCapture">截屏</s:String>
-    <s:String x:Key="btn_ScreenRecord">录屏</s:String>
-    <s:String x:Key="btn_DeskShare">远程</s:String>
-    <s:String x:Key="btn_Language">语言</s:String>
-    <s:String x:Key="btn_Language_label">设置语言：</s:String>
-    <s:String x:Key="btn_SetLanguage_label">设   置</s:String>
-    </ResourceDictionary>
+    <s:String x:Key="AlarmViewcbType0">指定日期</s:String>
+    <s:String x:Key="AlarmViewcbType1">每    周</s:String>
+    <s:String x:Key="AlarmViewcbType2">每    月</s:String>
+    <s:String x:Key="AlarmViewW1">周一</s:String>
+    <s:String x:Key="AlarmViewW2">周二</s:String>
+    <s:String x:Key="AlarmViewW3">周三</s:String>
+    <s:String x:Key="AlarmViewW4">周四</s:String>
+    <s:String x:Key="AlarmViewW5">周五</s:String>
+    <s:String x:Key="AlarmViewW6">周六</s:String>
+    <s:String x:Key="AlarmViewW7">周日</s:String>
+    <s:String x:Key="AlarmViewCancel">取消</s:String>
+    <s:String x:Key="AlarmViewOk">确定</s:String>
+    <s:String x:Key="AlarmViewTitle">标题</s:String>
+    <s:String x:Key="AlarmViewContent">描述</s:String>
+    <s:String x:Key="ExeViewTitle">标题</s:String>
+    <s:String x:Key="ExeViewSelect">选择</s:String>
+    <s:String x:Key="ExeViewOK">确定</s:String>
+    <s:String x:Key="ExeViewCancel">取消</s:String>
+    <s:String x:Key="TopMost">置顶</s:String>
+    <s:String x:Key="WindowMinimize">最小化</s:String>
+    <s:String x:Key="Exit">退出</s:String>
+    <s:String x:Key="AppsTile">应用中心</s:String>
+    <s:String x:Key="AppsAdd">新增</s:String>
+    <s:String x:Key="AppsDelete">删除</s:String>
+    <s:String x:Key="AlarmTile">提醒工11具</s:String>
+    <s:String x:Key="AlarmAdd">新增</s:String>
+    <s:String x:Key="AlarmDelete">删除</s:String>
+    <s:String x:Key="DeskShareTitle">共享桌面</s:String>
+    <s:String x:Key="DeskShareNiceName">昵称</s:String>
+    <s:String x:Key="DeskShareIP">本地IP</s:String>
+    <s:String x:Key="DeskSharePassword">密码</s:String>
+    <s:String x:Key="DeskShareMode">模式</s:String>
+    <s:String x:Key="DeskShareMode1">共享</s:String>
+    <s:String x:Key="DeskShareMode2">控制</s:String>
+    <s:String x:Key="DeskShareBtnDeskShare">共享</s:String>
+    <s:String x:Key="DeskShareText">Alt+Shift+Esc快捷键快速结束共享</s:String>
+    <s:String x:Key="IP2">加入或求助</s:String>
+    <s:String x:Key="Password2">共享</s:String>
+    <s:String x:Key="BtnDeskShareJoin">求助</s:String>
+    <s:String x:Key="DeskShareText2">求助模式:输入求助人IP后点击求助。加入模式：输入加入IP后点击加入按钮。</s:String>
+
+</ResourceDictionary>

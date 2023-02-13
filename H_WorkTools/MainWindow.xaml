@@ -33,13 +33,13 @@
                         <Image Source="/Resources/hworktools.ico" Grid.Row="0" Grid.Column="0" Height="24" Width="24" HorizontalAlignment="Left" Margin="12,5,5,5" PreviewMouseMove="Border_OnMouseLeftButtonDown"/>
                         <TextBlock x:Name="txtTitle" Text="123" Padding="5" FontSize="14" Grid.Row="0" Grid.Column="1" PreviewMouseMove="Border_OnMouseLeftButtonDown"/>
                         <ToggleButton Grid.Row="0" Grid.Column="2" x:Name="BtnTopMost"  Click="BtnTopMost_Click"
-                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{md:PackIcon Kind=Pin}" 
+                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource TopMost}" Content="{md:PackIcon Kind=Pin}" 
                                       md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=PinOff}" Cursor="Hand" />
                         <ToggleButton Grid.Row="0" Grid.Column="3" Click="Minimize_Click"
-                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="WindowMinimize" Content="{md:PackIcon Kind=WindowMinimize}" 
+                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource WindowMinimize}" Content="{md:PackIcon Kind=WindowMinimize}" 
                                       md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=WindowMinimize}" Cursor="Hand" />
                         <ToggleButton Grid.Row="0" Grid.Column="4"  Click="Close_Click"
-                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="Exit" Content="{md:PackIcon Kind=ExitToApp}" 
+                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource Exit}" Content="{md:PackIcon Kind=ExitToApp}" 
                                       md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=ExitToApp}" Cursor="Hand" />
                     </Grid>
                 </StackPanel>
@@ -54,7 +54,7 @@
                             </StackPanel>
                         </TabItem.Header>
                         <StackPanel Margin="12" >
-                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="应用中心" />
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource AppsTile}" />
                             <Grid Margin="0,0,0,10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -68,8 +68,8 @@
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                 </Grid.RowDefinitions>
                                 <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtApp" Text="" MaxLength="30" TextChanged="txtApp_TextChanged"/>
-                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AppInsertCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
-                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnExeDelete" Click="BtnExeDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AppInsertCommand}" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource AppsAdd}" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnExeDelete" Click="BtnExeDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource AppsDelete}" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
                                 <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvExe" Height="540" Margin="0,20,0,0" AllowDrop="True" 
                                           PreviewMouseMove="LvExe_OnPreviewMouseMove" Drop="LvExe_OnDrop"
                                           Background ="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
@@ -102,7 +102,7 @@
                             </StackPanel>
                         </TabItem.Header>
                         <StackPanel Margin="12">
-                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="提醒工具" />
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource AlarmTile}" />
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
@@ -117,9 +117,9 @@
                                 </Grid.RowDefinitions>
                                 <!--Command="{Binding UpdateCommand}"-->
                                 <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="txtAlarm" Text="" MaxLength="30" TextChanged="txtAlarm_TextChanged"/>
-                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AlarmInsertCommand}" Click="AlarmInsert_Click" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="3" Command="{Binding AlarmInsertCommand}" Click="AlarmInsert_Click" CommandParameter="{Binding ElementName=cbIp, Path=Text}" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource AlarmAdd}" Content="{md:PackIcon Kind=Plus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Plus}" Cursor="Hand" />
                                 <!--Click="BtnAlarmDelete_Click"-->
-                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnAlarmDelete" Click="AlarmDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="5" x:Name="BtnAlarmDelete" Click="AlarmDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource AlarmDelete}" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
                                 <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvAlarm" 
                                           Height="540" Margin="0,20,0,0" 
                                           Background ="Transparent" 
@@ -171,7 +171,7 @@
                             </StackPanel>
                         </TabItem.Header>
                         <StackPanel Margin="12">
-                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="共享桌面" />
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource DeskShareTitle}" />
                             <md:Card>
                                 <TabControl Style="{StaticResource MaterialDesignFilledTabControl}">
                                     <TabItem Header="共享">
@@ -192,20 +192,20 @@
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <!--停止共享-->
-                                            <Label Grid.Row="0" Grid.Column="0" Content="NiceName" Margin="10,10,0,0"/>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource DeskShareNiceName}" Margin="10,10,0,0"/>
                                             <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNiceName" md:HintAssist.Hint="NiceName" Text="" Margin="0,10,10,0"/>
-                                            <Label Grid.Row="1" Grid.Column="0" Content="本地IP" Margin="10,10,0,0"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource DeskShareIP}" Margin="10,10,0,0"/>
                                             <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="cbIp" DisplayMemberPath="IP" SelectedValuePath="id" IsEnabled="{Binding Path=IsChecked, ElementName=FilledComboBoxEnabledCheckBox}" Margin="0,0,10,0"/>
-                                            <Label Grid.Row="2" Grid.Column="0" Content="密码"  Margin="10,10,0,0"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource DeskSharePassword}"  Margin="10,10,0,0"/>
                                             <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpKey" md:HintAssist.Hint="Password" MaxLength="4" Text="" Margin="0,0,10,0"/>
-                                            <Label Grid.Row="3" Grid.Column="0" Content="模式" Margin="10,10,0,0"/>
-                                            <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbMode1" Content="共享" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
-                                            <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbMode2" Content="控制" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
-                                            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="共享" x:Name="BtnDeskShare" Click="BtnDeskShare_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="10,10,10,10">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource DeskShareMode}" Margin="10,10,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="1" x:Name="rbMode1" Content="{DynamicResource DeskShareMode1}" Style="{StaticResource MaterialDesignRadioButton}" IsChecked="True" Margin="0,10,0,0"/>
+                                            <RadioButton Grid.Row="3" Grid.Column="3" x:Name="rbMode2" Content="{DynamicResource DeskShareMode2}" Style="{StaticResource MaterialDesignRadioButton}" Margin="0,10,0,0"/>
+                                            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="{DynamicResource DeskShareBtnDeskShare}" x:Name="BtnDeskShare" Click="BtnDeskShare_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="10,10,10,10" Text="{DynamicResource DeskShareTitle2}"></TextBlock>
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="加入或求助">
+                                    <TabItem Header="{DynamicResource DeskShareTitle2}">
                                         <Grid >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100"/>
@@ -220,13 +220,13 @@
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                                 <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
                                             </Grid.RowDefinitions>
-                                            <Label Grid.Row="0" Grid.Column="0" Content="IP"  Margin="10,10,0,0"/>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource DeskShareIP2}"  Margin="10,10,0,0"/>
                                             <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtIp" md:HintAssist.Hint="IP" Text="192.168.3.132" Margin="0,10,10,0"/>
-                                            <Label Grid.Row="1" Grid.Column="0" Content="密码"  Margin="10,10,0,0"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource DeskSharePassword2}"  Margin="10,10,0,0"/>
                                             <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtRdpPswKey" md:HintAssist.Hint="Password" MaxLength="4" Text="" Margin="0,0,10,0"/>
-                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="加入" x:Name="BtnDeskShareJoin" Click="BtnDeskShareJoin_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                            <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="求助" x:Name="BtnDeskShareInvite" Click="BtnDeskShareInvite_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
-                                            <TextBlock  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="10,10,10,10">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Width="80" Content="{DynamicResource BtnDeskShareJoin}" x:Name="BtnDeskShareJoin" Click="BtnDeskShareJoin_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                            <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="80" Content="{DynamicResource BtnDeskShareInvite}" x:Name="BtnDeskShareInvite" Click="BtnDeskShareInvite_Click" FontSize="14" Cursor="Hand" Margin="0,10,0,0"/>
+                                            <TextBlock  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="10,10,10,10" Text="{DynamicResource DeskShareText2}"></TextBlock>
                                         </Grid>
                                     </TabItem>
                                 </TabControl>
@@ -422,7 +422,7 @@
                                             <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="4" x:Name="ScreenCaptureTitle" md:HintAssist.Hint="Key" Text="A" />
                                             <Label Grid.Row="4" Grid.Column="0" Content="透明度" />
                                             <Slider Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" x:Name="ScreenCaptureOpacity" Value="40" Minimum="30" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" TickFrequency="{Binding DiscreteHorizontal.TickFrequency}" TickPlacement="BottomRight" />
-                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                            <TextBlock  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0" Text="{Binding AlarmViewcbType0}">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
                                         </Grid>
                                     </GroupBox>
                                     <GroupBox Header="其他快捷键" Margin="0,5,0,0">
