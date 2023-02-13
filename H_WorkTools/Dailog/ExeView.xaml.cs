@@ -61,6 +61,10 @@ namespace H_WorkTools.Dailog
             if (opfd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             file = opfd.FileName;
 
+            if (string.IsNullOrEmpty(model.TxtTitle))
+            {
+                model.TxtTitle = opfd.SafeFileName.Split('.')[0];
+            }
             //指定存放图标的文件夹
             string folderToSave = path + "ico\\";
             if (!Directory.Exists(folderToSave)) Directory.CreateDirectory(folderToSave);

@@ -17,7 +17,7 @@
                 <RowDefinition Height="36"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <md:ColorZone Mode="PrimaryMid"  Grid.Row="0"  Height="36" PreviewMouseMove="Border_OnMouseLeftButtonDown">
+            <md:ColorZone Mode="PrimaryMid"  Grid.Row="0"  Height="36" >
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -30,13 +30,17 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Image Source="/Resources/hworktools.ico" Grid.Row="0" Grid.Column="0" Height="24" Width="24" HorizontalAlignment="Left" Margin="12,5,5,5"/>
-                        <TextBlock x:Name="txtTitle" Text="123" Padding="5" FontSize="14" Grid.Row="0" Grid.Column="1" Margin="0,5,0,0"/>
-                        <ToggleButton Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" x:Name="BtnTopMost" Click="BtnTopMost_Click"  Margin="0,0,0,0"
-                                      Height="30" Width="30" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" HorizontalAlignment="Right"
-                                      Content="{md:PackIcon Kind=Pin}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=PinOff,Size=20}" Cursor="Hand" />
-                        <md:PackIcon Grid.Row="0" Grid.Column="3" Width="24" Height="24" Kind="WindowMinimize" HorizontalAlignment="Right" Margin="12,5,5,5" MouseDown="Minimize_Click"/>
-                        <md:PackIcon Grid.Row="0" Grid.Column="4" Width="24" Height="24" Kind="WindowClose" HorizontalAlignment="Right" Margin="12,5,17,5" MouseDown="Close_Click"/>
+                        <Image Source="/Resources/hworktools.ico" Grid.Row="0" Grid.Column="0" Height="24" Width="24" HorizontalAlignment="Left" Margin="12,5,5,5" PreviewMouseMove="Border_OnMouseLeftButtonDown"/>
+                        <TextBlock x:Name="txtTitle" Text="123" Padding="5" FontSize="14" Grid.Row="0" Grid.Column="1" PreviewMouseMove="Border_OnMouseLeftButtonDown"/>
+                        <ToggleButton Grid.Row="0" Grid.Column="2" x:Name="BtnTopMost"  Click="BtnTopMost_Click"
+                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="置顶" Content="{md:PackIcon Kind=Pin}" 
+                                      md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=PinOff}" Cursor="Hand" />
+                        <ToggleButton Grid.Row="0" Grid.Column="3" Click="Minimize_Click"
+                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="WindowMinimize" Content="{md:PackIcon Kind=WindowMinimize}" 
+                                      md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=WindowMinimize}" Cursor="Hand" />
+                        <ToggleButton Grid.Row="0" Grid.Column="4"  Click="Close_Click"
+                                      Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="Exit" Content="{md:PackIcon Kind=ExitToApp}" 
+                                      md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=ExitToApp}" Cursor="Hand" />
                     </Grid>
                 </StackPanel>
             </md:ColorZone>

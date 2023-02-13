@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("H_ScreenCapture")]
+[assembly: AssemblyTitle("HScreenCapture")]
 [assembly: AssemblyDescription("blandh26@gmail.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NttData")]
-[assembly: AssemblyProduct("H_ScreenCapture")]
+[assembly: AssemblyProduct("HScreenCapture")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

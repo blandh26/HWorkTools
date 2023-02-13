@@ -267,7 +267,7 @@ namespace H_WorkTools
                                 }
                                 if (isShow)
                                 {
-                                    new MessageBoxCustom(model.title, model.content, MessageType.Success, MessageButtons.Ok).ShowDialog();
+                                    new MessageBoxCustom(model.title, model.content, MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                                     model.lastTime = dt.ToString("yyyy-MM-dd HH:mm");
                                     alarmmodel.Update(model);
                                 }
@@ -317,7 +317,7 @@ namespace H_WorkTools
             p2p.myport = Convert.ToInt32(cif.GetValue("Tcp"));
             if (TcpP2p.IsPortOccuped(p2p.myport))
             {
-                bool? Result = new MessageBoxCustom("adssad", "是否关闭占用端口程序 ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                bool? Result = new MessageBoxCustom("端口提示", "是否关闭占用端口程序 ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                 if (Convert.ToBoolean(Result))
                 {
                     try
@@ -327,7 +327,7 @@ namespace H_WorkTools
                     }
                     catch (Exception)
                     {
-                        new MessageBoxCustom("adssad", "端口相关程序关闭失败，关闭程序 ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        new MessageBoxCustom("端口提示", "端口相关程序关闭失败，关闭程序 ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         Environment.Exit(0); //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。
                     };
                 }
@@ -760,7 +760,7 @@ namespace H_WorkTools
         {
             if (txtNiceName.Text == "")
             {
-                new MessageBoxCustom("系统提示", "必须输入昵称", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                new MessageBoxCustom("远程共享提示", "输入昵称后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                 return;
             }
             if (IsDeskShare)
@@ -884,14 +884,14 @@ namespace H_WorkTools
         {
             if (txtNiceName.Text == "")
             {
-                new MessageBoxCustom("系统提示", "必须输入昵称", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                new MessageBoxCustom("远程共享提示", "输入昵称后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                 return;
             }
             if (txtIp.Text != "")
             {
                 if (txtRdpPswKey.Text == "" || txtRdpPswKey.Text.Length != 4)
                 {
-                    new MessageBoxCustom("系统提示", "输入密码", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    new MessageBoxCustom("远程共享提示", "输入密码后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
                 IPAddress ip;
@@ -913,7 +913,7 @@ namespace H_WorkTools
                         BtnDeskShareJoin.IsEnabled = false;
                         BtnDeskShareInvite.IsEnabled = false;
                         txtIp.IsEnabled = false;
-                        new MessageBoxCustom("系统提示", "加入请求失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        new MessageBoxCustom("远程共享提示", "加入请求失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         return;
                     }
                     cif.SaveValue("Ip", cbIp.SelectedValue.ToString());
@@ -924,7 +924,7 @@ namespace H_WorkTools
                     BtnDeskShare.IsEnabled = true;
                     BtnDeskShareJoin.IsEnabled = true;
                     BtnDeskShareInvite.IsEnabled = true;
-                    new MessageBoxCustom("系统提示", "输入正确IP后加入", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    new MessageBoxCustom("远程共享提示", "输入正确IP后加入", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
             }
@@ -939,7 +939,7 @@ namespace H_WorkTools
         {
             if (txtNiceName.Text == "")
             {
-                new MessageBoxCustom("系统提示", "必须输入昵称", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                new MessageBoxCustom("远程共享提示", "输入昵称后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                 return;
             }
             rbMode2.IsChecked = true;//邀请默认控制模式
@@ -962,7 +962,7 @@ namespace H_WorkTools
                     if (!issend)
                     {
                         Stop();
-                        new MessageBoxCustom("系统提示", "邀请失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        new MessageBoxCustom("远程共享提示", "邀请失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         return;
                     }
                     cif.SaveValue("Ip", cbIp.SelectedValue.ToString());
@@ -973,7 +973,7 @@ namespace H_WorkTools
                     BtnDeskShare.IsEnabled = true;
                     BtnDeskShareJoin.IsEnabled = true;
                     BtnDeskShareInvite.IsEnabled = true;
-                    new MessageBoxCustom("系统提示", "输入正确IP后邀请", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    new MessageBoxCustom("远程共享提示", "输入正确IP后邀请", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
             }
@@ -1068,7 +1068,7 @@ namespace H_WorkTools
                                 {//推送密钥
                                     try
                                     {
-                                        bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                                        bool? Result = new MessageBoxCustom("远程共享提示", msgstr.recName + "[" + msgstr.recIP + "]请求加入共享是否同意 ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                                         if (Convert.ToBoolean(Result))
                                         {//同意加入
                                             TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
@@ -1150,7 +1150,7 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinRefuse))
                         {//加入拒绝
-                            new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom("远程共享提示", "加入请求被拒绝 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinUpdate))
@@ -1198,7 +1198,7 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinPassword))
                         {//加入失败密码错误
-                            new MessageBoxCustom("系统提示", "加入失败，密码错误", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom("远程共享提示", "加入失败，密码错误", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                             BtnDeskShareJoin.IsEnabled = true;
                             BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
@@ -1207,7 +1207,7 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinFail))
                         {//加入失败会议没有
-                            new MessageBoxCustom("系统提示", "加入失败，未开启共享或已经结束", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom("远程共享提示", "加入失败，未开启共享或已经结束", MessageType.Warning, MessageButtons.Ok).ShowDialog();
                             BtnDeskShareJoin.IsEnabled = true;
                             BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
@@ -1216,7 +1216,7 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteApply))
                         {//邀请请求
-                            bool? Result = new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                            bool? Result = new MessageBoxCustom("远程共享提示", msgstr.recName + "[" + msgstr.recIP + "]请求远程协助是否同意", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                             if (Convert.ToBoolean(Result))
                             {//同意邀请
                                 BtnDeskShare.IsEnabled = false;
@@ -1263,13 +1263,13 @@ namespace H_WorkTools
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteRefuse))
                         {//邀请拒绝
                             Stop();
-                            new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom("远程共享提示", "邀请被拒绝", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteExit))
-                        {//邀请拒绝
+                        {//邀请者结束远程协助
                             Stop();
-                            new MessageBoxCustom("adssad", "Are you sure, You want to close         application ? ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom("远程共享提示", "邀请者结束远程协助 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.ExElistUpdate))
@@ -1552,7 +1552,7 @@ namespace H_WorkTools
                 string file = path + "Json\\" + "\\" + "Clipboard.Json";
                 if (File.Exists(file))
                 {
-                    bool? Result = new MessageBoxCustom("adssad", "从新设置密码清空缓存", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                    bool? Result = new MessageBoxCustom("设置提示", "从新设置密码清空缓存", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                     if (Convert.ToBoolean(Result))
                     {
                         File.Delete(file);
@@ -1584,7 +1584,7 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("adssad", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
             }
             #region 快捷键重新设置
             try
@@ -1781,7 +1781,6 @@ namespace H_WorkTools
         /// </summary>
         public void ExeRefresh()
         {
-            LvExe.ItemsSource = null;
             using (var db = new LiteDatabase(path + "worktools.db"))
             {
                 var exemodel = db.GetCollection<ExeModel>("ExeModel");
@@ -1930,7 +1929,7 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("adssad", "剪贴板快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "剪贴板快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -1944,7 +1943,7 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("adssad", "停止共享快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "停止共享快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -1968,7 +1967,7 @@ namespace H_WorkTools
             }
             catch
             {
-                new MessageBoxCustom("adssad", "截图快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "截图快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -1992,7 +1991,7 @@ namespace H_WorkTools
             }
             catch
             {
-                new MessageBoxCustom("adssad", "截图上一次快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "截图上一次快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -2016,7 +2015,7 @@ namespace H_WorkTools
             }
             catch
             {
-                new MessageBoxCustom("adssad", "截图对比快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                new MessageBoxCustom("设置提示", "截图对比快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -2058,7 +2057,6 @@ namespace H_WorkTools
         /// </summary>
         public void AlarmRefresh()
         {
-            LvExe.ItemsSource = null;
             using (var db = new LiteDatabase(path + "worktools.db"))
             {
                 var alarmmodel = db.GetCollection<AlarmModel>("AlarmModel");
@@ -2211,7 +2209,7 @@ namespace H_WorkTools
                     {
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
-                            new MessageBoxCustom("adssad", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom("设置提示", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                         }));
                     }
                     TcpP2p p2p = new TcpP2p();
@@ -2228,7 +2226,7 @@ namespace H_WorkTools
             }
             System.Diagnostics.Debug.WriteLine("MouseDoubleClick Command.");
         }
-        private DelegateCommand AppInsertCommand
+        public DelegateCommand AppInsertCommand
         {
             get
             {
@@ -2254,7 +2252,7 @@ namespace H_WorkTools
                             {
                                 App.Current.Dispatcher.Invoke((Action)(() =>
                                 {
-                                    new MessageBoxCustom("adssad", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                                    new MessageBoxCustom("添加应用程序", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
                                 }));
                             }
                             TcpP2p p2p = new TcpP2p();
