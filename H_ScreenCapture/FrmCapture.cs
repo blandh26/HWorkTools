@@ -451,7 +451,7 @@ namespace H_ScreenCapture
                 case "btn_save":
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Filter = "*.png|*.png|*.jpg|*.jpg|*.bmp|*.bmp|*.gif|*.gif|*.tiff|*.tiff";
-                    sfd.FileName = "DevCap_"/*Developer Capture*/ + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
+                    sfd.FileName = "HCap_"/*Developer Capture*/ + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
                     System.Drawing.Imaging.ImageFormat imgf = System.Drawing.Imaging.ImageFormat.Png;
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
@@ -465,7 +465,6 @@ namespace H_ScreenCapture
                         using (System.IO.Stream stream = new System.IO.FileStream(sfd.FileName, System.IO.FileMode.Create))
                         {
                             m_imgLastLayer.Save(stream, imgf);
-                            //如果使用此工具或者此代码 请保留此代码 好歹让原著装个逼啊 开源需要动力
                             byte[] byString = Encoding.UTF8.GetBytes("\0\0\r\nBy->blandh26@gmail.com");
                             stream.Write(byString, 0, byString.Length); ;
                         }
