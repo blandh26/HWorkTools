@@ -54,4 +54,13 @@
     <s:String x:Key="ScreenRecordingPath">生产路径：</s:String>
     <s:String x:Key="ScreenRecordingTime">录制时间:</s:String>
     <s:String x:Key="ScreenRecordingAudio">音频设备：</s:String>
+    <s:String x:Key="ClipboardTitle">粘贴助手</s:String>
+    <s:String x:Key="ClipboardAdd">监听</s:String>
+    <s:String x:Key="ClipboardDelete">删除</s:String>
+    <s:String x:Key="ClipboardText">开启监听Ctrl+C自动添加到剪贴板，双击或快捷键复制剪贴板内容</s:String>
+    <s:String x:Key="ScreenRecording_Video_Click">录屏</s:String>
+    <s:String x:Key="ScreenRecording_Video_Click">录屏</s:String>
+    <s:String x:Key="ScreenRecording_Video_Click">录屏</s:String>
+    <s:String x:Key="ScreenRecording_Video_Click">录屏</s:String>
+
 </ResourceDictionary>

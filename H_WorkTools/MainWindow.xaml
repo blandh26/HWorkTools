@@ -322,7 +322,7 @@
                             </StackPanel>
                         </TabItem.Header>
                         <StackPanel Margin="12">
-                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="粘贴助手" />
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource ClipboardTitle}" />
                             <Grid Margin="0,0,0,10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -336,12 +336,12 @@
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                     <RowDefinition FrameworkElement.FlowDirection="RightToLeft"/>
                                 </Grid.RowDefinitions>
-                                <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="监听" Content="{md:PackIcon Kind=ClipboardPlus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
-                                <ToggleButton Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="删除" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" x:Name="BtnClipboard" Click="BtnClipboard_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource ClipboardAdd}" Content="{md:PackIcon Kind=ClipboardPlus}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=ClipboardOff}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" x:Name="BtnDelete" Click="BtnDelete_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource ClipboardDelete}" Content="{md:PackIcon Kind=DeleteEmptyOutline}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=DeleteOffOutline}" Cursor="Hand" />
                                 <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LvClipboard" Height="500" Margin="0,10,0,0"
                                       PreviewMouseMove="LvClipboard_OnPreviewMouseMove" Drop="LvClipboard_OnDrop" AllowDrop="True" MouseDoubleClick="LvClipboard_MouseDoubleClick">
                                 </ListView>
-                                <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0">quiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaquiaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</TextBlock>
+                                <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0" Text="{DynamicResource ClipboardText}"></TextBlock>
                             </Grid>
                         </StackPanel>
                     </TabItem>
