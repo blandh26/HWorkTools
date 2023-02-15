@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Threading;
 using H_Util;
 using H_WorkTools;
+using Newtonsoft.Json;
 using static H_Util.WhoUsePort;
 
 namespace HWorkTools
@@ -20,7 +21,9 @@ namespace HWorkTools
     {
         Config cif = new Config();
         System.Threading.Mutex mutex;
-        bool isFrist = true;
+        bool isFrist = true; 
+        string jsonLanguage = "";
+        private static string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
         public App()
         {
             //首先注册开始和退出事件
@@ -48,7 +51,7 @@ namespace HWorkTools
             if (!ret&& isFrist)
             {
                 isFrist = false;
-                MessageBox.Show("已有一个程序实例运行");
+                MessageBox.Show(getLanguage("exeOnlyOone"));//已有一个程序实例运行
                 Environment.Exit(0);
             }
             isFrist = false;
@@ -108,6 +111,23 @@ namespace HWorkTools
             //task线程内未处理捕获
             Log.WriteErrorLog("捕获线程内未处理异常：" + e.Exception.Message);
             e.SetObserved();//设置该异常已察觉（这样处理后就不会引起程序崩溃）
+        }
+
+        public string getLanguage(string key)
+        {
+            try
+            {
+                if (jsonLanguage == "")
+                {
+                    jsonLanguage = System.IO.File.ReadAllText(path + "Language" + "\\" + cif.GetValue("Language") + ".json");
+                }
+                Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonLanguage);
+                return dic.Where(S => S.Key == key).Select(S => S.Value).First().ToString();
+            }
+            catch (Exception ee)
+            {
+                return "";
+            }
         }
     }
 }

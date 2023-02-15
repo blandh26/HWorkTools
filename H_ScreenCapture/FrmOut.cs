@@ -113,10 +113,10 @@ namespace H_ScreenCapture
                     StringFormat sf = new StringFormat();
                     sf.LineAlignment = StringAlignment.Center;
 
-                    string strDraw = "原图:" + ("[" + m_img.Width + "," + m_img.Height + "]").PadRight(15, ' ')
-                        + "倍数:" + ((double)(this.Width - 2) / m_img.Width).ToString("F2").PadRight(6, ' ') + "[宽]"
-                        + "\r\n当前:" + ("[" + (this.Width - 2) + "," + (this.Height - 2) + "]").PadRight(15, ' ')
-                        + "倍数:" + ((double)(this.Height - 2) / m_img.Height).ToString("F2").PadRight(6, ' ') + "[高]";
+                    string strDraw = "Original drawing:" + ("[" + m_img.Width + "," + m_img.Height + "]").PadRight(15, ' ')
+                        + "multiple:" + ((double)(this.Width - 2) / m_img.Width).ToString("F2").PadRight(6, ' ') + "[Width]"
+                        + "\r\nThis:" + ("[" + (this.Width - 2) + "," + (this.Height - 2) + "]").PadRight(15, ' ')
+                        + "multiple:" + ((double)(this.Height - 2) / m_img.Height).ToString("F2").PadRight(6, ' ') + "[Height]";
                     Rectangle rectString = new Rectangle(new Point(1, 1), g.MeasureString(strDraw, this.Font, this.Width, sf).ToSize());
                     rectString.Width += 5; rectString.Height += 5;
                     g.FillRectangle(sb, rectString);
@@ -126,7 +126,7 @@ namespace H_ScreenCapture
                         this.Width - 2, this.Font.Height * 2 + 5);
                     sf.Alignment = StringAlignment.Far;
                     g.FillRectangle(sb, rectString);
-                    g.DrawString("缩放 [中间] 退出 [右键]\r\n移动 [W,S,A,D]", this.Font, Brushes.White, rectString, sf);
+                    g.DrawString("Zoom [Middle] Exit [Right click]\r\nMove [W,S,A,D]", this.Font, Brushes.White, rectString, sf);
                 }
             }
             base.OnPaint(e);

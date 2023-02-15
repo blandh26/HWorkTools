@@ -165,10 +165,10 @@ namespace H_WorkTools
             this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
             this.notifyIcon.Visible = true;
             //打开菜单项
-            MenuItem show = new MenuItem("显示主窗体");
+            MenuItem show = new MenuItem(getLanguage("MenuItemShow"));//显示主窗体
             show.Click += new EventHandler(Show);
             //退出菜单项
-            MenuItem exit = new MenuItem("退出");
+            MenuItem exit = new MenuItem(getLanguage("MenuItemExit"));//退出
             exit.Click += new EventHandler(Close);
             //关联托盘控件
             MenuItem[] mis = new MenuItem[] { show, exit };
@@ -336,7 +336,8 @@ namespace H_WorkTools
             p2p.myport = Convert.ToInt32(cif.GetValue("Tcp"));
             if (TcpP2p.IsPortOccuped(p2p.myport))
             {
-                bool? Result = new MessageBoxCustom("端口提示", "是否关闭占用端口程序 ? ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                //是否关闭占用端口程序 ? 
+                bool? Result = new MessageBoxCustom(getLanguage("portTip"), getLanguage("portExeIfClose"), MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                 if (Convert.ToBoolean(Result))
                 {
                     try
@@ -346,7 +347,8 @@ namespace H_WorkTools
                     }
                     catch (Exception)
                     {
-                        new MessageBoxCustom("端口提示", "端口相关程序关闭失败，关闭程序 ", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        //端口相关程序关闭失败，关闭程序
+                        new MessageBoxCustom(getLanguage("portTip"), getLanguage("portExeIfClosefail"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         Environment.Exit(0); //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。
                     };
                 }
@@ -779,7 +781,8 @@ namespace H_WorkTools
         {
             if (txtNiceName.Text == "")
             {
-                new MessageBoxCustom("远程共享提示", "输入昵称后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                //输入昵称后再操作
+                new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("NiceNameTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                 return;
             }
             if (IsDeskShare)
@@ -799,7 +802,7 @@ namespace H_WorkTools
                 Random rNum = new Random();//随机生成类 
                 RdpKey = rNum.Next(1000, 9999).ToString();
                 txtRdpKey.Text = RdpKey;
-                BtnDeskShare.Content = "停止";
+                BtnDeskShare.Content = getLanguage("BtnDeskShare1");//停止
                 BtnDeskShare.Foreground = new SolidColorBrush(Colors.Brown);
                 BtnDeskShareJoin.IsEnabled = false;
                 BtnDeskShareInvite.IsEnabled = false;
@@ -836,7 +839,7 @@ namespace H_WorkTools
                 { }
                 rbMode1.IsEnabled = true;
                 rbMode2.IsEnabled = true;
-                BtnDeskShare.Content = "共享";
+                BtnDeskShare.Content = getLanguage("BtnDeskShare2");
                 BtnDeskShare.Foreground = new SolidColorBrush(Colors.White);
                 BtnDeskShareJoin.IsEnabled = true;
                 BtnDeskShareInvite.IsEnabled = true;
@@ -903,14 +906,15 @@ namespace H_WorkTools
         {
             if (txtNiceName.Text == "")
             {
-                new MessageBoxCustom("远程共享提示", "输入昵称后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("NiceNameTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                 return;
             }
             if (txtIp.Text != "")
             {
                 if (txtRdpPswKey.Text == "" || txtRdpPswKey.Text.Length != 4)
                 {
-                    new MessageBoxCustom("远程共享提示", "输入密码后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    //输入密码后再操作
+                    new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskSharePswKeyTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
                 IPAddress ip;
@@ -932,7 +936,8 @@ namespace H_WorkTools
                         BtnDeskShareJoin.IsEnabled = false;
                         BtnDeskShareInvite.IsEnabled = false;
                         txtIp.IsEnabled = false;
-                        new MessageBoxCustom("远程共享提示", "加入请求失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        //加入请求失败请检查ip
+                        new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareJoinIpfailTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         return;
                     }
                     cif.SaveValue("Ip", cbIp.SelectedValue.ToString());
@@ -943,7 +948,8 @@ namespace H_WorkTools
                     BtnDeskShare.IsEnabled = true;
                     BtnDeskShareJoin.IsEnabled = true;
                     BtnDeskShareInvite.IsEnabled = true;
-                    new MessageBoxCustom("远程共享提示", "输入正确IP后加入", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    //输入正确IP后加入
+                    new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareJoinIpNullTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
             }
@@ -958,7 +964,7 @@ namespace H_WorkTools
         {
             if (txtNiceName.Text == "")
             {
-                new MessageBoxCustom("远程共享提示", "输入昵称后再操作", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("NiceNameTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                 return;
             }
             rbMode2.IsChecked = true;//邀请默认控制模式
@@ -981,7 +987,8 @@ namespace H_WorkTools
                     if (!issend)
                     {
                         Stop();
-                        new MessageBoxCustom("远程共享提示", "邀请失败请检查ip", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        //邀请失败请检查ip
+                        new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareInviteIpFailTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                         return;
                     }
                     cif.SaveValue("Ip", cbIp.SelectedValue.ToString());
@@ -992,7 +999,8 @@ namespace H_WorkTools
                     BtnDeskShare.IsEnabled = true;
                     BtnDeskShareJoin.IsEnabled = true;
                     BtnDeskShareInvite.IsEnabled = true;
-                    new MessageBoxCustom("远程共享提示", "输入正确IP后邀请", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                    //输入正确IP后邀请
+                    new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareJoinIpNullJoinTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                     return;
                 }
             }
@@ -1087,7 +1095,9 @@ namespace H_WorkTools
                                 {//推送密钥
                                     try
                                     {
-                                        bool? Result = new MessageBoxCustom("远程共享提示", msgstr.recName + "[" + msgstr.recIP + "]请求加入共享是否同意 ", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                                        //请求加入共享是否同意
+                                        bool? Result = new MessageBoxCustom(getLanguage("DeskShareTip"), msgstr.recName + "[" + msgstr.recIP + "] "
+                                            + getLanguage("DeskShareJoinOkTip"), MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                                         if (Convert.ToBoolean(Result))
                                         {//同意加入
                                             TcpP2p.Msg Sendmsg = new TcpP2p.Msg();
@@ -1169,7 +1179,8 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinRefuse))
                         {//加入拒绝
-                            new MessageBoxCustom("远程共享提示", "加入请求被拒绝 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            //加入请求被拒绝
+                            new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareJoinRefuse"), MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinUpdate))
@@ -1217,7 +1228,7 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinPassword))
                         {//加入失败密码错误
-                            new MessageBoxCustom("远程共享提示", "加入失败，密码错误", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareJoinPasswordTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                             BtnDeskShareJoin.IsEnabled = true;
                             BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
@@ -1225,8 +1236,8 @@ namespace H_WorkTools
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.JoinFail))
-                        {//加入失败会议没有
-                            new MessageBoxCustom("远程共享提示", "加入失败，未开启共享或已经结束", MessageType.Warning, MessageButtons.Ok).ShowDialog();
+                        {//加入失败，未开启共享或已经结束
+                            new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareJoinFailTip"), MessageType.Warning, MessageButtons.Ok).ShowDialog();
                             BtnDeskShareJoin.IsEnabled = true;
                             BtnDeskShareInvite.IsEnabled = true;
                             BtnDeskShare.IsEnabled = true;
@@ -1235,7 +1246,8 @@ namespace H_WorkTools
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteApply))
                         {//邀请请求
-                            bool? Result = new MessageBoxCustom("远程共享提示", msgstr.recName + "[" + msgstr.recIP + "]请求远程协助是否同意", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                            bool? Result = new MessageBoxCustom(getLanguage("DeskShareTip"), msgstr.recName + "[" + msgstr.recIP + "]" +
+                                getLanguage("DeskShareInviteApplyTip"), MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                             if (Convert.ToBoolean(Result))
                             {//同意邀请
                                 BtnDeskShare.IsEnabled = false;
@@ -1282,13 +1294,13 @@ namespace H_WorkTools
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteRefuse))
                         {//邀请拒绝
                             Stop();
-                            new MessageBoxCustom("远程共享提示", "邀请被拒绝", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareInviteRefuseTip"), MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.InviteExit))
                         {//邀请者结束远程协助
                             Stop();
-                            new MessageBoxCustom("远程共享提示", "邀请者结束远程协助 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            new MessageBoxCustom(getLanguage("DeskShareTip"), getLanguage("DeskShareInviteExitTip"), MessageType.Info, MessageButtons.Ok).ShowDialog();
                             return;
                         }
                         else if (msgstr.command == Convert.ToInt32(TcpP2p.msgCommand.ExElistUpdate))
@@ -1485,12 +1497,12 @@ namespace H_WorkTools
         {
             if (Topmost)
             {
-                BtnTopMost.ToolTip = "置顶";
+                BtnTopMost.ToolTip = getLanguage("BtnTopMost1");//置顶
                 Topmost = false;
             }
             else
             {
-                BtnTopMost.ToolTip = "取消置顶";
+                BtnTopMost.ToolTip = getLanguage("BtnTopMost2");//取消置顶
                 Topmost = true;
             }
         }
@@ -1502,14 +1514,14 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void BtnClipboard_Click(object sender, EventArgs e)
         {
-            if (BtnClipboard.ToolTip.Equals("监听"))
+            if (BtnClipboard.ToolTip.Equals(getLanguage("BtnClipboard2")))//监听
             {
-                BtnClipboard.ToolTip = "取消监听";
+                BtnClipboard.ToolTip = getLanguage("BtnClipboard1");//取消监听
                 IsClipboardMode = true;
             }
             else
             {
-                BtnClipboard.ToolTip = "监听";
+                BtnClipboard.ToolTip = getLanguage("BtnClipboard2");//监听
                 IsClipboardMode = false;
             }
         }
@@ -1521,14 +1533,14 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            if (BtnDelete.ToolTip.Equals("删除"))
+            if (BtnDelete.ToolTip.Equals(getLanguage("BtnDelete2")))//删除
             {
-                BtnDelete.ToolTip = "取消删除";
+                BtnDelete.ToolTip = getLanguage("BtnDelete1");//取消删除
                 IsClipboardDelete = true;
             }
             else
             {
-                BtnDelete.ToolTip = "删除";
+                BtnDelete.ToolTip = getLanguage("BtnDelete2");//删除
                 IsClipboardDelete = false;
             }
         }
@@ -1571,7 +1583,8 @@ namespace H_WorkTools
                 string file = path + "Json\\" + "\\" + "Clipboard.Json";
                 if (File.Exists(file))
                 {
-                    bool? Result = new MessageBoxCustom("设置提示", "从新设置密码清空缓存", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                    //从新设置秘钥，需要清空缓存所有剪贴板数据是否继续
+                    bool? Result = new MessageBoxCustom(getLanguage("SetTip"), getLanguage("ClipboardIsNull"), MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
                     if (Convert.ToBoolean(Result))
                     {
                         File.Delete(file);
@@ -1603,7 +1616,8 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("设置提示", "开机自动启动失败，请用管理模式打开软件后再试试", MessageType.Success, MessageButtons.Ok).ShowDialog();
+                //开机自动启动失败，请用管理模式打开软件后再试试
+                new MessageBoxCustom(getLanguage("SetTip"), getLanguage("StartFail"), MessageType.Success, MessageButtons.Ok).ShowDialog();
             }
             #region 快捷键重新设置
             try
@@ -1637,8 +1651,8 @@ namespace H_WorkTools
             #endregion
 
             RegistAll();//注册快捷键
-
-            new MessageBoxCustom("设置提示", "语言设置需要重启软件", MessageType.Success, MessageButtons.Ok).ShowDialog();
+            //修改语言设置，个别模块需要重启后生效
+            new MessageBoxCustom(getLanguage("SetTip"), getLanguage("SetLanguageTip"), MessageType.Success, MessageButtons.Ok).ShowDialog();
 
         }
         #endregion
@@ -1853,14 +1867,14 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void BtnExeDelete_Click(object sender, EventArgs e)
         {
-            if (BtnExeDelete.ToolTip.Equals("删除"))
+            if (BtnExeDelete.ToolTip.Equals(getLanguage("BtnExeDelete2")))//删除
             {
-                BtnExeDelete.ToolTip = "取消删除";
+                BtnExeDelete.ToolTip = getLanguage("BtnExeDelete1");//取消删除
                 IsExeDelete = true;
             }
             else
             {
-                BtnExeDelete.ToolTip = "删除";
+                BtnExeDelete.ToolTip = getLanguage("BtnExeDelete2");//删除
                 IsExeDelete = false;
             }
         }
@@ -1983,7 +1997,8 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("设置提示", "剪贴板快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                //剪贴板快捷键设置失败，修改后再设置试试
+                new MessageBoxCustom(getLanguage("SetTip"), getLanguage("ClipboardRegistTip"), MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -1997,7 +2012,8 @@ namespace H_WorkTools
             }
             catch (Exception)
             {
-                new MessageBoxCustom("设置提示", "停止共享快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                //停止共享快捷键设置失败，修改后再设置试试
+                new MessageBoxCustom(getLanguage("SetTip"), getLanguage("DeskShareStopRegist"), MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -2021,7 +2037,8 @@ namespace H_WorkTools
             }
             catch
             {
-                new MessageBoxCustom("设置提示", "截图快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                //截图快捷键设置失败，修改后再设置试试
+                new MessageBoxCustom(getLanguage("SetTip"), getLanguage("Capture1"), MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -2045,7 +2062,8 @@ namespace H_WorkTools
             }
             catch
             {
-                new MessageBoxCustom("设置提示", "截图上一次快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                //截图上一次快捷键设置失败，修改后再设置试试
+                new MessageBoxCustom(getLanguage("SetTip"), getLanguage("Capture2"), MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -2069,7 +2087,8 @@ namespace H_WorkTools
             }
             catch
             {
-                new MessageBoxCustom("设置提示", "截图对比快捷键设置失败，修改后再设置试试", MessageType.Success, MessageButtons.OkCancel).ShowDialog();
+                //截图对比快捷键设置失败，修改后再设置试试
+                new MessageBoxCustom(getLanguage("SetTip"), getLanguage("Capture3"), MessageType.Success, MessageButtons.OkCancel).ShowDialog();
                 return;
             }
             #endregion
@@ -2143,11 +2162,11 @@ namespace H_WorkTools
             switch (t.alarmType)
             {
                 case "0":
-                    return "[指定] " + t.data + " " + t.time;
+                    return "["+ getLanguage("DiyDay") + "] " + t.data + " " + t.time;
                 case "1":
-                    return "[每周] " + t.data;
+                    return "[" + getLanguage("WeekDay") + "] " + t.data;
                 case "2":
-                    return "[每月] " + t.data;
+                    return "[" + getLanguage("MonthDay") + "] " + t.data;
             }
             return "";
         }
@@ -2217,14 +2236,14 @@ namespace H_WorkTools
         /// <param name="e"></param>
         private void AlarmDelete_Click(object sender, EventArgs e)
         {
-            if (BtnAlarmDelete.ToolTip.Equals("删除"))
+            if (BtnAlarmDelete.ToolTip.Equals(getLanguage("BtnAlarmDelete1")))//删除
             {
-                BtnAlarmDelete.ToolTip = "取消删除";
+                BtnAlarmDelete.ToolTip = getLanguage("BtnAlarmDelete2");//取消删除
                 IsAlarmDelete = true;
             }
             else
             {
-                BtnAlarmDelete.ToolTip = "删除";
+                BtnAlarmDelete.ToolTip = getLanguage("BtnAlarmDelete1");//删除
                 IsAlarmDelete = false;
             }
         }
@@ -2251,12 +2270,13 @@ namespace H_WorkTools
             DragDrop.DoDragDrop(LvAlarm, dataObj, System.Windows.DragDropEffects.Move);  //调用方法
         }
 
-        public string getLanguage(string key) {
+        public string getLanguage(string key)
+        {
             try
             {
-                if (jsonLanguage=="")
+                if (jsonLanguage == "")
                 {
-                    jsonLanguage=System.IO.File.ReadAllText(path+ "Language"+"\\"+cif.GetValue("Language")+".json");
+                    jsonLanguage = System.IO.File.ReadAllText(path + "Language" + "\\" + cif.GetValue("Language") + ".json");
                 }
                 Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonLanguage);
                 return dic.Where(S => S.Key == key).Select(S => S.Value).First().ToString();
@@ -2271,6 +2291,9 @@ namespace H_WorkTools
     #region 弹出框有关
     internal class MainWindowViewModel : ViewModelBase
     {
+        string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
+        string jsonLanguage = "";
+        Config cif = new Config();
         public MainWindowViewModel()
         {
             Action<object> a = new Action<object>(AlarmInsert);
@@ -2279,13 +2302,12 @@ namespace H_WorkTools
         public DelegateCommand AlarmInsertCommand { get; private set; }
         public async void AlarmInsert(object src)
         {
-            string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
             string showtitle = "";
             if (AlarmTemp.json == "")
-                showtitle = "Add";
+                showtitle = getLanguage("InsertAlarmTitle1");
             else
-                showtitle = "Edit";
-            CommonDialogResult result = await CommonDialogShow.ShowInsertAlarm("Root", "Add") as CommonDialogResult;
+                showtitle = getLanguage("InsertAlarmTitle2");
+            CommonDialogResult result = await CommonDialogShow.ShowInsertAlarm("Root", showtitle) as CommonDialogResult;
             if (result.Button == CommonDialogButton.Ok)
             {
                 await CommonDialogShow.ShowCurcularProgress("Root", () =>
@@ -2311,7 +2333,8 @@ namespace H_WorkTools
                     {
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
-                            new MessageBoxCustom("设置提示", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                            //添加失败，不可以重复添加
+                            new MessageBoxCustom(getLanguage("SysTip"), getLanguage("InsertAlarmFail"), MessageType.Info, MessageButtons.Ok).ShowDialog();
                         }));
                     }
                     TcpP2p p2p = new TcpP2p();
@@ -2334,8 +2357,7 @@ namespace H_WorkTools
             {
                 return new DelegateCommand(async (src) =>
                 {
-                    string path = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;   //存储在本程序目录下
-                    CommonDialogResult result = await CommonDialogShow.ShowInsertExe("Root", "Add") as CommonDialogResult;
+                    CommonDialogResult result = await CommonDialogShow.ShowInsertExe("Root", getLanguage("InsertExeTitle")) as CommonDialogResult;
                     if (result.Button == CommonDialogButton.Ok)
                     {
                         await CommonDialogShow.ShowCurcularProgress("Root", () =>
@@ -2354,7 +2376,8 @@ namespace H_WorkTools
                             {
                                 App.Current.Dispatcher.Invoke((Action)(() =>
                                 {
-                                    new MessageBoxCustom("添加应用程序", "添加失败，不可以重复添加 ", MessageType.Info, MessageButtons.Ok).ShowDialog();
+                                    //添加失败，不可以重复添加
+                                    new MessageBoxCustom(getLanguage("SysTip"), getLanguage("InsertExeFail"), MessageType.Info, MessageButtons.Ok).ShowDialog();
                                 }));
                             }
                             TcpP2p p2p = new TcpP2p();
@@ -2372,7 +2395,22 @@ namespace H_WorkTools
                 });
             }
         }
-
+        public string getLanguage(string key)
+        {
+            try
+            {
+                if (jsonLanguage == "")
+                {
+                    jsonLanguage = System.IO.File.ReadAllText(path + "Language" + "\\" + cif.GetValue("Language") + ".json");
+                }
+                Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonLanguage);
+                return dic.Where(S => S.Key == key).Select(S => S.Value).First().ToString();
+            }
+            catch (Exception ee)
+            {
+                return "";
+            }
+        }
     }
     #endregion
 }

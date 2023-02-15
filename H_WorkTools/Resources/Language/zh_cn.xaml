@@ -26,10 +26,10 @@
     <s:String x:Key="AppsTile">应用中心</s:String>
     <s:String x:Key="AppsAdd">新增</s:String>
     <s:String x:Key="AppsDelete">删除</s:String>
-    <s:String x:Key="AlarmTile">提醒工11具</s:String>
+    <s:String x:Key="AlarmTile">提醒工具</s:String>
     <s:String x:Key="AlarmAdd">新增</s:String>
     <s:String x:Key="AlarmDelete">删除</s:String>
-    <s:String x:Key="DeskShareTitle">共享桌面</s:String>
+    <s:String x:Key="DeskShareTitle">共享</s:String>
     <s:String x:Key="DeskShareNiceName">昵称</s:String>
     <s:String x:Key="DeskShareIP">本地IP</s:String>
     <s:String x:Key="DeskSharePassword">密码</s:String>
@@ -39,7 +39,7 @@
     <s:String x:Key="DeskShareBtnDeskShare">共享</s:String>
     <s:String x:Key="DeskShareText">Alt+Shift+Esc快捷键快速结束共享</s:String>
     <s:String x:Key="DeskShareTitle2">加入或求助</s:String>
-    <s:String x:Key="DeskShareIP2">加入或求助</s:String>
+    <s:String x:Key="DeskShareIP2">IP</s:String>
     <s:String x:Key="DeskSharePassword2">共享</s:String>
     <s:String x:Key="BtnDeskShareJoin">加入</s:String>
     <s:String x:Key="BtnDeskShareInvite">求助</s:String>

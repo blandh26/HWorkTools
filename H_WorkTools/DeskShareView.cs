@@ -41,6 +41,8 @@ namespace H_WorkTools
         {
             try
             {
+                this.Text = getLanguage("DeskShareView");
+                toolStripMenuItem1.Text = getLanguage("control");//控制
                 axRDPViewer1.SmartSizing = true;
                 if (mode == "C")
                 {
@@ -94,14 +96,14 @@ namespace H_WorkTools
             {
                 if (isControl)
                 {
-                    toolStripMenuItem1.Text = "释放";
+                    toolStripMenuItem1.Text = getLanguage("release");//释放
                     axRDPViewer1.RequestControl(RDPCOMAPILib.CTRL_LEVEL.CTRL_LEVEL_INTERACTIVE);
                     isControl = false;
                     toolStripMenuItem1.Image = H_WorkTools.Properties.Resources._2;
                 }
                 else
                 {
-                    toolStripMenuItem1.Text = "控制";
+                    toolStripMenuItem1.Text = getLanguage("control");//控制
                     axRDPViewer1.RequestControl(RDPCOMAPILib.CTRL_LEVEL.CTRL_LEVEL_VIEW);
                     isControl = true;
                     toolStripMenuItem1.Image = H_WorkTools.Properties.Resources._1;
