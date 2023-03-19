@@ -302,7 +302,7 @@
 
                                 <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource ScreenRecordingTime}" Margin="0,20,0,0"/>
                                 <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LabMins" Content="00:00:00.000" Margin="0,15,0,10" FontSize="18"/>
-                                <ToggleButton Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnScreenRecordingVideo" Click="ScreenRecording_Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource ScreenRecording_Video_Click}" Content="{md:PackIcon Kind=Video}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
+                                <ToggleButton Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" x:Name="BtnScreenRecordingVideo" Click="Video_Click" Height="40" Width="40" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="{DynamicResource ScreenRecording_Video_Click}" Content="{md:PackIcon Kind=Video}" md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Stop,Size=20}" Cursor="Hand" />
 
                                 <!--输出内容-->
                                 <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Height="470" x:Name="VideoScrollViewer">
@@ -344,6 +344,41 @@
                         </StackPanel>
                     </TabItem>
                     <!--剪贴板-结束-->
+                    <!--统计代码-开始-->
+                    <TabItem  Width="48" Height="48">
+                        <TabItem.Header>
+                            <StackPanel Width="auto" Height="auto">
+                                <md:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Code" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <StackPanel Margin="12">
+                            <TextBlock Margin="0,0,0,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{DynamicResource RuleContent}" />
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                    <RowDefinition FrameworkElement.FlowDirection="RightToLeft"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="80" Content="{DynamicResource RuleCount_Click}" x:Name="BtnRuleContent" Click="BtnRuleContent_Click" FontSize="14" Cursor="Hand"/>
+                                <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" MaxHeight="200" x:Name="VideoScrollViewer1">
+                                    <TextBox x:Name="txtRule" Text="" md:HintAssist.Hint="Rule" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                </ScrollViewer>
+                                <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Height="300" x:Name="VideoScrollViewer2">
+                                    <TextBox x:Name="txtContent" Text="" md:HintAssist.Hint="Content" AcceptsReturn="True"/>
+                                </ScrollViewer>
+                                <TextBlock x:Name="txtRuleContent" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="0,10,0,0" Text=".."></TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <!--统计代码-结束-->
                     <!--语言设置-开始-->
                     <TabItem Width="48" Height="48">
                         <TabItem.Header>

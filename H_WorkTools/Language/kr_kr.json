@@ -1,5 +1,5 @@
 ﻿{
-    "exeOnlyOone": "실행 중인 프로그램 인스턴스가 있습니다",
+	"exeOnlyOone": "실행 중인 프로그램 인스턴스가 있습니다",
 	"control": "통제",
 	"release": "석방",
 	"DeskShareView": "데스크 공유 보기",
@@ -51,5 +51,6 @@
 	"InsertExeFail": "추가 실패, 중복 추가 불가",
 	"InsertExeTitle": "프로그램 추가",
 	"InsertAlarmTitle1": "알람 추가",
-	"InsertAlarmTitle2": "알람 편집"
+	"InsertAlarmTitle2": "알람 편집",
+	"RuleCount": "통계 결과: 유효한 행 {0} 행, 유효하지 않은 행 {1} 행, {2} 단어 수입니다."
 }

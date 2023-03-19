@@ -1,5 +1,5 @@
 ﻿{
-    "exeOnlyOone": "プログラム インスタンスが既に実行されています",
+	"exeOnlyOone": "プログラム インスタンスが既に実行されています",
 	"control": "制御",
 	"release": "リリース",
 	"DeskShareView": "デスクシェアビュー",
@@ -51,5 +51,6 @@
 	"InsertExeFail": "追加は失敗し、繰り返し追加しないでください",
 	"InsertExeTitle": "新しいアプリ",
 	"InsertAlarmTitle1": "目覚まし時計を追加しました",
-	"InsertAlarmTitle2": "アラームを編集します"
+	"InsertAlarmTitle2": "アラームを編集します",
+	"RuleCount": "統計結果：有効な行{0}行、無効な行{1}行、{2}文字数。"
 }

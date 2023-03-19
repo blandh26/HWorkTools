@@ -158,7 +158,7 @@ namespace H_WorkTools
             _hwndSource.AddHook(WndProc);
 
             encrypt_key = cif.GetValue("Encrypt");
-
+            txtRule.Text = cif.GetValue("Rule");
             #region 托盘设置
             this.notifyIcon = new NotifyIcon();
             this.notifyIcon.Text = "HWorkTools";//鼠标移入图标后显示的名称
@@ -478,6 +478,7 @@ namespace H_WorkTools
             cbClipboardCtrl.SelectedIndex = Convert.ToInt32(cList[0]);
             cbClipboardNumber.SelectedIndex = Convert.ToInt32(cList[1]);
 
+
             #endregion
             RegistAll();//注册所有快捷键
         }
@@ -606,7 +607,7 @@ namespace H_WorkTools
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ScreenRecording_Video_Click(object sender, EventArgs e)
+        private void Video_Click(object sender, EventArgs e)
         {
             if (IsVideo)//true 停止
             {
@@ -665,6 +666,8 @@ namespace H_WorkTools
                     startInfo.Arguments = arguments;
                     startInfo.UseShellExecute = false;//不使用操作系统外壳程序启动
                     startInfo.RedirectStandardError = true;//重定向标准错误流
+                    startInfo.StandardOutputEncoding = Encoding.UTF8;
+                    startInfo.StandardErrorEncoding = Encoding.UTF8;
                     startInfo.CreateNoWindow = true;//默认不显示窗口
                     startInfo.RedirectStandardInput = true;//启用模拟该进程控制台输入的开关
                     startInfo.RedirectStandardOutput = true;
@@ -1963,6 +1966,8 @@ namespace H_WorkTools
         /// <exception cref="Exception"></exception>
         public void RegistAll()
         {
+
+
             #region  剪贴板 默认快捷键Ctrl + 1-10
             try
             {
@@ -2007,8 +2012,11 @@ namespace H_WorkTools
             try
             {
                 HotkeyModifiers key = GetHotkeyModifiers(cbDeskShare.Text);
+                //录屏结束
+                Regist(this, key, Key.Q, () => { try { FFmpeg_Stop(); } catch { } });
+                //停止共享
                 Regist(this, key, (Key)Enum.Parse(typeof(Key), txtDeskShareKey.Text), () =>
-                { try { Stop(); } catch { } });//停止共享
+                { try { Stop(); } catch { } });
             }
             catch (Exception)
             {
@@ -2162,7 +2170,7 @@ namespace H_WorkTools
             switch (t.alarmType)
             {
                 case "0":
-                    return "["+ getLanguage("DiyDay") + "] " + t.data + " " + t.time;
+                    return "[" + getLanguage("DiyDay") + "] " + t.data + " " + t.time;
                 case "1":
                     return "[" + getLanguage("WeekDay") + "] " + t.data;
                 case "2":
@@ -2246,6 +2254,55 @@ namespace H_WorkTools
                 BtnAlarmDelete.ToolTip = getLanguage("BtnAlarmDelete1");//删除
                 IsAlarmDelete = false;
             }
+        }
+        #endregion
+
+        #region 统计字数
+        /// <summary>
+        ///  统计字数按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnRuleContent_Click(object sender, EventArgs e)
+        {
+            string rule = txtRule.Text;
+            cif.SaveValue("Rule", rule);
+            string content = txtContent.Text;
+            int countRow = 0;//有效行
+            int countNoRow = 0;//无效行
+            int countStr = 0;
+            string ruleContent = "";//处理后文字
+            string[] ruleLine = txtRule.Text.Split(new string[] { "\r" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] contentLine = txtContent.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            if (rule != "" && content != "")
+            {
+                foreach (string item in contentLine)
+                {
+                    bool isCount = false;//是否统计
+                    foreach (string ritem in ruleLine)
+                    {
+                        if (item.Contains(ritem)|| item.Trim()=="")
+                        {
+                            isCount = true;
+                            break;
+                        }
+                    }
+                    if (!isCount)
+                    {//统计
+                        ruleContent += item + Environment.NewLine;
+                        countStr += item.Length;
+                        ++countRow;
+                    }
+                    else
+                    {//不统计
+                        ++countNoRow;
+                    }
+                }
+            }
+            txtRuleContent.Text = getLanguage("RuleCount").Replace("{0}", countRow.ToString());
+            txtRuleContent.Text = txtRuleContent.Text.Replace("{1}", countNoRow.ToString());
+            txtRuleContent.Text = txtRuleContent.Text.Replace("{2}", countStr.ToString());
+            txtContent.Text= ruleContent;
         }
         #endregion
 

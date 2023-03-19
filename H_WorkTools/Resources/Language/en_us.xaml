@@ -80,4 +80,6 @@
     <s:String x:Key="cbClipboardNumber1">Keyboard Numbers</s:String>
     <s:String x:Key="cbClipboardNumber2">Number Pad</s:String>
     <s:String x:Key="SetLanguage_Click">Settings</s:String>
+    <s:String x:Key="RuleCount_Click">Statistical</s:String>
+    <s:String x:Key="RuleContent">Count code lines</s:String>
 </ResourceDictionary>

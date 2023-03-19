@@ -1,5 +1,5 @@
 ﻿{
-    "exeOnlyOone": "已有一个程序实例运行",
+	"exeOnlyOone": "已有一个程序实例运行",
 	"control": "控制",
 	"release": "释放",
 	"DeskShareView": "浏览窗体",
@@ -51,5 +51,6 @@
 	"InsertExeFail": "添加失败，不可以重复添加",
 	"InsertExeTitle": "新增应用",
 	"InsertAlarmTitle1": "新增闹钟",
-	"InsertAlarmTitle2": "编辑闹钟"
+	"InsertAlarmTitle2": "编辑闹钟",
+	"RuleCount": "统计结果：有效行{0}行，无效行{1}行，{2}字数。"
 }

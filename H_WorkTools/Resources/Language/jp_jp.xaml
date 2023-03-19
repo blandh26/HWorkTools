@@ -80,4 +80,6 @@
     <s:String x:Key="cbClipboardNumber1">キーボードの数字</s:String>
     <s:String x:Key="cbClipboardNumber2">キーパッド</s:String>
     <s:String x:Key="SetLanguage_Click">設定</s:String>
+    <s:String x:Key="RuleCount_Click">統計</s:String>
+    <s:String x:Key="RuleContent">統計コードの行数</s:String>
 </ResourceDictionary>

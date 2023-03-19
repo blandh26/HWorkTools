@@ -1,5 +1,5 @@
 ﻿{
-    "exeOnlyOone": "There is already a program instance running",
+	"exeOnlyOone": "There is already a program instance running",
 	"control": "control",
 	"release": "release",
 	"DeskShareView": "DeskShareView",
@@ -51,5 +51,6 @@
 	"InsertExeFail": "Failed to add. Cannot add again",
 	"InsertExeTitle": "Add App",
 	"InsertAlarmTitle1": "Add alarm",
-	"InsertAlarmTitle2": "Edit alarm"
+	"InsertAlarmTitle2": "Edit alarm",
+	"RuleCount": "Statistical results: valid lines {0}, invalid lines {1}, and {2} words."
 }
